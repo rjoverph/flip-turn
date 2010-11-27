@@ -3,12 +3,12 @@
 ##
 ##  Change password and username(s) as necessary.
 ##
-create database flip-turn ;
-use flip-turn ;
-create table flip-turn (flip-turn varchar(50)) ;
-grant all on flip-turn.* to flip-turn identified by 'flip-turn' ;
-grant all on flip-turn.* to flip-turn@localhost identified by 'flip-turn' ;
-SET PASSWORD FOR flip-turn@localhost = OLD_PASSWORD('flip-turn')
+create database sdif2mysql ;
+use sdif2mysql ;
+create table sdif2mysql (sdif2mysql varchar(50)) ;
+grant all on sdif2mysql.* to sdif2mysql identified by 'sdif2mysql' ;
+grant all on sdif2mysql.* to sdif2mysql@localhost identified by 'sdif2mysql' ;
+SET PASSWORD FOR sdif2mysql@localhost = OLD_PASSWORD('sdif2mysql')
 
 ##  Create the swimmer database
 CREATE TABLE `results` (
