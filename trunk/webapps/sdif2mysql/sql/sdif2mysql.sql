@@ -8,7 +8,7 @@ use sdif2mysql ;
 create table sdif2mysql (sdif2mysql varchar(50)) ;
 grant all on sdif2mysql.* to sdif2mysql identified by 'sdif2mysql' ;
 grant all on sdif2mysql.* to sdif2mysql@localhost identified by 'sdif2mysql' ;
-SET PASSWORD FOR sdif2mysql@localhost = OLD_PASSWORD('sdif2mysql')
+SET PASSWORD FOR sdif2mysql@localhost = OLD_PASSWORD('sdif2mysql') ;
 
 ##  Create the swimmer database
 CREATE TABLE `results` (
@@ -23,10 +23,10 @@ CREATE TABLE `results` (
 	`place` SMALLINT(6) NULL DEFAULT '0',
 	`date` DATE NULL DEFAULT NULL,
 	INDEX `resultid` (`resultid`)
-)
-COLLATE='utf8_general_ci'
-ENGINE=InnoDB
-ROW_FORMAT=DEFAULT
+) ;
+#COLLATE='utf8_general_ci'
+#ENGINE=InnoDB
+#ROW_FORMAT=DEFAULT
 
 ##  Create the results database
 CREATE TABLE `swimmer` (
@@ -38,8 +38,8 @@ CREATE TABLE `swimmer` (
 	`uss` TEXT NULL,
 	`gender` TINYINT(4) NULL DEFAULT NULL,
 	INDEX `swimmerid` (`swimmerid`)
-)
-COLLATE='utf8_general_ci'
-ENGINE=InnoDB
-ROW_FORMAT=DEFAULT
+) ;
+#COLLATE='utf8_general_ci'
+#ENGINE=InnoDB
+#ROW_FORMAT=DEFAULT
 
