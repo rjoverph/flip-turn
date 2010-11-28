@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT config (database+)>
+<!ELEMENT database (connection+,tables+)>
+
+<!ELEMENT connection (driver+,host+,port,name+,user+,password+)>
+<!ELEMENT driver (#PCDATA)>
+<!ELEMENT host (#PCDATA)>
+<!ELEMENT port (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT user (#PCDATA)>
+<!ELEMENT password (#PCDATA)>
+
+<!ELEMENT tables (table+)>
+<!ATTLIST tables parent CDATA "DBDataObject">
+
+<!ELEMENT table (atom?)>
+<!ATTLIST table name CDATA #REQUIRED>
+
+<!ELEMENT atom (#PCDATA)>
+<!ATTLIST atom name CDATA #REQUIRED>

@@ -1,0 +1,92 @@
+$Id: CHANGELOG 3366 2010-02-26 03:56:43Z hemna $
+
+++ Major change or new feature.
++  fairly large change
+-  minor change
+
+
+version 3.0.3 - DEVTBD
+  + Added a prompt in the ProjectGenerator to ask to include DataBase support while creating
+    a new project.
+  - fixed a bug with the label rendering for FENumberInRange
+  - fixed an issue in DBDataObjectTemplateGenerator that was trying to generate a get_id() method which is 
+    marked as final in the parent class.
+  + Added DBDataObject Iterator support.
+  - Fixes to SVG classes to make them work in php5.
+  + Changed Daemon class to use the new Log class.  removed PEAR references as well
+  + added support to disable controller request debug output
+    2 on objects that provide the controller_debug_allowed() method.
+  + added hostname port support in RequestBuilder
+  + Added new JSONWidget and AutoloadGenerator support.
+
+version 3.0.2 - 03/18/08
+  - fixed a bug with RequestBuilder::get_url() when a RequestBuilder::set_file() was called.
+ ++ added Controller ability to set http headers with every call. 
+  + added HTMLPage::http_headers() for the controller to call.
+  + added content_type to the HTMLDocument.
+  - added __toString() support to the DBDataObjectGenerator
+  - added __toString() to the generated DBDataObjects.
+ ++ Added new Logging facility in Log, LogWriter, LogEvent, LogFormatter
+  - Added progress cursor to ajax update requests.
+  + Updated AjaxableHTMLWidget to automatically support wrapping contents
+    in containing div and handle ajax vs. non ajax (containing object render) 
+    requests.
+  - fixed examples/widget8.php
+  + fixed a bug with the AjaxDefaultHTMLDataList and AjaxDataList where the
+    action_button() method wasn't ajax aware.
+
+version 3.0.1 - 10/12/07
+  - fixed a small issue in ADODBSQLDataListSource count() method
+  - pulled out the generated documentation from the repository
+  - added bin/build.xml which is a phing build project. All
+    releases will be done with phing now
+  - fixed issues with the XMLDocument not outputting content type properly.
+  - added type hinting to all tag constructors, so typing new DIVtag('hello')
+    instead of new DIVtag(array(), 'hello') will trigger a useful error message
+  - fixed a bug in ProjectGenerator that wouldn't allow empty defaults (useful
+    for db password on dev machines)
+  - updated RequestBuilder::get_query_params_as_string() to wrap name and value pairs
+    in query string with urlencode() to protect against XSS.  Also wrap entire query
+    string in htmlentities to validate urls against the w3c validator.
+  - made phphtmllibException non-abstract; throw phphtmllibExceptions instead of Exceptions
+    everywhere except AutoloadGenerator
+  - Fixed small issue with invalid DOCTYPE declarations.
+
+
+version 3.0.0 - 9/27/07
+ ++ php5 codebase.
+ ++ Added the new framework directory which includes
+    MVC controller, cache mgr, session mgr, request mgr and more to come
++++ Converted to a framework
++++ added ProjectGenerator
+  + FormElements names are no longer based on the label.
+ ++ Added DataObject class
+ ++ Added DataBase Object
+ ++ Added framework wide Exceptions and Exception codes.
+ ++ Added AjaxHTMLDataList
+ ++ Added AjaxDefaultHTMLDataList
+ ++ Added AjaxFormProcessor for processing AjaxFormContent
+ ++ Added AjaxFormContent
+ ++ Added Config object to handle app wide config options
+ ++ Use Config for widget image paths instead of hard coded values.
+ ++ The BaseWidget renamed to HTMLWidget
+  + set an id attribute on all FormElement labels
+  + Added FormElement::render() method
+  + Renamed XMLDocumentClass to XMLDocument
+  + Renamed HTMLDocumentClass to HTMLDocument
+  + Renamed PageWidget to HTMLPage
+  + Renamed WMLDocumentClass to WMLDocument
+  + Renamed SVGDocumentClass to SVGDocument
+ ++ changed the global $phphtmllib use to a
+    define PHPHTMLLIB
+  + changed FormProcessor::is_successfull() to is_successful()
+  + refactored the DataList and DataListSource object.
+    DataListSource now implements iterator
+ ++ Refactored how the form engine and FormElement classes all do
+    validation.  They all use the new framework's Validator object
+    to help centralize application wide validation of data.
+ ++ Added NetworkValidator, DateValidator
+  + Migrated to Subversion
+  + added FormContent::get_hidden_element()
+  + added HTMLDataList::set_div_id(), get_div_id() to allow for
+    consistent wrapping of output in a div with an id tag. (AJAX requests)

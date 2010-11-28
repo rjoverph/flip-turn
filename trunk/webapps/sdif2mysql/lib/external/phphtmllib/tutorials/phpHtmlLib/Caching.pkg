@@ -1,0 +1,126 @@
+
+
+<refentry id="{@id}">
+ <refnamediv>
+  <refname>Caching</refname>
+  <refpurpose>The phpHtmlLib Cache classes</refpurpose>
+ </refnamediv>
+ <refsynopsisdiv>
+  <refsynopsisdivinfo>
+   <copyright>&copy; #!#COPYDATE#!#, Walter A. Boring IV, Suren Markosian</copyright>
+   <releaseinfo>phpHtmlLib #!#VERSION#!#</releaseinfo>
+  </refsynopsisdivinfo>
+ </refsynopsisdiv>
+ {@toc}
+ <refsect1 id="{@id cacheoverview}">
+  <title>Cache overview.</title>
+  <para>
+      The phpHtmlLib framework has many different ways to cache data.  You can enable/disable caching globally
+      if you like.  You can use caching for database requests, rendered page output or anything you like.  There
+      are several classes that help you do caching.
+  </para>
+  <para>
+      The Cache classes
+      <unorderedlist>
+       <listitem><para>Cache -- the base Cache classes.</para></listitem>
+       <listitem><para>NoCache -- when caching is disabled this class is used.</para></listitem>
+       <listitem><para>FileCache -- uses files on disk to cache data.</para></listitem>
+       <listitem><para>MemcachedCache -- uses memcached to cache data.</para></listitem>
+       <listitem><para>DataCache -- child of MemcachedCache to show a setup example</para></listitem>
+       <listitem><para>SessionCache -- used for storing session keys</para></listitem>
+      </unorderedlist>
+  </para>
+ </refsect1>
+ <refsect1 id="{@id cache}">
+  <title>Cache</title>
+  <para>
+      By default caching is enabled.  If you want to disable it globally, then do this.
+      <example>
+          <![CDATA[
+  //This will globally force all requests for a
+  //Cache object to return the NoCache object.
+  Cache::enable_cache(FALSE);
+          ]]>
+
+      </example>
+  </para>
+ </refsect1>
+
+
+ <refsect1 id="{@id nocache}">
+  <title>NoCache</title>
+  <para>
+      The NoCache object is a child of the Cache object to act as a stub.  When caching id disabled, the
+      NoCache object is returned for all singleton() method calls.  This will ensure that all requests to
+      use the cache goes through NoCache.  NoCache::get() will always return false, which should induce a fallback
+      to the more permanent store for the key.
+  </para>
+  <para>
+      Here are some samples of using the PostRequestBuilder
+      <example>
+          <![CDATA[
+<?php
+  //first disable all caching.
+  Cache::enable_cache(FALSE);
+
+  //$c is now a NoCache object, because caching is globally disabled.
+  $c = FileCache::singleton();
+
+  //value will be false.
+  $value = $c->get('name');
+
+  //does nothing.
+  $c->set('name', 'walt');
+?>
+          ]]>
+      </example>
+  </para>
+ </refsect1>
+
+
+
+ <refsect1 id="{@id filecache}">
+  <title>FileCache</title>
+  <para>
+      The FileCache object by default will create a directory /tmp/phphtmllib-cache to store all of
+      it's files.  Each cache key will map to 1 file on disk with the name as the key.
+  </para>
+  <para>
+      You can change the default cache directory if you like.
+      <example>
+          <![CDATA[
+<?php
+  //change the default cache dir
+  FileCache::set_cache_dir('/var/data/cache');
+?>
+          ]]>
+      </example>
+  </para>
+
+  <para>
+      How do I set and get a cache value?
+      <example>
+          <![CDATA[
+<?php
+  //get the cache object
+  $c = FileCache::singleton();
+
+  $c->set('my_cache_key', $somedata, $sometimeout);
+
+  $data = $c->get('my_cache_key');
+?>
+          ]]>
+      </example>
+  </para>
+  <para>
+      That same api will work for all of the Cache objects.
+  </para>
+ </refsect1>
+
+
+ <refsect1 id="{@id license}">
+  <title>Software license</title>
+   <para>phpHtmlLib is released under
+    {@link http://www.gnu.org/copyleft/lesser.html GNU LGPL}</para>
+ </refsect1>
+</refentry>

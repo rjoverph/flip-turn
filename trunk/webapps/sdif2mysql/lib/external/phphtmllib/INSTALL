@@ -1,0 +1,130 @@
+
+  phpHtmlLib INSTALLATION
+
+
+  Introduction
+  ============
+
+  phpHtmlLib is now a full blown framework for developing web applications.
+  It is based on an MVC model that has support for constructing and rendering
+  any renderable phphtmllib object.  This new framework comes with a built in
+  project generator that will help you get up and running against an existing
+  database to give you examples of how to get around in the new framework.
+  Follow the instructions below and begin having fun.
+  I haven't tested the libs in a windows environment, as I don't have a M$ O.S.
+  installed anywhere in my house.  If you encounter any issues, please let me
+  know.  I welcome any and all feedback.
+
+  Thanks and enjoy,
+  Walt A. Boring IV
+  waboring@newsblob.com
+
+
+
+  Installing the libs
+  ================================================
+
+  1. Overview for the impatient
+     --------------------------
+
+     $ cd phphtmllib/bin and run php -f phl.php
+
+
+  2. Requirements
+     ------------
+
+     The following requirements exist for using phpHtmlLib :
+
+     o  PHP version 5.1.x
+
+     Optional
+     o  Part of the new application layers has support for caching
+        pages/data/objects/anything.  The default cache mechanism is
+        the FileCache object.  If you plan on running multiple web
+        servers for the same application, I would suggest installing
+        memcached and using the MemcachedCache object instead.
+        http://pecl.php.net/package/memcache
+
+
+  3. Installing
+     ----------
+
+     Prefix.
+        No matter if you are creating a brand new project or are
+        trying to incorporate the phpHtmlLib framework into an existing
+        project, I would start by running the new project generator script.
+
+        This will create the base filesystem structure as well as the
+        project specific DataBase object that has a singleton() and can
+        connect to the project database, as well as the DataObjects that map
+        to the database's tables.
+
+        NOTE:
+           If you don't have an existing database, but are going to use one, I would
+        suggest creating it first before going to step 1 as the project generator will
+        prompt you for the database connection parameters.
+
+
+        Creating a project called 'foobar' and install it in /home/user1/foobar
+
+     1. After you have untarred the tarball, then run the project generator.
+
+        cd phphtmllib/bin;
+        php -f ./phl.php
+
+        This will walk you through the creation of your project and setup the
+        DataBase as well as DataObjects and the autoload generator specific to your
+        project.
+
+     2. phl.php will first ask you for a project name.  This project name will be used
+        througout the codebase as a prefix for some class names.  For example, If my
+        project was called 'foobar', I would get classes such as foobarDB, foobarDataObject
+        foobarPage, etc.
+
+     3. Next phl.php will ask you for the path for the project installation.  Giving
+        a path of /home/user1 will give you /home/user1/foobar
+
+     4. DataBase.   Enter your database connection parameters.  If you have an existing database
+        and enter the correct parameters, the script will try and connect to the database to
+        ensure that you entered everything correctly.  It will not touch your schema at all.
+        This will help create the foobarDB class which will automatically know how to connect to your
+        'foobar' project database.
+
+     5. After the DataBase is correctly set up the script will try and get the list of tables that exist
+        in the database to create an associated DataObject for each table in the database.  This will also
+        create a /home/user1/foobar/dev/foobar.xml file.  This file tells the dataobject generator script
+        (dev/dot_generator.php) how to connect to the database and which tables you want to map to DataObjects.
+        The phl.php script will then run the dot_generator.php (data object template generator) and install
+        the DataObjecTemplate classes and their children in /home/user1/foobar/lib/core/data
+
+        If you add new tables to your database later in the project, just edit the /home/user1/foobar/dev/foobar.xml file
+        and add the new tables there.  Then run the dot_generator.php file.  It will only generate what is new.
+
+     6.  After all that is done, then the phl.php script will create an autoload_generator.php script file for you and run it.
+         This script will atomatically go through your entire project directory, extract which classes are declared and create
+         a ClassMap object and php __autoload() function.  Now you never have to worry about includes again.
+
+         Note:  As you develop your new project and add new classes, just run the /home/user1/foobar/dev/autoload_generator.php
+                script again and it will find your new class files and add them to the ClassMap.
+
+
+     7.  You will also notice that the phl.php script creates several directories and creates many files.  It will create you a
+         minimal, but working project that you can see a hello world type of output.
+
+         When the phl.php script is complete it will give you a sample apache virtualhost entry of how to hit your new project.
+
+
+
+  9. Contacts
+     --------
+
+     o All the latest updates and news will be posted on phpHtmlLib's project
+       website at http://phphtmllib.newsblob.com
+
+     o You can always contact me by sending an email to: Walt Boring
+       waboring@newsblob.com
+
+
+     Thanks for trying phpHtmlLib.
+                                          Walt Boring IV
+

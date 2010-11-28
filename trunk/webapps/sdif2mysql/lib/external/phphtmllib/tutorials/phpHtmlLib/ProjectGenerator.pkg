@@ -1,0 +1,250 @@
+<refentry id="{@id}">
+  <refnamediv>
+    <refname>Getting Started</refname>
+    <refpurpose>Creating a new project with phpHtmlLib</refpurpose>
+  </refnamediv>
+  <refsynopsisdiv>
+    <refsynopsisdivinfo>
+      <author>
+    by Walter A. Boring IV
+    <authorblurb>{@link mailto:waboring@newsblob.com}</authorblurb>
+   </author>
+   <copyright>&copy; #!#COPYDATE#!#, Walter A. Boring IV</copyright>
+      <releaseinfo>phpHtmlLib #!#VERSION#!#</releaseinfo>
+    </refsynopsisdivinfo>
+  </refsynopsisdiv>
+ {@toc}
+
+  <refsect1 id="{@id installing}">
+    <title>Creating your project</title>
+    <para>Version 3.0 and > comes with a new project generator script phphtmllib/bin/phl.php.</para>
+    <para> This script will create a full directory that makes up your new project as well as a functioning 'hello world' page that you can use as a guide.</para>
+    <para>
+       The project generator will prompt you for database connection parameters.
+	   It will then try to connect to your database, read the metadata about your tables and construct all of the dataobjects based off
+	   of your table schema.  Then the phl.php script will run the autoload generator on your project and allow you to generate the api class
+	   documentation.  When it's all done you should have a skeleton of an application that uses the new Controller class and allows you to
+	   see a hello world page.
+     </para>
+    <orderedlist>
+      <listitem>
+          <PARA>run the phl.php script in the phphtmllib/bin dir</PARA>
+          <PARA><example><![CDATA[waboring@walt ~/devel/phphtmllib/bin $ ./phl.php
+
+ __  _  _  __  _  _  ___ _  _         _  __
+|__] |__| |__] |__|   |  |\/| |   |   | |__|
+|    |  | |    |  |   |  |  | |__ |__ | |__|
+---------------------------------------------------------------
+
+phpHtmlLib Project Generator:
+---------------------------------------------------------------
+This script generates the base application layout to help you
+build web applications with the phpHtmlLib framework.
+
+To cancel at any time, hit CTRL-C.
+
+---------------------------------------------------------------
+commands:
+  project  -- build a new starter project
+  quit -- quit.
+
+
+Enter Command (project,quit)
+>                   ]]></example></PARA>
+
+      </listitem>
+      <listitem>
+        <para>For now, the only option is to generate a new project.  So type in 'project'.</para>
+        <PARA><example><![CDATA[Enter Command (project,quit)
+> project
+Build a new project
+
+Enter Project Name (ie. myproject not www.myproject.com).
+The project name is used as base class object name (ie. myprojectDB).
+>]]></example></PARA>
+
+      </listitem>
+      <listitem>
+        <para>Enter your project name.  The project name will be used for 2 things.</para>
+        <para>The directory name that will contain the newly generated project.</para>
+        <para>The base name used in creating several Classes that will be available to your project.  These classes are for now
+                the parent DataBase object and the parent DataObject Class.</para>
+        <para>For example, if you named your project 'myproject', you will get myprojectDB and myprojectDataOBject base classes.</para>
+      </listitem>
+      <listitem>
+        <PARA>Enter the path where you want your new project directory to be generated.  You can move it later as there are no hard coded
+              in the generated php code.</PARA>
+        <para><example><![CDATA[Enter install path (ie. /var/www will create /var/www/<project name>)
+>]]></example></para>
+        <para>This will create the base directory structure for your project, which includes the htdocs directory that will contain the single index.php script controller
+        and the lib dir where all of your real work will go.  All of the classes that you will write will be contained in the lib directory, as it's wise
+        to not put those in the DOCUMENT_ROOT of your tree.</para>
+        <para><example><![CDATA[Enter install path (ie. /var/www will create /var/www/<project name>)
+> /tmp
+Creating myproject Project directory structure in /tmp/myproject
+/tmp/myproject/apidocs
+/tmp/myproject/cache
+/tmp/myproject/dev
+/tmp/myproject/db
+/tmp/myproject/htdocs/js
+/tmp/myproject/htdocs/css
+/tmp/myproject/htdocs/images
+/tmp/myproject/lib/core/data/dataobjects
+/tmp/myproject/lib/core/datalist
+/tmp/myproject/lib/core/db
+/tmp/myproject/lib/core/page
+/tmp/myproject/lib/modules/home
+/tmp/myproject/lib/modules/home/page
+/tmp/myproject/lib/external
+
+/tmp/myproject/dev/autoload_generator.php script created.
+
+This script is used to build the php __autload() function with it's
+mapping of classes that are in your project.  When you add new classes
+to your project, just re-run the /tmp/myproject/dev/autoload_generator.php
+script and your classes wil automatically be included properly.
+
+
+Copying phphtmllib install to project /tmp/myproject/lib/external/phphtmllib
+Copying phphtmllib images to /tmp/myproject/htdocs/images
+/tmp/myproject/lib/db
+]]></example></para>
+      <PARA>You can also see that the script copies phphtmllib to myproject/lib/external.  This keeps your project completely self contained.</PARA>
+      <para>Another thing this step does is runs the autoload generator the very first time.  I'll discuss the autoload_generator.php script later.</para>
+      </listitem>
+    </orderedlist>
+  </refsect1>
+
+ <refsect1 id="{@id database}">
+    <title>Generating DataBase objects</title>
+    <para>This part of the phl.php script will connect to your database and create a project DB object as well as DataObjects relating to the tables in your database.
+    It will not modify your database at all.  It just fetches the meta data about the tables, indexes and foreign keys in your database to figure out how to
+    generate the DataObjectTemplates.</para>
+    <unorderedlist>
+        <listitem>
+            <para>Next the script will prompt you for your database type and connection parameters.
+            Currently only mysql has been tested, so I can't promise pgsql will work :(</para>
+            <para><example><![CDATA[This portion of the project generator is used for setting up the DataBase class and any
+DataObjects that map to tables in an already existing database.  You will be asked for the
+connection parmeters to your database.  This script currently only supports mysql or postgres.
+After the settings are entered this script will try to make a connection to the database
+and then extract any tables and create DataObjects for those tables.
+
+What Type of database server? (mysql,pgsql)
+[mysql] > mysql
+
+What is the host/ip of the database server?
+[localhost] >
+
+What is the Database port?
+[3306] >
+
+What is the db schema/name ?
+> phphtmllib
+
+Enter DataBase username
+> php
+
+Enter DataBase password
+> **************
+Testing Database connection
+Connection success.
+Executing /tmp/myproject/dev/autoload_generator.php
+
+Scanning /tmp/myproject/lib (205) ...
+
+Analyzing classes ...(205)
+Writing autoload file .../tmp/myproject/lib/autoload.inc
+
+Total 205 classes processed
+
+---- WARNING: AutoloadGenerator was run in DEBUG MODE. You do not want this in production. ----
+
+Build/Rebuild the DataObjects
+Testing Database connection
+Connection success.
+We found the following tables
+user_downloads, versions,
+Created /tmp/myproject/dev/myproject.xml which contains the DataObject generator config.
+
+Generating DataObjects and DataObjectTemplate Classes.
+If you add more tables to the database make sure to edit the
+/tmp/myproject/dev/myproject.xml file and add the table name.
+Then you can run the /tmp/myproject/dev/dot_generator.php to rebuild the
+DataObjects that phphtmllib supports.  (Note: This will only overwrite the
+DataObjectTemplate classes, not the child classes that you can modify).
+
+
+Executing /tmp/myproject/dev/dot_generator.php
+
+Start Processing DB: phphtmllib
+
+phphtmllib::user_downloads ...          writing userDownloadsDataObject class to disk
+done
+phphtmllib::versions ...                writing versionsDataObject class to disk
+done
+
+phphtmllib processing complete
+
+Executing /tmp/myproject/dev/autoload_generator.php
+
+Scanning /tmp/myproject/lib (210) ...
+
+Analyzing classes ...(210)
+Writing autoload file .../tmp/myproject/lib/autoload.inc
+
+Total 210 classes processed
+
+---- WARNING: AutoloadGenerator was run in DEBUG MODE. You do not want this in production. ----
+]]></example></para>
+            <para>As you can see, a lot of work is done in that phase.  First, it connects to the database to verify the connection
+            parameters are correct.  Then phl.php generates the project DataBase child object (myprojectDB). Then autoload_generator.php script is run to build
+            the ClassMap file, which maps the classes to targets, so the php __autoload() method will work.  After that, the DataObjects are
+            generated, which involces the creation of the myprojectDataObject child and all of the DataObjecTemplate classes which map 1:1 for each
+            table that is discovered in the database. </para>
+            <para>For every table that is found in your database schema a DataObjectTemplate and child of that object is created.  For example, if you had
+            a table called user, userDataObjectTemplate and userDataObject (which is actually a child of userDataObjectTemplate) is created.  You should avoid
+            changes to the userDataObjectTemplate class as it will get overwritten the next time you run the dot_generator.php script.</para>
+
+            <para>Please note that the phl.php script will create a database myproject.xml file which describes the DB connection parameters as well as the tables
+            that will get gleaned to create the DataObjectTemplate classes.  The myproject.xml file will get placed in myproject/dev/myproject.xml  When you add/modify tables
+            in your database and want new DataObjectTemplates updated to reflect those changes, you will want to modify your myproject/dev/myproject.xml file to tell
+            the dot_generator.php script which tables to work on.</para>
+        </listitem>
+    </unorderedlist>
+ </refsect1>
+
+
+ <refsect1 id="{@id apidocs}">
+    <title>API Documentation</title>
+    <para>Next you can have your newly created project automatically generate the Class API documentation in either doxygen format or phpDocumentor.</para>
+    <para>The script will prompt you to choose either doxygen or phpDocumentor type of Class documentation as well as the full path
+        to the executable phpdoc or doxygen.</para>
+    <para>Once the documentation is generated it will be available in your project directory in myproject/apidocs.</para>
+ </refsect1>
+
+
+ <refsect1 id="{@id apache}">
+    <title>Apache Config</title>
+    <para>The very last step is to use the apache config that the phl.php creates for you to see your new project running!</para>
+    <para><example><![CDATA[The new project is now complete.  You can add the following settings to your apache config
+<VirtualHost localhost:80>
+  DocumentRoot "/tmp/myproject/htdocs"
+  ServerName myproject
+
+  <Directory "/tmp/myproject/htdocs">
+     Options Indexes FollowSymLinks
+     AllowOverride None
+     Order allow,deny
+     Allow from all
+  </Directory>
+</VirtualHost>
+]]></example></para>
+    <para>Once you update your web server's config and restart, you should be able to see the newly generated project's functioning 'hello world' example.</para>
+ </refsect1>
+
+
+
+
+
+  </refentry>

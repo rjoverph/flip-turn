@@ -1,0 +1,156 @@
+
+<refentry id="{@id}">
+ <refnamediv>
+  <refname>Request Classes</refname>
+  <refpurpose>The phpHtmlLib Controller</refpurpose>
+ </refnamediv>
+ <refsynopsisdiv>
+  <refsynopsisdivinfo>
+   <copyright>&copy; #!#COPYDATE#!#, Walter A. Boring IV, Suren Markosian</copyright>
+   <releaseinfo>phpHtmlLib #!#VERSION#!#</releaseinfo>
+  </refsynopsisdivinfo>
+ </refsynopsisdiv>
+ {@toc}
+ <refsect1 id="{@id request}">
+  <title>Request</title>
+  <para>
+      When using the phpHtmlLib framework and you need to get access to a GET/POST var, the Request object
+      is the proper mechanism to access the variables.  The Request object has the capability of filtering out
+      variables that you didn't want in the request or validating the type of each variable.  If you register a
+      GET/POST variable with the Request object with a certain type, the Request object will try and validate
+      that the type matches.  This can be used to help detect tampering with variabls.
+  </para>
+  <para>
+     Here are some sample uses of the Request object.
+    <example>
+   <![CDATA[
+<?php
+  //get the $_GET['foo'] variable.
+  $var = Request::singleton()->get('foo');
+
+  //was the last request done via ajax?
+  $ajax = Request::singleton()->is_ajax();
+
+  //get the target object from the last request
+  //the target object is supposed to service the
+  //request via the Controller
+  $target = Request::singleton()->get_target();
+
+?>
+]]>
+   </example>
+  </para>
+ </refsect1>
+ <refsect1 id="{@id requestbuilder}">
+  <title>RequestBuilder</title>
+  <para>
+      The RequestBuilder object is what you would use to generate a normal GET request
+      to a target object via the Controller.  It can build a normal url that you inject into the href
+      attribute of an Atag object, or it can build a javascript url that you can place in the onclick attribute.
+  </para>
+  <para>
+      Here are some samples of using the RequestBuilder
+      <example>
+          <![CDATA[
+<?php
+  //Generate a request to the mvc for the HomePage object.
+  $url = RequestBuilder::build_url('HomePage');
+
+  //get a url to the HomePage object including
+  //all of the GET vars from the last request made.
+  $url = RequestBuilder::build_url_with_request('HomePage');
+
+  //get a url and add a new request variable.
+  $url = RequestBuilder::build_url('DownloadPage', array('version' => '3'));
+?>
+          ]]>
+      </example>
+  </para>
+  <para>
+      By default every url generated will point to the document root's index.php script.  If you need the request to go
+      to another controller besides /index.php, then just change the prefix.
+  <example>
+      <![CDATA[
+<?php
+  //we need the next requests to go to /backoffice/index.php
+  RequestBuilder::set_file('/backoffice/index.php');
+
+  //now get the url to the AdminHomePage target object.
+  $url = RequestBuilder::build_url('AdminHomePage');
+?>
+      ]]>
+  </example>
+  </para>
+ </refsect1>
+ <refsect1 id="{@id postrequestbuilder}">
+  <title>PostRequestBuilder</title>
+  <para>
+      The PostRequestBuilder object is what you would use to generate a normal POST request
+      to a target object via the Controller.  It operates just like the RequestBuilder.
+  </para>
+  <para>
+      Here are some samples of using the PostRequestBuilder
+      <example>
+          <![CDATA[
+<?php
+  //Generate a request to the mvc for the HomePage object.
+  $url = PostRequestBuilder::build_url('HomePage');
+
+  //get a url to the HomePage object including
+  //all of the GET vars from the last request made.
+  $url = PostRequestBuilder::build_url_with_request('HomePage');
+
+  //get a url and add a new request variable.
+  $url = PostRequestBuilder::build_url('DownloadPage', array('version' => '3'));
+?>
+          ]]>
+      </example>
+  </para>
+ </refsect1>
+ <refsect1 id="{@id ajaxrequestbuilder}">
+  <title>AjaxRequestBuilder</title>
+  <para>
+      The AjaxRequestBuilder object does the same thing as the RequestBuilder object, but it generates an
+      ajax style urls that call the controller.  This requires that the framework/js/ajax.js javascript file
+      be included as well as the framscriptaculous/lib
+  </para>
+  <para>
+      This class requires that some javascript files be included in the currently loaded page to work.
+      <unorderedlist>
+       <listitem><para>phphtmllib/framework/js/scriptaculous/lib/prototype.js</para></listitem>
+       <listitem><para>phphtmllib/framework/js/scriptaculous/src/scriptaculous.js</para></listitem>
+       <listitem><para>phphtmllib/framework/js/ajax.js</para></listitem>
+      </unorderedlist>
+
+  </para>
+  <para>
+      Here are some samples of using the ajaxRequestBuilder
+      <example>
+          <![CDATA[
+<?php
+  //Generate a request to the mvc for the HomePage object.
+  $url = AjaxRequestBuilder::build_url('HomePage');
+
+  //get a url to the HomePage object including
+  //all of the GET vars from the last request made.
+  $url = AjaxRequestBuilder::build_url_with_request('HomePage');
+
+  //get a url and add a new request variable.
+  $url = AjaxRequestBuilder::build_url('DownloadPage', array('version' => '3'));
+?>
+          ]]>
+      </example>
+  </para>
+ </refsect1>
+ <refsect1 id="{@id ajaxpostrequestbuilder}">
+  <title>AjaxPostRequestBuilder</title>
+  <para>
+      The AjaxPostRequestBuilder is the same as the above classes, but it generates a POST ajax request.
+  </para>
+ </refsect1>
+ <refsect1 id="{@id license}">
+  <title>Software license</title>
+   <para>phpHtmlLib is released under
+    {@link http://www.gnu.org/copyleft/lesser.html GNU LGPL}</para>
+ </refsect1>
+</refentry>

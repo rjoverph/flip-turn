@@ -1,0 +1,65 @@
+<refentry id="{@id}">
+ <refnamediv>
+  <refname>MVC - Controller</refname>
+  <refpurpose>The phpHtmlLib Controller</refpurpose>
+ </refnamediv>
+ <refsynopsisdiv>
+  <refsynopsisdivinfo>
+   <copyright>&copy; #!#COPYDATE#!#, Walter A. Boring IV, Suren Markosian</copyright>
+   <releaseinfo>phpHtmlLib #!#VERSION#!#</releaseinfo>
+  </refsynopsisdivinfo>
+ </refsynopsisdiv>
+ {@toc}
+ <refsect1 id="{@id whatisit}">
+  <title>Controller</title>
+  <para>
+      The Controller Class is responsible for servicing all php related requests into the application.
+      This takes the place of making individual .php files for each page in your application.  The controller
+      accepts requests for a particular target object, then tries to service that target object based upon
+      what the application has registered as a valid target in the ClassMap.
+  </para>
+  <para>
+      Here is an example of what would be in an index.php main controller script.
+    <example>
+   <![CDATA[
+<?php
+/**
+ * Do some includes here
+ *
+ */
+include('includes.inc');
+
+/**
+ * Create the controller and tell it the default
+ * target object is the HomePage object
+ */
+$c = new Controller('HomePage');
+$c->execute();
+?>
+]]>
+   </example>
+  </para>
+  <para>
+      The Controller can handle normal page turn requests and ajax requests to specific blocks within a page object or a stand alone widget
+      that is renderable.  There are a new set of phpHtmlLib widgets that implement the Ajaxable interface that can be called by the controller
+      to render and show within a page via an ajax request.  To learn how to make ajax requests see the next section on the Request object.
+  </para>
+ </refsect1>
+ <refsect1 id="{@id features}">
+  <title>Features</title>
+   <unorderedlist>
+    <listitem><para>Layered approach to Application development.</para></listitem>
+    <listitem><para>MVC architecture.</para></listitem>
+    <listitem><para>Ajaxable pages, datalist, widgets.</para></listitem>
+    <listitem><para>BusinessObjects - contains the business logic of the application.</para></listitem>
+    <listitem><para>DataObjects - cached database rows</para></listitem>
+    <listitem><para>Cacheable interface - caches pages, objects, widgets.</para></listitem>
+    <listitem><para>DataBase - PDO based cacheable queries.</para></listitem>
+   </unorderedlist>
+ </refsect1>
+ <refsect1 id="{@id license}">
+  <title>Software license</title>
+   <para>phpHtmlLib is released under
+    {@link http://www.gnu.org/copyleft/lesser.html GNU LGPL}</para>
+ </refsect1>
+</refentry>
