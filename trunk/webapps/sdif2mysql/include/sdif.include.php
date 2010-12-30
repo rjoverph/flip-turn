@@ -25,11 +25,11 @@
  *
  */
 
-define("FT_SDIF_VERSION", "3.0") ;
-define("FT_SDIF_FUTURE_USE", "") ;
-define("FT_SDIF_NO_VALUE", "") ;
-define("FT_SDIF_SOFTWARE_NAME", "Flip-Turn") ;
-define("FT_SDIF_SOFTWARE_VERSION", "v0.1") ;
+define('FT_SDIF_VERSION', '3.0') ;
+define('FT_SDIF_FUTURE_USE', '') ;
+define('FT_SDIF_NO_VALUE', '') ;
+define('FT_SDIF_SOFTWARE_NAME', 'Flip-Turn') ;
+define('FT_SDIF_SOFTWARE_VERSION', 'v0.1') ;
 
 /**
  *  Organization Code
@@ -1280,24 +1280,27 @@ define("FT_SDIF_ETHNICITY_CODE_NO_RESPONSE_VALUE", "X") ;
 
 //  Define Debug Column Record - used to make sure things are
 //  in the correct column - kind of like the old FORTRAN days!
-define("FT_SDIF_COLUMN_DEBUG1", "         1         2         3         4         5         6         7         8         9         0         1         2         3         4         5         6  ") ;
-define("FT_SDIF_COLUMN_DEBUG2", "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012") ;
+define('FT_SDIF_COLUMN_DEBUG1', '         1         2         3         4         5         6         7         8         9         0         1         2         3         4         5         6  ') ;
+define('FT_SDIF_COLUMN_DEBUG2', '123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012') ;
 
 //  SDIF record terminator
-define("FT_SDIF_RECORD_TERMINATOR", chr(13) . chr(10)) ;
+define('FT_SDIF_RECORD_TERMINATOR', chr(13) . chr(10)) ;
 
 //  Define A0 record
-define("FT_SDIF_A0_RECORD", "A0%1.1s%-8.8s%-2.2s%-30.30s%-20.20s%-10.10s%-20.20s%-12.12s%-8.8s%-42.42s%-2.2s%-3.3s%2.2s") ;
+define('FT_SDIF_A0_RECORD', 'A0%1.1s%-8.8s%-2.2s%-30.30s%-20.20s%-10.10s%-20.20s%-12.12s%-8.8s%-42.42s%-2.2s%-3.3s%2.2s') ;
+
+//  Define B1 record
+define('FT_SDIF_B1_RECORD', 'B1%1s%8s%30s%22s%22s%20s%2s%10s%3s%1s%8s%8s%4s%8s%1s%10s') ;
 
 //  Define C1 record
-define("FT_SDIF_C1_RECORD", "C1%1.1s%-8.8s%-6.6s%-30.30s%-16.16s%-22.22s%-22.22s%-20.20s%-2.2s%-10.10s%-3.3s%1.1s%-6.6s%1.1s%-10.10s%2.2s") ;
+define('FT_SDIF_C1_RECORD', 'C1%1.1s%-8.8s%-6.6s%-30.30s%-16.16s%-22.22s%-22.22s%-20.20s%-2.2s%-10.10s%-3.3s%1.1s%-6.6s%1.1s%-10.10s%2.2s') ;
 
 //  Define D1 record
-define("FT_SDIF_D1_RECORD", "D1%1.1s%-8.8s%-6.6s%1.1s%-28.28s%1.1s%-12.12s%1.1s%-3.3s%-8.8s%02.2s%1.1s%-30.30s%-20.20s%-12.12s%-12.12s%-8.8s%1.1s%-3.3s%2.2s") ;
+define('FT_SDIF_D1_RECORD', 'D1%1.1s%-8.8s%-6.6s%1.1s%-28.28s%1.1s%-12.12s%1.1s%-3.3s%-8.8s%02.2s%1.1s%-30.30s%-20.20s%-12.12s%-12.12s%-8.8s%1.1s%-3.3s%2.2s') ;
 
 //  Define D2 record
-define("FT_SDIF_D2_RECORD", "D2%1.1s%-8.8s%-6.6s%1.1s%-28.28s%-30.30s%-30.30s%-20.20s%-2.2s%-12.12s%-10.10s%-3.3s%1.1s%1.1s%1.1s%-4.4s%2.2s") ;
+define('FT_SDIF_D2_RECORD', 'D2%1.1s%-8.8s%-6.6s%1.1s%-28.28s%-30.30s%-30.30s%-20.20s%-2.2s%-12.12s%-10.10s%-3.3s%1.1s%1.1s%1.1s%-4.4s%2.2s') ;
 
 //  Define Z0 record
-define("FT_SDIF_Z0_RECORD", "Z0%1.1s%-8.8s%-2.2s%-30.30s%3.3s%3.3s%4.4s%4.4s%6.6s%6.6s%5.5s%6.6s%6.6s%5.5s%3.3s%3.3s%3.3s%3.3s%-57s%-2.2s") ;
+define('FT_SDIF_Z0_RECORD', 'Z0%1.1s%-8.8s%-2.2s%-30.30s%3.3s%3.3s%4.4s%4.4s%6.6s%6.6s%5.5s%6.6s%6.6s%5.5s%3.3s%3.3s%3.3s%3.3s%-57s%-2.2s') ;
 ?>
