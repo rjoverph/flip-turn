@@ -22,6 +22,7 @@
  */
 
 include_once('db.class.php') ;
+include_once('sdif.include.php') ;
 include_once('sdif.class.php') ;
 include_once('widgets.class.php') ;
 
@@ -63,7 +64,7 @@ class SwimMeet extends SDIFB1Record
      */
     function getSwimMeetId()
     {
-        return ($this->_swimmeerid) ;
+        return ($this->_swimmeetid) ;
     }
 
     /**
@@ -118,15 +119,16 @@ class SwimMeet extends SDIFB1Record
      */
     function LoadSwimMeetById($swimmeetid = null)
     {
-        if (is_null($swimmeetid)) $meetid = $this->getSwimMeetId() ;
+        if (is_null($swimmeetid)) $swimmeetid = $this->getSwimMeetId() ;
 
+        var_dump($swimmeetid) ;
         //  Dud?
         if (is_null($swimmeetid)) return false ;
 
         $this->setSwimMeetId($swimmeetid) ;
 
         //  Make sure it is a legal meet id
-        if ($this->SwimMeetExistsById())
+        if ($this->SwimMeetExistsById($swimmeetid))
         {
             $query = sprintf("SELECT * FROM %s WHERE swimmeetid=\"%s\"",
                 FT_SWIMMEETS_TABLE, $swimmeetid) ;
@@ -137,23 +139,23 @@ class SwimMeet extends SDIFB1Record
             $result = $this->getQueryResult() ;
 
             $this->setSwimMeetId($result['swimmeetid']) ;
-            $this->setOrgCode($result['org_code']),
-            $this->setFutureUse1($result['future_use_1']),
-            $this->setMeetName($result['meet_name']),
-            $this->setMeetAddress1($result['meet_address_1']),
-            $this->setMeetAddress2($result['meet_address_2']),
-            $this->setMeetCity($result['meet_city']),
-            $this->setMeetState($result['meet_state']),
-            $this->setMeetPostalCode($result['meet_postal_code']),
-            $this->setMeetCountryCode($result['meet_country_code']),
-            $this->setMeetCode($result['meet_code']),
-            $this->setMeetStart($result['meet_start'], true),
-            $this->setMeetEnd($result['meet_end'], true),
-            $this->setPoolAltitude($result['pool_altitude']),
-            $this->setFutureUse2($result['future_use_2']),
-            $this->setCourseCode($result['couse_code']),
-            $this->setFutureUse3($result['future_use_3']))) ;
-            $this->setTimestamp($result['timestamp']))) ;
+            $this->setOrgCode($result['org_code']) ;
+            $this->setFutureUse1($result['future_use_1']) ;
+            $this->setMeetName($result['meet_name']) ;
+            $this->setMeetAddress1($result['meet_address_1']) ;
+            $this->setMeetAddress2($result['meet_address_2']) ;
+            $this->setMeetCity($result['meet_city']) ;
+            $this->setMeetState($result['meet_state']) ;
+            $this->setMeetPostalCode($result['meet_postal_code']) ;
+            $this->setMeetCountryCode($result['meet_country_code']) ;
+            $this->setMeetCode($result['meet_code']) ;
+            $this->setMeetStart($result['meet_start'], true) ;
+            $this->setMeetEnd($result['meet_end'], true) ;
+            $this->setPoolAltitude($result['pool_altitude']) ;
+            $this->setFutureUse2($result['future_use_2']) ;
+            $this->setCourseCode($result['course_code']) ;
+            $this->setFutureUse3($result['future_use_3']) ;
+            $this->setTimestamp($result['timestamp']) ;
         }
 
         $idExists = (bool)($this->getQueryCount() > 0) ;
@@ -167,8 +169,6 @@ class SwimMeet extends SDIFB1Record
      */
     function AddSwimMeet()
     {
-        $this->openConnection() ;
-
         $this->setQuery(sprintf("INSERT INTO %s SET
             org_code=\"%s\",
             future_use_1=\"%s\",
@@ -205,7 +205,6 @@ class SwimMeet extends SDIFB1Record
             $this->getFutureUse3())) ;
 
         $success = $this->runInsertQuery() ;
-        $this->closeConnection() ;
 
         return $success ;
     }
@@ -364,7 +363,7 @@ class SwimMeetsDataList extends DefaultGUIDataList
         //  set the prefix for all the internal query string 
         //  variables.  You really only need to change this
         //  if you have more then 1 DataList object per page.
-        //$this->set_global_prefix("ft_");
+        $this->set_global_prefix(FT_DB_PREFIX) ;
     }
 
     /**
@@ -409,7 +408,7 @@ class SwimMeetInfoTable extends FlipTurnInfoTable
     /**
      * Property to hold the meet id
      */
-    var $__swimmeetid ;
+    var $_swimmeetid ;
 
     /**
      * Set Swim Meet Id
@@ -418,7 +417,7 @@ class SwimMeetInfoTable extends FlipTurnInfoTable
      */
     function setSwimMeetId($id)
     {
-        $this->__swimmeetid = $id ;
+        $this->_swimmeetid = $id ;
     }
 
     /**
@@ -428,39 +427,45 @@ class SwimMeetInfoTable extends FlipTurnInfoTable
      */
     function getSwimMeetId()
     {
-        return $this->__swimmeetid ;
+        return $this->_swimmeetid ;
     }
 
     /**
      * Construct a summary of the active season.
      *
      */
-    function constructSwimMeetInfoTable($swimmeetid = null)
+    function BuildInfoTable($swimmeetid = null)
     {
         //  Alternate the row colors
-        //$this->set_alt_color_flag(true) ;
-        //$this->set_column_header($hdr++, "Date", null, "left") ;
-        //$this->set_column_header($hdr++, "Opponent", null, "left") ;
-        //$this->set_column_header($hdr++, "Location", null, "left") ;
-        //$this->set_column_header($hdr++, "Result", null, "left") ;
+        $this->set_alt_color_flag(true) ;
 
         $meet = new SwimMeet() ;
 
         if (is_null($swimmeetid)) $swimmeetid = $this->getSwimMeetId() ;
 
-        if (!is_null($swimmeetid))
+        if (!is_null($swimmeetid) || $meet->SwimMeetExistsById($swimmeetid))
         {
-            $meet->loadSwimMeetByMeetId($swimmeetid) ;
+            $meet->LoadSwimMeetById($swimmeetid) ;
     
-            $meetstartedate = date("D M j, Y", strtotime($meet->getMeetStartDate())) ;
-            $meetenddate = date("D M j, Y", strtotime($meet->getMeetEndDate())) ;
+            $meetstartdate = date("D M j, Y", strtotime($meet->getMeetStart())) ;
+            $meetenddate = date("D M j, Y", strtotime($meet->getMeetEnd(true))) ;
+            $meetenddate = date("D M j, Y", strtotime($meet->getMeetEnd(true))) ;
 
+            $this->add_row(html_b("Organization"), SDIFCodeTables::GetOrgCode($meet->getOrgCode())) ;
             $this->add_row(html_b("Meet Name"), $meet->getMeetName()) ;
-
+            $this->add_row(html_b("Meet Addresss 1"), $meet->getMeetAddress1()) ;
+            $this->add_row(html_b("Meet Addresss 2"), $meet->getMeetAddress2()) ;
+            $this->add_row(html_b("City"), $meet->getMeetCity()) ;
+            $this->add_row(html_b("State"), $meet->getMeetState()) ;
+            $this->add_row(html_b("Postal Code"), $meet->getMeetPostalCode()) ;
+            $this->add_row(html_b("Country"), SDIFCodeTables::GetCountryCode($meet->getMeetCountryCode())) ;
+            $this->add_row(html_b("Type"), SDIFCodeTables::GetMeetCode($meet->getMeetCode())) ;
             $this->add_row(html_b("Start Date"), $meetstartdate) ;
             $this->add_row(html_b("End Date"), $meetenddate) ;
-            $this->add_row(html_b("Opponent"), $opponent) ;
-            $this->add_row(html_b("Location"), ucfirst($meet->getLocation())) ;
+            $this->add_row(html_b("Pool Altitude (feet)"), $meet->getPoolAltitude()) ;
+            $this->add_row(html_b("Course"), SDIFCodeTables::GetCourseCode($meet->getCourseCode())) ;
+
+            //$this->add_row(html_b("State"), ucfirst($meet->getLocation())) ;
         }
         else
         {

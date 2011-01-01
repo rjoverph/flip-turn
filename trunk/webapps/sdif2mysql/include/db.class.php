@@ -324,6 +324,8 @@ class FlipTurnDBI
      */
     function runSelectQuery($retrieveResults = true)
     {
+        $this->openConnection() ;
+
         if ($this->_conn == null)
             $this->ft_db_die(__FILE__, __LINE__, "No database connection.") ;
 
@@ -352,6 +354,8 @@ class FlipTurnDBI
                     $this->setQueryResults($this->_rs->GetRows()) ;
             }
         }
+
+        $this->closeConnection() ;
 
         return $success ;
     }

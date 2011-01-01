@@ -13,6 +13,8 @@
  *
  */
 
+include_once('ft.include.php') ;
+
 /**
  * This is Flip-Turn Child of the PageWidget
  * class that is used for the base page layout

@@ -18,10 +18,6 @@
  *
  */
 
-define('FT_DEBUG', true) ;
-define('FT_CREATE', "create") ;
-define('FT_IGNORE', "ignore") ;
-
 /**
  * The username to use
  */

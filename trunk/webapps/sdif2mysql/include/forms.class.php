@@ -19,6 +19,8 @@
  *
  */
 
+include_once('ft.include.php') ;
+
 /**
  * Include the Form Processing objects
  *

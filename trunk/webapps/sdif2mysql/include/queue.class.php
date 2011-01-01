@@ -83,7 +83,6 @@ class SDIFQueue extends FlipTurnDBI
     function ValidateQueue()
     {
         $valid = true ;
-        $this->openConnection() ;
 
         $rs = $this->getEmptyRecordSet() ;
 
@@ -101,8 +100,6 @@ class SDIFQueue extends FlipTurnDBI
                 $this->getRecordCount())) ;
         }
 
-        $this->closeConnection() ;
-
         return $valid ;
     }
 
@@ -113,12 +110,8 @@ class SDIFQueue extends FlipTurnDBI
      */
     function PurgeQueue()
     {
-        $this->openConnection() ;
-
         $this->setQuery(sprintf("DELETE FROM %s", FT_SDIFQUEUE_TABLE)) ;
         $this->runDeleteQuery() ;
-
-        $this->closeConnection() ;
 
         return $this->getAffectedRows() ;
     }
@@ -130,22 +123,18 @@ class SDIFQueue extends FlipTurnDBI
      */
     function ProcessQueue()
     {
-        $this->openConnection() ;
-
         //  Need B1 record to add or update the swim meet
  
         $this->setQuery(sprintf('SELECT sdifrecord FROM %s WHERE recordtype="B1"', FT_SDIFQUEUE_TABLE)) ;
         $this->runSelectQuery(true) ;
 
         $sdifrecord = new SDIFB1Record() ;
-        $debug = html_h3(basename(__FILE__) . "::" . __LINE__) ;
-        print $debug->render() ;
+        //$debug = html_h3(basename(__FILE__) . "::" . __LINE__) ;
+        //print $debug->render() ;
         $rslt = $this->getQueryResult() ;
         $sdifrecord->setSDIFRecord($rslt["sdifrecord"]) ;
         $sdifrecord->ParseRecord() ;
         $sdifrecord->AddMeet() ;
-
-        $this->closeConnection() ;
 
         return $this->getAffectedRows() ;
     }
@@ -311,7 +300,7 @@ class SDIFQueueDataList extends DefaultGUIDataList
         //  set the prefix for all the internal query string 
         //  variables.  You really only need to change this
         //  if you have more then 1 DataList object per page.
-        //$this->set_global_prefix("ft_");
+        $this->set_global_prefix(FT_DB_PREFIX);
     }
 
     /**
