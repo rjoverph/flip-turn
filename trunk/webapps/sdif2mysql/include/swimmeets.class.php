@@ -54,7 +54,7 @@ class SwimMeet extends SDIFB1Record
      */
     function setSwimMeetId($id)
     {
-        $this->_swimmeerid = $id ;
+        $this->_swimmeetid = $id ;
     }
 
     /**
@@ -64,7 +64,7 @@ class SwimMeet extends SDIFB1Record
      */
     function getSwimMeetId()
     {
-        return ($this->_swimmeetid) ;
+        return $this->_swimmeetid ;
     }
 
     /**
@@ -112,6 +112,30 @@ class SwimMeet extends SDIFB1Record
     }
 
     /**
+     * Check if a meet already exists in the database
+     * by comparing names and return a boolean accordingly.
+     *
+     * @param string meet name
+     * @return boolean existance of meet by name
+     */
+    function SwimMeetExistsByName($meetname = null)
+    {
+        if (is_null($meetname)) $meetname = $this->getMeetName() ;
+
+	    //  Is name already in the database?
+
+        $query = sprintf("SELECT swimmeetid FROM %s WHERE meet_name = \"%s\"",
+            FT_SWIMMEETS_TABLE, $meetname) ;
+
+        $this->setQuery($query) ;
+        $this->runSelectQuery(false) ;
+
+	    //  Make sure name doesn't exist
+
+        return (bool)($this->getQueryCount() > 0) ;
+    }
+
+    /**
      *
      * Load meet record by Id
      *
@@ -121,7 +145,6 @@ class SwimMeet extends SDIFB1Record
     {
         if (is_null($swimmeetid)) $swimmeetid = $this->getSwimMeetId() ;
 
-        var_dump($swimmeetid) ;
         //  Dud?
         if (is_null($swimmeetid)) return false ;
 
@@ -166,6 +189,7 @@ class SwimMeet extends SDIFB1Record
     /**
      * Add Swim Meet to database
      *
+     * @return boolean successful query
      */
     function AddSwimMeet()
     {
@@ -208,6 +232,56 @@ class SwimMeet extends SDIFB1Record
 
         return $success ;
     }
+
+    /**
+     * Update Swim Meet in database
+     *
+     * @return boolean successful query
+     */
+    function UpdateSwimMeet()
+    {
+        $this->setQuery(sprintf("UPDATE %s SET
+            org_code=\"%s\",
+            future_use_1=\"%s\",
+            meet_name=\"%s\",
+            meet_address_1=\"%s\",
+            meet_address_2=\"%s\",
+            meet_city=\"%s\",
+            meet_state=\"%s\",
+            meet_postal_code=\"%s\",
+            meet_country_code=\"%s\",
+            meet_code=\"%s\",
+            meet_start=\"%s\",
+            meet_end=\"%s\",
+            pool_altitude=\"%s\",
+            future_use_2=\"%s\",
+            course_code=\"%s\",
+            future_use_3=\"%s\"
+            WHERE swimmeetid=\"%s\"",
+            FT_SWIMMEETS_TABLE,
+            $this->getOrgCode(),
+            $this->getFutureUse1(),
+            $this->getMeetName(),
+            $this->getMeetAddress1(),
+            $this->getMeetAddress2(),
+            $this->getMeetCity(),
+            $this->getMeetState(),
+            $this->getMeetPostalCode(),
+            $this->getMeetCountryCode(),
+            $this->getMeetCode(),
+            $this->getMeetStart(true),
+            $this->getMeetEnd(true),
+            $this->getPoolAltitude(),
+            $this->getFutureUse2(),
+            $this->getCourseCode(),
+            $this->getFutureUse3(),
+            $this->getSwimMeetId())) ;
+
+        $success = $this->runUpdateQuery() ;
+
+        return $success ;
+    }
+
 }
 
 /**

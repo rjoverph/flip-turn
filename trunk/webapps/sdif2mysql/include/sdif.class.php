@@ -408,7 +408,7 @@ class SDIFB1Record extends SDIFRecord
      * @param string meet end
      * @param boolean date provided in database format
      */
-    function setMeetEnd($txt, $db = true)
+    function setMeetEnd($txt, $db = false)
     {
         if ($db)
         {
@@ -581,8 +581,6 @@ class SDIFB1Record extends SDIFRecord
         $this->setFutureUse2(trim(substr($this->_sdif_record, 141, 8))) ;
         $this->setCourseCode(trim(substr($this->_sdif_record, 149, 1))) ;
         $this->setFutureUse3(trim(substr($this->_sdif_record, 150, 10))) ;
-
-        var_dump($this) ;
     }
 }
 

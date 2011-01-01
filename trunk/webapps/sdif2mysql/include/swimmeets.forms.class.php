@@ -40,6 +40,11 @@ class FlipTurnSwimMeetForm extends FlipTurnForm
     var $_swimmeetid ;
 
     /**
+     * swim meet property - used to store an instance
+     */
+    var $_swimmeet = null ;
+
+    /**
      * Set the swim meet id property
      */
     function setSwimMeetId($id)
@@ -53,6 +58,22 @@ class FlipTurnSwimMeetForm extends FlipTurnForm
     function getSwimMeetId()
     {
         return $this->_swimmeetid ;
+    }
+
+    /**
+     * Set the swim meet property
+     */
+    function setSwimMeet($swimmeet)
+    {
+        $this->_swimmeet = $swimmeet ;
+    }
+
+    /**
+     * Get the swim meet property
+     */
+    function getSwimMeet()
+    {
+        return $this->_swimmeet ;
     }
 
     /**
@@ -247,60 +268,35 @@ class SwimMeetAddForm extends FlipTurnSwimMeetForm
      * data against some backend mechanism, say a DB.
      *
      */
-    function form_backend_validation($checkexists = true)
+    function form_backend_validation()
     {
         $valid = true ;
 
-        //  Make sure swim meet is unique
+        $this->setSwimMeet(new SwimMeet()) ;
+        $swimmeet = $this->getSwimMeet() ;
 
-        //$meet = new SwimMeet() ;
+        $swimmeet->setOrgCode($this->get_element_value('Organization')) ;
+        $swimmeet->setMeetName($this->get_element_value('Meet Name')) ;
+        $swimmeet->setMeetAddress1($this->get_element_value('Meet Address 1')) ;
+        $swimmeet->setMeetAddress2($this->get_element_value('Meet Address 2')) ;
+        $swimmeet->setMeetState($this->get_element_value('Meet State')) ;
+        $swimmeet->setMeetCountryCode($this->get_element_value('Meet Country')) ;
+        $swimmeet->setMeetCode($this->get_element_value('Meet Code')) ;
 
-        //$meet->setSeasonId($this->get_element_value("Season")) ;
-        //$meet->setOpponentSwimClubId($this->get_element_value("Opponent")) ;
-        //$meet->setMeetType($this->get_element_value("Meet Type")) ;
-        //$meet->setParticipation($this->get_element_value("Participation")) ;
-        //$meet->setMeetDescription($this->get_element_value("Description")) ;
-        //$meet->setLocation($this->get_element_value("Location")) ;
-        //$meet->setMeetDate($this->get_element_value("Date")) ;
+        $date = $this->get_element_value('Meet Start') ;
+        $swimmeet->setMeetStart($date['month'] . $date['day'] . $date['year']) ;
 
-        //$time = $this->get_element_value("Time") . ":" .
-            //$this->get_element_value("Minutes") . ":00" ;
-        //$meet->setMeetTime($time) ;
+        $date = $this->get_element_value('Meet End') ;
+        $swimmeet->setMeetEnd($date['month'] . $date['day'] . $date['year']) ;
 
-        //  Check existance?
- 
-        //if ($checkexists)
-        //{
-            //if ($meet->getSwimMeetExists())
-            //{
-                //$this->add_error("Season", "Similar swim meet already exists.");
-                //$this->add_error("Opponent", "Similar swim meet already exists.");
-                //$this->add_error("Date", "Similar swim meet already exists.");
-                //$valid = false ;
-            //}
-        //}
+        $swimmeet->setPoolAltitude($this->get_element_value('Pool Altitude')) ;
+        $swimmeet->setCourseCode($this->get_element_value('Course Code')) ;
 
-        //  Make sure dates are reasonable - is it during the season?
-        
-        //$season = new SwimTeamSeason() ;
-        //$season->loadSeasonById($meet->getSeasonId()) ;
-
-        //$s = $season->getSeasonStartAsArray() ;
-        //$st = strtotime(sprintf("%04s-%02s-%02s", $s["year"], $s["month"], $s["day"])) ;
-
-        //$e = $season->getSeasonEndAsArray() ;
-        //$et = strtotime(sprintf("%04s-%02s-%02s", $e["year"], $e["month"], $e["day"])) ;
-
-        //$d = $meet->getMeetDate() ;
-        //$dt = strtotime(sprintf("%04s-%02s-%02s", $d["year"], $d["month"], $d["day"])) ;
- 
-        //  Date before season start or after season end?
-
-        //if (($dt < $st) || ($dt > $et))
-        //{
-            //$this->add_error("Date", "Date occurs outside of season.") ;
-            //$valid = false ;
-        //}
+        if ($swimmeet->SwimMeetExistsByName())
+        {
+            $valid = false ;
+            $this->add_error('Meet Name', 'A meet with this name already exists in the database') ;
+        }
 
 	    return $valid ;
     }
@@ -313,24 +309,10 @@ class SwimMeetAddForm extends FlipTurnSwimMeetForm
      */
     function form_action()
     {
-        $swimmeet = new SwimMeet() ;
+        //  After passing validation, all of the meet data
+        //  should be stored in the Swim Meet class instance.
 
-        $swimmeet->setOrgCode($this->get_element_value("Organization")) ;
-        $swimmeet->setMeetName($this->get_element_value("Meet Name")) ;
-        $swimmeet->setMeetAddress1($this->get_element_value("Meet Address 1")) ;
-        $swimmeet->setMeetAddress2($this->get_element_value("Meet Address 2")) ;
-        $swimmeet->setMeetState($this->get_element_value("Meet State")) ;
-        $swimmeet->setMeetCountry($this->get_element_value("Meet Country")) ;
-        $swimmeet->setMeetCode($this->get_element_value("Meet Code")) ;
-
-        $date = $this->get_element_value("Meet Start") ;
-        $swimmeet->setMeetStart($date['month'] . $date['day'] . $date['year']) ;
-
-        $date = $this->get_element_value("Meet End") ;
-        $swimmeet->setMeetEnd($date['month'] . $date['day'] . $date['year']) ;
-
-        $swimmeet->setPoolAltitude($this->get_element_value("Pool Altitude")) ;
-        $swimmeet->setCourseCode($this->get_element_value("Course Code")) ;
+        $swimmeet = $this->getSwimMeet() ;
 
         $success = $swimmeet->AddSwimMeet() ;
 
@@ -383,11 +365,10 @@ class SwimMeetUpdateForm extends SwimMeetAddForm
     function form_init_data()
     {
         $this->set_hidden_element_value('_action', FT_ACTION_UPDATE) ;
+        $this->set_hidden_element_value('swimmeetid', $this->getSwimMeetId()) ;
 
         $swimmeet = new SwimMeet() ;
         $swimmeet->LoadSwimMeetById($this->getSwimMeetId()) ;
-
-        $this->set_hidden_element_value('swimmeetid', $swimmeet->getSwimMeetId()) ;
 
         $this->set_element_value('Organization', $swimmeet->getOrgCode()) ;
         $this->set_element_value('Meet Name', $swimmeet->getMeetName()) ;
@@ -417,7 +398,40 @@ class SwimMeetUpdateForm extends SwimMeetAddForm
      */
     function form_backend_validation()
     {
-        $valid = parent::form_backend_validation(false) ;
+        $valid = true ;
+
+        $this->setSwimMeet(new SwimMeet()) ;
+        $swimmeet = $this->getSwimMeet() ;
+
+        //  Need to make sure that the update isn't changing the
+        //  swim meet to match something which already exists in
+        //  the database.
+
+        $swimmeet->LoadSwimMeetById($this->get_hidden_element_value('swimmeetid')) ;
+        $oldmeetname = $swimmeet->getMeetName() ;
+
+        $swimmeet->setOrgCode($this->get_element_value('Organization')) ;
+        $swimmeet->setMeetName($this->get_element_value('Meet Name')) ;
+        $swimmeet->setMeetAddress1($this->get_element_value('Meet Address 1')) ;
+        $swimmeet->setMeetAddress2($this->get_element_value('Meet Address 2')) ;
+        $swimmeet->setMeetState($this->get_element_value('Meet State')) ;
+        $swimmeet->setMeetCountryCode($this->get_element_value('Meet Country')) ;
+        $swimmeet->setMeetCode($this->get_element_value('Meet Code')) ;
+
+        $date = $this->get_element_value('Meet Start') ;
+        $swimmeet->setMeetStart(sprintf("%02s%02s%04s", $date['month'], $date['day'], $date['year'])) ;
+
+        $date = $this->get_element_value('Meet End') ;
+        $swimmeet->setMeetEnd(sprintf("%02s%02s%04s", $date['month'], $date['day'], $date['year'])) ;
+
+        $swimmeet->setPoolAltitude($this->get_element_value('Pool Altitude')) ;
+        $swimmeet->setCourseCode($this->get_element_value('Course Code')) ;
+
+        if ($swimmeet->SwimMeetExistsByName() && ($oldmeetname != $swimmeet->getMeetName()))
+        {
+            $valid = false ;
+            $this->add_error('Meet Name', 'A meet with this name already exists in the database') ;
+        }
 
 	    return $valid ;
     }
@@ -430,34 +444,19 @@ class SwimMeetUpdateForm extends SwimMeetAddForm
      */
     function form_action()
     {
-        $meet = new SwimMeet() ;
+        //  After passing validation, all of the meet data
+        //  should be stored in the Swim Meet class instance.
 
-        $swimmeet = new SwimMeet() ;
+        $swimmeet = $this->getSwimMeet() ;
+        //var_dump($swimmeet) ;
 
-        $swimmeet->setOrgCode($this->get_element_value("Organization")) ;
-        $swimmeet->setMeetName($this->get_element_value("Meet Name")) ;
-        $swimmeet->setMeetAddress1($this->get_element_value("Meet Address 1")) ;
-        $swimmeet->setMeetAddress2($this->get_element_value("Meet Address 2")) ;
-        $swimmeet->setMeetState($this->get_element_value("Meet State")) ;
-        $swimmeet->setMeetCountry($this->get_element_value("Meet Country")) ;
-        $swimmeet->setMeetCode($this->get_element_value("Meet Code")) ;
-
-        $date = $this->get_element_value("Meet Start") ;
-        $swimmeet->setMeetStart($date['month'] . $date['day'] . $date['year']) ;
-
-        $date = $this->get_element_value("Meet End") ;
-        $swimmeet->setMeetEnd($date['month'] . $date['day'] . $date['year']) ;
-
-        $swimmeet->setPoolAltitude($this->get_element_value("Pool Altitude")) ;
-        $swimmeet->setCourseCode($this->get_element_value("Course Code")) ;
-
-        $success = $meet->UpdateSwimMeet() ;
+        $success = $swimmeet->UpdateSwimMeet() ;
 
         //  If successful, store the updated meet id in so it can be used later.
 
         if ($success) 
         {
-            $meet->setMeetId($success) ;
+            $swimmeet->setSwimMeetId($success) ;
             $this->set_action_message("Swim Meet successfully updated.") ;
         }
         else
