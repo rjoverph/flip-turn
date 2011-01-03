@@ -38,6 +38,41 @@ include_once("forms.class.php") ;
 class SDIFFileUploadForm extends FlipTurnFileUploadForm
 {
     /**
+     * This method gets called EVERY time the object is
+     * created.  It is used to build all of the 
+     * FormElement objects used in this Form.
+     *
+     */
+    function form_init_elements()
+    {
+        parent::form_init_elements() ;
+
+        $override = new FECheckBox('Override Z0 Record Validation') ;
+        $this->add_element($override) ;
+    }
+
+    /**
+     * This is the method that builds the layout of where the
+     * FormElements will live.  You can lay it out any way
+     * you like.
+     *
+     */
+    function form_content()
+    {
+        $table = html_table($this->_width,0,4) ;
+        $table->set_style("border: 0px solid") ;
+
+        $table->add_row($this->element_label($this->getUploadFileLabel()),
+            $this->element_form($this->getUploadFileLabel())) ;
+
+        $td = html_td(null, null, $this->element_form('Override Z0 Record Validation')) ;
+        $td->set_tag_attribute('colspan', 2) ;
+        $table->add_row($td) ;
+
+        $this->add_form_block(null, $table) ;
+    }
+
+    /**
      * This method gets called after the FormElement data has
      * passed the validation.  This enables you to validate the
      * data against some backend mechanism, say a DB.
@@ -118,10 +153,25 @@ class SDIFFileUploadForm extends FlipTurnFileUploadForm
             }
         }
 
+        //  Suppress Z0 checking?
+        if ($this->get_element('Override Z0 Record Validation'))
+        {
+            return true ;
+        }
+
         //  Got this far, the file has the right records in it, do
         //  the counts match what is reported in the Z0 record?
 
         $z0_record->ParseRecord() ;
+
+        //  Make sure this is a results file!
+        if ($z0_record->getFileCode() != FT_SDIF_FTT_CODE_MEET_RESULTS_VALUE)
+        {
+            $this->add_error('SDIF Filename',
+                sprintf('File Code (%02d) field in Z0 record does not match Results File Code(%02d).',
+                $z0_record->getFileCode(), FT_SDIF_FTT_CODE_MEET_RESULTS_VALUE)) ;
+            return false ;
+        }
         
         //  Make sure number of B records match Z0 record field
         if ($z0_record->getBRecordCount() != $record_counts['B1'])
@@ -260,7 +310,7 @@ class SDIFQueuePurgeForm extends FlipTurnForm
     /**
      * Label
      */
-    var $_confirm_label = "Purge SDIF Queue" ;
+    var $_confirm_label = 'Purge SDIF Queue' ;
 
     /**
      * This method gets called EVERY time the object is
@@ -296,8 +346,8 @@ class SDIFQueuePurgeForm extends FlipTurnForm
         $table->set_style("border: 0px solid") ;
 
         $msg = html_div("ft_form_msg") ;
-        $msg->add(html_p("Purging the SDIF Queue will delete all records
-            currently stored in the SDIF Queue.  This action cannot be
+        $msg->add(html_p("Purging the  Queue will delete all records
+            currently stored in the  Queue.  This action cannot be
             reversed.  Make sure all data has been saved appropriately
             prior to performing this action.", html_br())) ;
 
@@ -338,7 +388,7 @@ class SDIFQueuePurgeForm extends FlipTurnForm
     {
         $success = true ;
 
-        $sdifqueue = new SDIFQueue() ;
+        $sdifqueue = new SDIFResultsQueue() ;
         $sdifqueue->PurgeQueue() ;
 
         $this->set_action_message(sprintf("%d record%s purged from SDIF Queue.",
@@ -361,6 +411,21 @@ class SDIFQueuePurgeForm extends FlipTurnForm
 }
 
 /**
+ * Construct the SDIF Queue Purge form
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see SDIFQueuePurgeForm
+ */
+class ResultsQueuePurgeForm extends SDIFQueuePurgeForm
+{
+    /**
+     * Label
+     */
+    var $_confirm_label = "Purge Results Queue" ;
+}
+
+/**
  * Construct the SDIF Queue Process form
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
@@ -372,7 +437,7 @@ class SDIFQueueProcessForm extends FlipTurnForm
     /**
      * Label
      */
-    var $_confirm_label = "Process SDIF Queue" ;
+    var $_confirm_label = "Process Results Queue" ;
 
     /**
      * This method gets called EVERY time the object is
@@ -455,7 +520,7 @@ class SDIFQueueProcessForm extends FlipTurnForm
      */
     function form_backend_validation()
     {
-        $sdifqueue = new SDIFQueue() ;
+        $sdifqueue = new SDIFResultsQueue() ;
         $valid = $sdifqueue->ValidateQueue() ;
         unset($sdifqueue) ;
 
@@ -472,8 +537,8 @@ class SDIFQueueProcessForm extends FlipTurnForm
     {
         $success = true ;
 
-        $sdifqueue = new SDIFQueue() ;
-        $cnt = $sdifqueue->ProcessQueueC1Records() ;
+        $sdifqueue = new SDIFResultsQueue() ;
+        $cnt = $sdifqueue->ProcessQueue() ;
 
         $c = container() ;
         $msgs = $sdifqueue->get_status_message() ;

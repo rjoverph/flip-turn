@@ -524,7 +524,8 @@ class FlipTurnFileUploadForm extends FlipTurnForm
         $lines = file($fileInfo['tmp_name']) ; 
 
         $it->add_row("Filename", $fileInfo['name']) ; 
-        $it->add_row("Temporary Filename", $fileInfo['tmp_name']) ; 
+        if (FT_DEBUG)
+            $it->add_row("Temporary Filename", $fileInfo['tmp_name']) ; 
         $it->add_row("File Size", filesize($fileInfo['tmp_name'])) ; 
         $it->add_row("Lines", count($lines)) ; 
 

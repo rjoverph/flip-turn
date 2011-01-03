@@ -139,18 +139,42 @@ class SDIFResultsQueue extends SDIFQueue
      */
     function ProcessQueue()
     {
+        $count = 0 ;
+
+        $count += $this->ProcessQueueB1Record() ;
+        printf("<h4>%d</h4>", $count) ;
+        $count += $this->ProcessQueueC1Records() ;
+        printf("<h4>%d</h4>", $count) ;
+
+        return $count ;
+    }
+
+    /**
+     * Process SDIF records from the Queue
+     *
+     * @return int number of records purged
+     */
+    function ProcessQueueB1Record()
+    {
         //  Need B1 record to add or update the swim meet
  
         $this->setQuery(sprintf('SELECT sdifrecord FROM %s WHERE recordtype="B1"', FT_SDIFQUEUE_TABLE)) ;
         $this->runSelectQuery(true) ;
-
-        $sdifrecord = new SDIFB1Record() ;
         $rslt = $this->getQueryResult() ;
+        $rsltscnt = $this->getQueryCount() ;
+
+        $sdifrecord = new SwimMeet() ;
         $sdifrecord->setSDIFRecord($rslt["sdifrecord"]) ;
         $sdifrecord->ParseRecord() ;
-        $sdifrecord->AddSwimMeet() ;
 
-        return $this->getAffectedRows() ;
+        if (!$sdifrecord->SwimMeetExistsByName())
+            $sdifrecord->AddSwimMeet() ;
+        else
+            $this->add_status_message(sprintf('Swim Meet "%s" already exists in the database, ignored.',
+                $sdifrecord->getMeetName())) ;
+
+        //return $this->getAffectedRows() ;
+        return $rsltscnt ;
     }
 
     /**
@@ -180,7 +204,7 @@ class SDIFResultsQueue extends SDIFQueue
             if (!$sdifrecord->SwimTeamExistsByName())
                 $sdifrecord->AddSwimTeam() ;
             else
-                $this->add_status_message(sprintf('Swim Team "%s" already exists in the database.',
+                $this->add_status_message(sprintf('Swim Team "%s" already exists in the database, ignored.',
                     $sdifrecord->getTeamName())) ;
         }
 
