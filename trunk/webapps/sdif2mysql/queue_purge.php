@@ -38,7 +38,7 @@ class SDIFQueuePurgePage extends FlipTurnLayoutPage
 	    $container = container() ;
 
 	    //  Create the form
-        $form = new SDIFQueuePurgeForm("Purge SDIF Queue", $_SERVER['PHP_SELF'], 600) ;
+        $form = new ResultsQueuePurgeForm("Purge Results Queue", $_SERVER['PHP_SELF'], 600) ;
 
 	    //  Create the form processor
         $fp = new FormProcessor($form) ;

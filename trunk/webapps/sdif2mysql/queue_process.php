@@ -38,7 +38,7 @@ class SDIFQueueProcessPage extends FlipTurnLayoutPage
         //
 	    $container = container() ;
 
-        $sdifqueue = new SDIFQueue() ;
+        $sdifqueue = new SDIFResultsQueue() ;
 
         if (!$sdifqueue->ValidateQueue())
         {
