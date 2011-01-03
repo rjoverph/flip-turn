@@ -83,7 +83,6 @@ class SwimTeamUpdatePage extends FlipTurnLayoutPage
 	        //  Update the Form Processor to the container.
 
 	        $container->add(html_br(2), $fp) ;
-            //$container->add(FlipTurnGUIBackHomeButtons::getButtons()) ;
 	    }
         else
         {

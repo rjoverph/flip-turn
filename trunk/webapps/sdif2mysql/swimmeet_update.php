@@ -54,7 +54,7 @@ class SwimMeetUpdatePage extends FlipTurnLayoutPage
             $swimmeetid = null ;
 
 	    //  Create the form
-        $form = new SwimMeetUpdateForm("Update Swim Meet", $_SERVER['PHP_SELF'], 600) ;
+        $form = new SwimMeetUpdateForm("Update Swim Meet", null, 600) ;
         $form->setSwimMeetId($swimmeetid) ;
 
 	    //  Create the form processor
@@ -71,10 +71,16 @@ class SwimMeetUpdatePage extends FlipTurnLayoutPage
 
 	    if ($fp->is_action_successful())
 	    {
-	        //$container->add($form->get_action_message()) ;
-
+            //  Add the InfoTableCSS so the tables look right
+	        $this->add_head_css(new DefaultGUIDataListCSS) ;
+	    
+            $swimmeets = new SwimMeetsDataList("Swim Meets", 800, "swimmeetid") ;
+            $div = html_div() ;
+            $div->set_id("swimmeetsgdl") ;
+            $div->add($swimmeets) ;
+            $container->add($div) ;
+ 
 	        //  Update the Form Processor to the container.
-
 	        $container->add(html_br(2), $fp) ;
 	    }
         else
