@@ -38,45 +38,7 @@ class SDIFQueueProcessPage extends FlipTurnLayoutPage
         //
 	    $container = container() ;
 
-        if (0) {
-        //  Establish a database connection
- 
-        try
-        { 
-            $conn = ADONewConnection(FT_DB_DSN) ;
-        }
-        catch (exception $e)
-        { 
-            $success = false ;
-            $container->add("Unable to connect to database.") ;
-            return $container ;
-            //var_dump($e); 
-            //adodb_backtrace($e->gettrace());
-        }
-
-        
-        //  Need a B1 record to obtain meet details.
-
-        $rs = $conn->Execute('SELECT * FROM sdifqueue WHERE recordtype="B1"') ;
-        //  Multiple B1 records?
-        if ($rs->RecordCount() > 1)
-        {
-            $container->add($this->error_message('Multiple \"B1\" records found in SDIF queue.')) ;
-
-            return $container ;
-        }
-
-        //  No B1 records?
-        if ($rs->RecordCount() < 1)
-        {
-            $container->add($this->error_message('Missing \"B1\" records in SDIF queue.')) ;
-
-            return $container ;
-        }
-        }
-
         $sdifqueue = new SDIFQueue() ;
-        $sdifqueue->openConnection() ;
 
         if (!$sdifqueue->ValidateQueue())
         {

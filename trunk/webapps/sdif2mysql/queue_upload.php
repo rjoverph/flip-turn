@@ -60,8 +60,6 @@ class SDIFFileUploadPage extends FlipTurnLayoutPage
             $sd3fileinfo = $form->get_file_info() ;
 	        $container->add($form->get_file_info_table()) ;
 
-            var_dump($sd3fileinfo) ;
-            
 	        //  Add the Form Processor to the container.
 
 	        $container->add(html_br(2), $fp) ;
