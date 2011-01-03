@@ -20,6 +20,9 @@
  */
 
 include_once("db.class.php") ;
+include_once("swimmeets.class.php") ;
+include_once("swimteams.class.php") ;
+
 include_once(PHPHTMLLIB_ABSPATH . "/widgets/data_list/includes.inc") ;
 
 //  Add the include path for adodb - assumed in the document root.  Where
@@ -53,16 +56,16 @@ class SDIFQueue extends FlipTurnDBI
     /**
      *  Property to store error messages
      */
-    var $_sdif_queue_status_msg ;
+    var $_sdif_queue_status_msg = array() ;
 
     /**
-     * Set error message
+     * Add status message
      *
      * @param string error message
      */
-    function set_status_message($msg)
+    function add_status_message($msg)
     {
-        $this->_sdif_queue_status_msg = $msg ;
+        $this->_sdif_queue_status_msg[] = $msg ;
     }
 
     /**
@@ -75,6 +78,32 @@ class SDIFQueue extends FlipTurnDBI
         return $this->_sdif_queue_status_msg ;
     }
 
+    /**
+     * Purge SDIF records from the Queue
+     *
+     * @return int number of records purged
+     */
+    function PurgeQueue()
+    {
+        $this->setQuery(sprintf("DELETE FROM %s", FT_SDIFQUEUE_TABLE)) ;
+        $this->runDeleteQuery() ;
+
+        return $this->getAffectedRows() ;
+    }
+}
+
+/**
+ * SDIFResultsQueue
+ *
+ * Child class to manage the SDIF Results Queue.
+ *
+ * @author Mike Walsh - mike_walsh@mindspring.com
+ * @access public
+ * @see FlipTurnDBI
+ *
+ */
+class SDIFResultsQueue extends SDIFQueue
+{
     /**
      * Validate SDIF Queue
      *
@@ -104,20 +133,7 @@ class SDIFQueue extends FlipTurnDBI
     }
 
     /**
-     * Purge SDIF records from the Queue
-     *
-     * @return int number of records purged
-     */
-    function PurgeQueue()
-    {
-        $this->setQuery(sprintf("DELETE FROM %s", FT_SDIFQUEUE_TABLE)) ;
-        $this->runDeleteQuery() ;
-
-        return $this->getAffectedRows() ;
-    }
-
-    /**
-     * Purge SDIF records from the Queue
+     * Process SDIF records from the Queue
      *
      * @return int number of records purged
      */
@@ -129,14 +145,47 @@ class SDIFQueue extends FlipTurnDBI
         $this->runSelectQuery(true) ;
 
         $sdifrecord = new SDIFB1Record() ;
-        //$debug = html_h3(basename(__FILE__) . "::" . __LINE__) ;
-        //print $debug->render() ;
         $rslt = $this->getQueryResult() ;
         $sdifrecord->setSDIFRecord($rslt["sdifrecord"]) ;
         $sdifrecord->ParseRecord() ;
-        $sdifrecord->AddMeet() ;
+        $sdifrecord->AddSwimMeet() ;
 
         return $this->getAffectedRows() ;
+    }
+
+    /**
+     * Process SDIF records from the Queue
+     *
+     * @return int number of records purged
+     */
+    function ProcessQueueC1Records()
+    {
+        //  Need C1 record to add or update the swim meet
+ 
+        $this->setQuery(sprintf('SELECT sdifrecord FROM %s WHERE recordtype="C1"', FT_SDIFQUEUE_TABLE)) ;
+        $this->runSelectQuery(true) ;
+
+        //$sdifrecord = new SDIFC1Record() ;
+        $sdifrecord = new SwimTeam() ;
+        $rslts = $this->getQueryResults() ;
+        $rsltscnt = $this->getQueryCount() ;
+
+        //  Process each C1 record in the file.
+ 
+        foreach ($rslts as $rslt)
+        {
+            $sdifrecord->setSDIFRecord($rslt["sdifrecord"]) ;
+            $sdifrecord->ParseRecord() ;
+
+            if (!$sdifrecord->SwimTeamExistsByName())
+                $sdifrecord->AddSwimTeam() ;
+            else
+                $this->add_status_message(sprintf('Swim Team "%s" already exists in the database.',
+                    $sdifrecord->getTeamName())) ;
+        }
+
+        //return $this->getAffectedRows() ;
+        return $rsltscnt ;
     }
 
     /**
