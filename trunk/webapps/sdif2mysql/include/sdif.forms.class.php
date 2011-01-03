@@ -24,6 +24,7 @@
  *
  */
 include_once("db.include.php") ;
+include_once("sdif.class.php") ;
 include_once("queue.class.php") ;
 include_once("forms.class.php") ;
 
@@ -72,6 +73,8 @@ class SDIFFileUploadForm extends FlipTurnFileUploadForm
             "C1" => 0, "C2" => 0, "D0" => 0, "D3" => 0, "G0" => 0,
             "E0" => 0, "F0" => 0, "Z0" => 0) ;
  
+        $z0_record = new SDIFZ0Record() ;
+
         $file = $this->get_element("SDIF Filename") ; 
         $fileInfo = $file->get_file_info() ; 
 
@@ -98,6 +101,9 @@ class SDIFFileUploadForm extends FlipTurnFileUploadForm
             }
 
             $line_number++ ;
+
+            if ($record_type == "Z0")
+                $z0_record->setSDIFRecord($line) ;
         }
 
         //  Got this far, the file has the right records in it, do
@@ -110,6 +116,65 @@ class SDIFFileUploadForm extends FlipTurnFileUploadForm
                 $this->add_error("SDIF Filename", sprintf("Missing required \"%s\" record(s) in SDIF file.", $record_type)) ;
                 return false ;
             }
+        }
+
+        //  Got this far, the file has the right records in it, do
+        //  the counts match what is reported in the Z0 record?
+
+        $z0_record->ParseRecord() ;
+        
+        //  Make sure number of B records match Z0 record field
+        if ($z0_record->getBRecordCount() != $record_counts['B1'])
+        {
+            $this->add_error('SDIF Filename',
+                sprintf('Number of B records (%d) does not match field in Z0 record (%d).',
+                $record_counts['B1'], $z0_record->getBRecordCount())) ;
+            return false ;
+        }
+
+        //  Make sure number of C records match Z0 record field
+        if ($z0_record->getCRecordCount() != $record_counts['C1'])
+        {
+            $this->add_error('SDIF Filename',
+                sprintf('Number of C records (%d) does not match field in Z0 record (%d).',
+                $record_counts['C1'], $z0_record->getCRecordCount())) ;
+            return false ;
+        }
+
+        //  Make sure number of D records match Z0 record field
+        if ($z0_record->getDRecordCount() != $record_counts['D0'])
+        {
+            $this->add_error('SDIF Filename',
+                sprintf('Number of D records (%d) does not match field in Z0 record (%d).',
+                $record_counts['D0'], $z0_record->getDRecordCount())) ;
+            return false ;
+        }
+
+        //  Make sure number of E records match Z0 record field
+        if ($z0_record->getERecordCount() != $record_counts['E0'])
+        {
+            $this->add_error('SDIF Filename',
+                sprintf('Number of E records (%d) does not match field in Z0 record (%d).',
+                $record_counts['E0'], $z0_record->getERecordCount())) ;
+            return false ;
+        }
+
+        //  Make sure number of F records match Z0 record field
+        if ($z0_record->getFRecordCount() != $record_counts['F0'])
+        {
+            $this->add_error('SDIF Filename',
+                sprintf('Number of F records (%d) does not match field in Z0 record (%d).',
+                $record_counts['F0'], $z0_record->getFRecordCount())) ;
+            return false ;
+        }
+
+        //  Make sure number of G records match Z0 record field
+        if ($z0_record->getGRecordCount() != $record_counts['G0'])
+        {
+            $this->add_error('SDIF Filename',
+                sprintf('Number of G records (%d) does not match field in Z0 record (%d).',
+                $record_counts['G0'], $z0_record->getGRecordCount())) ;
+            return false ;
         }
 
         unset($lines) ; 
@@ -142,8 +207,7 @@ class SDIFFileUploadForm extends FlipTurnFileUploadForm
 
         //  Establish a database connection
  
-        $sdifqueue = new SDIFQueue() ;
-        $sdifqueue->openConnection() ;
+        $sdifqueue = new SDIFResultsQueue() ;
 
         //  Need a record set to work with
 
@@ -167,8 +231,6 @@ class SDIFFileUploadForm extends FlipTurnFileUploadForm
 
             $line_number++ ;
         }
-
-        $sdifqueue->closeConnection() ;
 
         unset($sdifqueue) ;
 
@@ -411,10 +473,21 @@ class SDIFQueueProcessForm extends FlipTurnForm
         $success = true ;
 
         $sdifqueue = new SDIFQueue() ;
-        $sdifqueue->ProcessQueue() ;
+        $cnt = $sdifqueue->ProcessQueueC1Records() ;
 
-        $this->set_action_message(sprintf("%d record%s purged from SDIF Queue.",
-            $sdifqueue->getAffectedRows(), $sdifqueue->getAffectedRows() == 1 ? "" : "s")) ;
+        $c = container() ;
+        $msgs = $sdifqueue->get_status_message() ;
+
+        foreach ($msgs as $msg)
+            $c->add($msg, html_br()) ;
+
+
+        $c->add(sprintf("%d record%s processed from SDIF Queue.",
+            $cnt, $cnt == 1 ? "" : "s")) ;
+
+        $this->set_action_message($c) ;
+        //$this->set_action_message(sprintf("%d record%s processed from SDIF Queue.",
+        //    $cnt, $cnt == 1 ? "" : "s")) ;
 
         unset($sdifqueue) ;
 

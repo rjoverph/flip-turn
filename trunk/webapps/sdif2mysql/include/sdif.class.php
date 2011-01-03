@@ -55,10 +55,11 @@ class SDIFRecord extends FlipTurnDBI
 }
 
 /**
- * SDIF record base class
+ * SDIF B1 record
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @access public
+ * @see SDIFRecord
  */
 class SDIFB1Record extends SDIFRecord
 {
@@ -585,6 +586,944 @@ class SDIFB1Record extends SDIFRecord
 }
 
 /**
+ * SDIF C1 record
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see SDIFRecord
+ */
+class SDIFC1Record extends SDIFRecord
+{
+    /**
+     * Org Code
+     */
+    var $_org_code ;
+
+    /**
+     * Future Use #1
+     */
+    var $_future_use_1 ;
+
+    /**
+     * Team Code
+     */
+    var $_team_code ;
+
+    /**
+     * Team Name
+     */
+    var $_team_name ;
+
+    /**
+     * Team Name Abbreviation
+     */
+    var $_team_name_abrv ;
+
+    /**
+     * Team Address Line 1
+     */
+    var $_team_address_1 ;
+
+    /**
+     * Team Address Line 2
+     */
+    var $_team_address_2 ;
+
+    /**
+     * Team City
+     */
+    var $_team_city ;
+
+    /**
+     * Team State
+     */
+    var $_team_state ;
+
+    /**
+     * Team Postal Code
+     */
+    var $_team_postal_code ;
+
+    /**
+     * Team Country Code
+     */
+    var $_team_country_code ;
+
+    /**
+     * Region Code
+     */
+    var $_region_code ;
+
+    /**
+     * Future Use #2
+     */
+    var $_future_use_2 ;
+
+    /**
+     * Team Code 5th Character
+     */
+    var $_team_code_5 ;
+
+    /**
+     * Future Use #3
+     */
+    var $_future_use_3 ;
+
+    /**
+     * Set Org Code
+     *
+     * @param int org code
+     */
+    function setOrgCode($code)
+    {
+        $this->_org_code = $code ;
+    }
+
+    /**
+     * Get Org Code
+     *
+     * @return int org code
+     */
+    function getOrgCode()
+    {
+        return $this->_org_code ;
+    }
+
+    /**
+     * Set Future Use 1
+     *
+     * @param string future use 1
+     */
+    function setFutureUse1($txt)
+    {
+        $this->_future_use_1 = $txt ;
+    }
+
+    /**
+     * Get Future Use 1
+     *
+     * @return string future use 1
+     */
+    function getFutureUse1()
+    {
+        return $this->_future_use_1 ;
+    }
+
+    /**
+     * Set Team Code
+     *
+     * @param string team code
+     */
+    function setTeamCode($txt)
+    {
+        $this->_team_code = $txt ;
+    }
+
+    /**
+     * Get Team Code
+     *
+     * @return string team code
+     */
+    function getTeamCode()
+    {
+        return $this->_team_code ;
+    }
+
+    /**
+     * Set Team Name
+     *
+     * @param string team name
+     */
+    function setTeamName($txt)
+    {
+        $this->_team_name = $txt ;
+    }
+
+    /**
+     * Get Team Name
+     *
+     * @return string team name
+     */
+    function getTeamName()
+    {
+        return $this->_team_name ;
+    }
+
+    /**
+     * Set Team Name Abbreviation
+     *
+     * @param string team name abreviation
+     */
+    function setTeamNameAbrv($txt)
+    {
+        $this->_team_name_abrv = $txt ;
+    }
+
+    /**
+     * Get Team Name Abreviation
+     *
+     * @return string team name abreviation
+     */
+    function getTeamNameAbrv()
+    {
+        return $this->_team_name_abrv ;
+    }
+
+    /**
+     * Set Team Address 1
+     *
+     * @param string team address 1
+     */
+    function setTeamAddress1($txt)
+    {
+        $this->_team_address_1 = $txt ;
+    }
+
+    /**
+     * Get Team Address 1
+     *
+     * @return string team address 1
+     */
+    function getTeamAddress1()
+    {
+        return $this->_team_address_1 ;
+    }
+
+    /**
+     * Set Team Address 2
+     *
+     * @param string team address 2
+     */
+    function setTeamAddress2($txt)
+    {
+        $this->_team_address_2 = $txt ;
+    }
+
+    /**
+     * Get Team Address 2
+     *
+     * @return string team address 2
+     */
+    function getTeamAddress2()
+    {
+        return $this->_team_address_2 ;
+    }
+
+    /**
+     * Set Team City
+     *
+     * @param string team city
+     */
+    function setTeamCity($txt)
+    {
+        $this->_team_city = $txt ;
+    }
+
+    /**
+     * Get Team City
+     *
+     * @return string team city
+     */
+    function getTeamCity()
+    {
+        return $this->_team_city ;
+    }
+
+    /**
+     * Set Team State
+     *
+     * @param string team state
+     */
+    function setTeamState($txt)
+    {
+        $this->_team_state = $txt ;
+    }
+
+    /**
+     * Get Team State
+     *
+     * @return string team state
+     */
+    function getTeamState()
+    {
+        return $this->_team_state ;
+    }
+
+    /**
+     * Set Team Postal Code
+     *
+     * @param string team postal code
+     */
+    function setTeamPostalCode($txt)
+    {
+        $this->_team_postal_code = $txt ;
+    }
+
+    /**
+     * Get Team Postal Code
+     *
+     * @return string team postal code
+     */
+    function getTeamPostalCode()
+    {
+        return $this->_team_postal_code ;
+    }
+
+    /**
+     * Set Team Country Code
+     *
+     * @param string team country code
+     */
+    function setTeamCountryCode($txt)
+    {
+        $this->_team_country_code = $txt ;
+    }
+
+    /**
+     * Get Team Country Code
+     *
+     * @return string team country code
+     */
+    function getTeamCountryCode()
+    {
+        return $this->_team_country_code ;
+    }
+
+    /**
+     * Set Region Code
+     *
+     * @param string region code
+     */
+    function setRegionCode($txt)
+    {
+        $this->_region_code = $txt ;
+    }
+
+    /**
+     * Get Region Code
+     *
+     * @return string region code
+     */
+    function getRegionCode()
+    {
+        return $this->_region_code ;
+    }
+
+    /**
+     * Set Future Use 2
+     *
+     * @param string future use 2
+     */
+    function setFutureUse2($txt)
+    {
+        $this->_future_use_2 = $txt ;
+    }
+
+    /**
+     * Get Future Use 2
+     *
+     * @return string future use 2
+     */
+    function getFutureUse2()
+    {
+        return $this->_future_use_2 ;
+    }
+
+    /**
+     * Set Team Code 5th character
+     *
+     * @param string team code 5th character
+     */
+    function setTeamCode5($txt)
+    {
+        $this->_team_code_5 = $txt ;
+    }
+
+    /**
+     * Get Team Code 5th character
+     *
+     * @return string team code 5th character
+     */
+    function getTeamCode5()
+    {
+        return $this->_team_code_5 ;
+    }
+
+    /**
+     * Set Future Use 3
+     *
+     * @param string future use 3
+     */
+    function setFutureUse3($txt)
+    {
+        $this->_future_use_3 = $txt ;
+    }
+
+    /**
+     * Get Future Use 3
+     *
+     * @return string future use 3
+     */
+    function getFutureUse3()
+    {
+        return $this->_future_use_3 ;
+    }
+
+    /**
+     * Parse Record
+     */
+    function ParseRecord()
+    {
+        if (FT_DEBUG)
+        {
+            $c = container() ;
+            $c->add(html_pre(FT_SDIF_COLUMN_DEBUG1,
+                FT_SDIF_COLUMN_DEBUG2, $this->_sdif_record)) ;
+            print $c->render() ;
+        }
+
+        //  Extract the data from the SDIF record by substring position
+
+        $this->setOrgCode(trim(substr($this->_sdif_record, 2, 1))) ;
+        $this->setFutureUse1(trim(substr($this->_sdif_record, 3, 8))) ;
+        $this->setTeamCode(trim(substr($this->_sdif_record, 11, 6))) ;
+        $this->setTeamName(trim(substr($this->_sdif_record, 17, 30))) ;
+        $this->setTeamNameAbrv(trim(substr($this->_sdif_record, 47, 16))) ;
+        $this->setTeamAddress1(trim(substr($this->_sdif_record, 63, 22))) ;
+        $this->setTeamAddress2(trim(substr($this->_sdif_record, 85, 22))) ;
+        $this->setTeamCity(trim(substr($this->_sdif_record, 107, 20))) ;
+        $this->setTeamState(trim(substr($this->_sdif_record, 127, 2))) ;
+        $this->setTeamPostalCode(trim(substr($this->_sdif_record, 129, 10))) ;
+        $this->setTeamCountryCode(trim(substr($this->_sdif_record, 139, 3))) ;
+        $this->setRegionCode(trim(substr($this->_sdif_record, 142, 1))) ;
+        $this->setFutureUse2(trim(substr($this->_sdif_record, 143, 8))) ;
+        $this->setTeamCode5(trim(substr($this->_sdif_record, 149, 1))) ;
+        $this->setFutureUse3(trim(substr($this->_sdif_record, 150, 10))) ;
+    }
+}
+
+/**
+ * SDIF Z0 record
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see SDIFRecord
+ */
+class SDIFZ0Record extends SDIFRecord
+{
+    /**
+     * Org Code
+     */
+    var $_org_code ;
+
+    /**
+     * Future Use #1
+     */
+    var $_future_use_1 ;
+
+    /**
+     * File Code
+     */
+    var $_file_code ;
+
+    /**
+     * Notes
+     */
+    var $_notes ;
+
+    /**
+     * B record count
+     */
+    var $_b_record_count ;
+
+    /**
+     * Meet Count
+     */
+    var $_meet_count ;
+
+    /**
+     * C record count
+     */
+    var $_c_record_count ;
+
+    /**
+     * Team Count
+     */
+    var $_team_count ;
+
+    /**
+     * D record count
+     */
+    var $_d_record_count ;
+
+    /**
+     * Swimmer Count
+     */
+    var $_swimmer_count ;
+
+    /**
+     * E record count
+     */
+    var $_e_record_count ;
+
+    /**
+     * F record count
+     */
+    var $_f_record_count ;
+
+    /**
+     * G record count
+     */
+    var $_g_record_count ;
+
+    /**
+     * Batch Number
+     */
+    var $_batch_number ;
+
+    /**
+     * New Member Count
+     */
+    var $_new_member_count ;
+
+    /**
+     * Renew Member Count
+     */
+    var $_renew_member_count ;
+
+    /**
+     * Change Member Count
+     */
+    var $_change_member_count ;
+
+    /**
+     * Delete Member Count
+     */
+    var $_delete_member_count ;
+
+    /**
+     * Future Use #2
+     */
+    var $_future_use_2 ;
+
+    /**
+     * Set Org Code
+     *
+     * @param int org code
+     */
+    function setOrgCode($code)
+    {
+        $this->_org_code = $code ;
+    }
+
+    /**
+     * Get Org Code
+     *
+     * @return int org code
+     */
+    function getOrgCode()
+    {
+        return $this->_org_code ;
+    }
+
+    /**
+     * Set Future Use 1
+     *
+     * @param string future use 1
+     */
+    function setFutureUse1($txt)
+    {
+        $this->_future_use_1 = $txt ;
+    }
+
+    /**
+     * Get Future Use 1
+     *
+     * @return string future use 1
+     */
+    function getFutureUse1()
+    {
+        return $this->_future_use_1 ;
+    }
+
+    /**
+     * Set File Code
+     *
+     * @param string file code
+     */
+    function setFileCode($txt)
+    {
+        $this->_file_code = $txt ;
+    }
+
+    /**
+     * Get File Code
+     *
+     * @return string file code
+     */
+    function getFileCode()
+    {
+        return $this->_file_code ;
+    }
+
+    /**
+     * Set Notes
+     *
+     * @param string notes
+     */
+    function setNotes($txt)
+    {
+        $this->_notes = $txt ;
+    }
+
+    /**
+     * Get Notes
+     *
+     * @return string notes
+     */
+    function getNotes()
+    {
+        return $this->_notes ;
+    }
+
+    /**
+     * Set B record count
+     *
+     * @param int number of b records
+     */
+    function setBRecordCount($cnt)
+    {
+        $this->_b_record_count = $cnt ;
+    }
+
+    /**
+     * Get B record count
+     *
+     * @param int number of b records
+     */
+    function getBRecordCount()
+    {
+        return $this->_b_record_count ;
+    }
+
+    /**
+     * Set Meet Count
+     *
+     * @param int number of meets
+     */
+    function setMeetCount($cnt)
+    {
+        $this->_meet_count = $cnt ;
+    }
+
+    /**
+     * Get Meet Count 
+     *
+     * @return int number of meets
+     */
+    function getMeetCount()
+    {
+        return $this->_meet_count ;
+    }
+
+    /**
+     * Set C record count
+     *
+     * @param int number of c records
+     */
+    function setCRecordCount($cnt)
+    {
+        $this->_c_record_count = $cnt ;
+    }
+
+    /**
+     * Get C record count
+     *
+     * @param int number of c records
+     */
+    function getCRecordCount()
+    {
+        return $this->_c_record_count ;
+    }
+
+    /**
+     * Set Team Count
+     *
+     * @param int number of teams
+     */
+    function setTeamCount($cnt)
+    {
+        $this->_team_count = $cnt ;
+    }
+
+    /**
+     * Get Team Count 
+     *
+     * @return int number of teams
+     */
+    function getTeamCount()
+    {
+        return $this->_team_count ;
+    }
+
+    /**
+     * Set D record count
+     *
+     * @param int number of d records
+     */
+    function setDRecordCount($cnt)
+    {
+        $this->_d_record_count = $cnt ;
+    }
+
+    /**
+     * Get D record count
+     *
+     * @param int number of d records
+     */
+    function getDRecordCount()
+    {
+        return $this->_d_record_count ;
+    }
+
+    /**
+     * Set Swimmer Count
+     *
+     * @param int number of swimmers
+     */
+    function setSwimmerCount($cnt)
+    {
+        $this->_swimmer_count = $cnt ;
+    }
+
+    /**
+     * Get Swimmer Count 
+     *
+     * @return int number of swimmers
+     */
+    function getSwimmerCount()
+    {
+        return $this->_swimmer_count ;
+    }
+
+    /**
+     * Set E record count
+     *
+     * @param int number of e records
+     */
+    function setERecordCount($cnt)
+    {
+        $this->_e_record_count = $cnt ;
+    }
+
+    /**
+     * Get E record count
+     *
+     * @param int number of e records
+     */
+    function getERecordCount()
+    {
+        return $this->_e_record_count ;
+    }
+
+    /**
+     * Set F record count
+     *
+     * @param int number of f records
+     */
+    function setFRecordCount($cnt)
+    {
+        $this->_f_record_count = $cnt ;
+    }
+
+    /**
+     * Get F record count
+     *
+     * @param int number of f records
+     */
+    function getFRecordCount()
+    {
+        return $this->_f_record_count ;
+    }
+
+    /**
+     * Set G record count
+     *
+     * @param int number of g records
+     */
+    function setGRecordCount($cnt)
+    {
+        $this->_g_record_count = $cnt ;
+    }
+
+    /**
+     * Get G record count
+     *
+     * @param int number of g records
+     */
+    function getGRecordCount()
+    {
+        return $this->_g_record_count ;
+    }
+
+    /**
+     * Set Batch Number
+     *
+     * @param int number of batches
+     */
+    function setBatchNumber($cnt)
+    {
+        $this->_batch_number = $cnt ;
+    }
+
+    /**
+     * Get Batch Number 
+     *
+     * @return int number of batches
+     */
+    function getBatchNumber()
+    {
+        return $this->_batch_number ;
+    }
+
+    /**
+     * Set Future Use 2
+     *
+     * @param string future use 2
+     */
+    function setFutureUse2($txt)
+    {
+        $this->_future_use_2 = $txt ;
+    }
+
+    /**
+     * Set New Member Count
+     *
+     * @param int number of new members
+     */
+    function setNewMemberCount($cnt)
+    {
+        $this->_new_member_count = $cnt ;
+    }
+
+    /**
+     * Get New Member Count 
+     *
+     * @return int number of new members
+     */
+    function getNewMemberCount()
+    {
+        return $this->_new_member_count ;
+    }
+
+    /**
+     * Set Renew Member Count
+     *
+     * @param int number of renew members
+     */
+    function setRenewMemberCount($cnt)
+    {
+        $this->_renew_member_count = $cnt ;
+    }
+
+    /**
+     * Get Renew Member Count 
+     *
+     * @return int number of renew members
+     */
+    function getRenewMemberCount()
+    {
+        return $this->_renew_member_count ;
+    }
+
+    /**
+     * Set Change Member Count
+     *
+     * @param int number of change members
+     */
+    function setChangeMemberCount($cnt)
+    {
+        $this->_change_member_count = $cnt ;
+    }
+
+    /**
+     * Get Change Member Count 
+     *
+     * @return int number of change members
+     */
+    function getChangeMemberCount()
+    {
+        return $this->_change_member_count ;
+    }
+
+    /**
+     * Set Delete Member Count
+     *
+     * @param int number of delete members
+     */
+    function setDeleteMemberCount($cnt)
+    {
+        $this->_delete_member_count = $cnt ;
+    }
+
+    /**
+     * Get Delete Member Count 
+     *
+     * @return int number of delete members
+     */
+    function getDeleteMemberCount()
+    {
+        return $this->_delete_member_count ;
+    }
+
+    /**
+     * Get Future Use 2
+     *
+     * @return string future use 2
+     */
+    function getFutureUse2()
+    {
+        return $this->_future_use_2 ;
+    }
+
+    /**
+     * Parse Record
+     */
+    function ParseRecord()
+    {
+        if (FT_DEBUG)
+        {
+            $c = container() ;
+            $c->add(html_pre(FT_SDIF_COLUMN_DEBUG1,
+                FT_SDIF_COLUMN_DEBUG2, $this->_sdif_record)) ;
+            print $c->render() ;
+        }
+
+        //  Extract the data from the SDIF record by substring position
+
+        $this->setOrgCode(trim(substr($this->_sdif_record, 2, 1))) ;
+        $this->setFutureUse1(trim(substr($this->_sdif_record, 3, 8))) ;
+        $this->setFileCode(trim(substr($this->_sdif_record, 11, 2))) ;
+        $this->setNotes(trim(substr($this->_sdif_record, 13, 30))) ;
+        $this->setBRecordCount(trim(substr($this->_sdif_record, 43, 3))) ;
+        $this->setMeetCount(trim(substr($this->_sdif_record, 46, 3))) ;
+        $this->setCRecordCount(trim(substr($this->_sdif_record, 49, 4))) ;
+        $this->setTeamCount(trim(substr($this->_sdif_record, 53, 4))) ;
+        $this->setDRecordCount(trim(substr($this->_sdif_record, 57, 6))) ;
+        $this->setSwimmerCount(trim(substr($this->_sdif_record, 63, 6))) ;
+        $this->setERecordCount(trim(substr($this->_sdif_record, 69, 5))) ;
+        $this->setFRecordCount(trim(substr($this->_sdif_record, 74, 6))) ;
+        $this->setGRecordCount(trim(substr($this->_sdif_record, 80, 6))) ;
+        $this->setBatchNumber(trim(substr($this->_sdif_record, 86, 5))) ;
+        $this->setNewMemberCount(trim(substr($this->_sdif_record, 91, 3))) ;
+        $this->setRenewMemberCount(trim(substr($this->_sdif_record, 94, 3))) ;
+        $this->setChangeMemberCount(trim(substr($this->_sdif_record, 97, 3))) ;
+        $this->setDeleteMemberCount(trim(substr($this->_sdif_record, 100, 3))) ;
+        $this->setFutureUse2(trim(substr($this->_sdif_record, 103, 57))) ;
+    }
+}
+
+/**
  * SDIF Code Tables
  *
  * The SDIF specification defines 26 tables that map code
@@ -651,6 +1590,42 @@ class SDIFCodeTables
 
         if (array_key_exists($code, $FT_SDIF_COURSE_CODES))
             return $FT_SDIF_COURSE_CODES[$code] ;
+        else if ($invalid)
+            return "Invalid" ;
+        else
+            return "" ;
+    }
+
+    /**
+     * Return the Region Code text based on the supplied
+     * region code.  Return either "Invalid" or an empty
+     * string when the code cannot be mapped.
+     *
+     * @param string region code
+     * @param boolean optional invalid mapping
+     * @return string region code description
+     */
+    function GetRegionCode($code, $invalid = true)
+    {
+        $FT_SDIF_REGION_CODES = array(
+            FT_SDIF_REGION_CODE_REGION_1_VALUE => FT_SDIF_REGION_CODE_REGION_1_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_2_VALUE => FT_SDIF_REGION_CODE_REGION_2_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_3_VALUE => FT_SDIF_REGION_CODE_REGION_3_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_4_VALUE => FT_SDIF_REGION_CODE_REGION_4_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_5_VALUE => FT_SDIF_REGION_CODE_REGION_5_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_6_VALUE => FT_SDIF_REGION_CODE_REGION_6_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_7_VALUE => FT_SDIF_REGION_CODE_REGION_7_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_8_VALUE => FT_SDIF_REGION_CODE_REGION_8_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_9_VALUE => FT_SDIF_REGION_CODE_REGION_9_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_10_VALUE => FT_SDIF_REGION_CODE_REGION_10_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_11_VALUE => FT_SDIF_REGION_CODE_REGION_11_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_12_VALUE => FT_SDIF_REGION_CODE_REGION_12_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_13_VALUE => FT_SDIF_REGION_CODE_REGION_13_LABEL
+           ,FT_SDIF_REGION_CODE_REGION_14_VALUE => FT_SDIF_REGION_CODE_REGION_14_LABEL
+        ) ;
+
+        if (array_key_exists($code, $FT_SDIF_REGION_CODES))
+            return $FT_SDIF_REGION_CODES[$code] ;
         else if ($invalid)
             return "Invalid" ;
         else
@@ -953,6 +1928,34 @@ class SDIFCodeTableMappings
                 FT_SDIF_COURSE_STATUS_CODE_DQ_LABEL] = FT_SDIF_COURSE_STATUS_CODE_DQ_VALUE ;
  
         return $FT_SDIF_COURSE_CODES ;
+    }
+
+    /**
+     * Return an array of region codes and their mappings
+     *
+     * @return string region code description
+     */
+    function GetRegionCodes()
+    {
+        $FT_SDIF_REGION_CODES = array(
+            'Select Region' => FT_NULL_STRING
+           ,FT_SDIF_REGION_CODE_REGION_1_LABEL => FT_SDIF_REGION_CODE_REGION_1_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_2_LABEL => FT_SDIF_REGION_CODE_REGION_2_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_3_LABEL => FT_SDIF_REGION_CODE_REGION_3_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_4_LABEL => FT_SDIF_REGION_CODE_REGION_4_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_5_LABEL => FT_SDIF_REGION_CODE_REGION_5_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_6_LABEL => FT_SDIF_REGION_CODE_REGION_6_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_7_LABEL => FT_SDIF_REGION_CODE_REGION_7_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_8_LABEL => FT_SDIF_REGION_CODE_REGION_8_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_9_LABEL => FT_SDIF_REGION_CODE_REGION_9_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_10_LABEL => FT_SDIF_REGION_CODE_REGION_10_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_11_LABEL => FT_SDIF_REGION_CODE_REGION_11_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_12_LABEL => FT_SDIF_REGION_CODE_REGION_12_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_13_LABEL => FT_SDIF_REGION_CODE_REGION_13_VALUE
+           ,FT_SDIF_REGION_CODE_REGION_14_LABEL => FT_SDIF_REGION_CODE_REGION_14_VALUE
+        ) ;
+
+        return $FT_SDIF_REGION_CODES ;
     }
 
     /**
