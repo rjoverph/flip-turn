@@ -28,50 +28,36 @@ include_once(PHPHTMLLIB_ABSPATH . "/widgets/data_list/includes.inc") ;
  * @access public
  * @see SPANtag
  */
-class FlipTurnGUIBackHomeButtons extends SPANtag
+class FlipTurnGUIButtons extends SPANtag
 {
+    
     /**
-     * Get Full URL Path
+     * Get Back button
      *
-     * @return string - full URL path for the current page
+     * @return object - HTML button.
      */
-    function getFullURLPath()
+    function getBackButton()
     {
-        $full_url = 'http' ;
-        $script_name = '' ;
+        $back = html_button("button", "Back") ;
+        $back->set_tag_attribute("onclick", "javascript:history.go(-1)") ;
+        $back->set_style("margin: 10px; vertical-align: middle; width: 90px;") ;
 
-        if(isset($_SERVER['REQUEST_URI']))
-        {
-            $script_name = $_SERVER['REQUEST_URI'] ;
-        }
-        else
-        {
-            $script_name = $_SERVER['PHP_SELF'] ;
+        return $back ;
+    }
+    
+    
+    /**
+     * Get Home buttons
+     *
+     * @return object - HTML Home button.
+     */
+    function getHomeButton()
+    {
+        $home = html_button("button", "Home") ;
+        $home->set_tag_attribute("onclick", "javascript:document.location='/';") ;
+        $home->set_style("margin: 10px; vertical-align: middle; width: 90px;") ;
 
-            if($_SERVER['QUERY_STRING'] > ' ')
-            {
-                $script_name .=  '?'.$_SERVER['QUERY_STRING'] ;
-            }
-        }
-
-        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on')
-        {
-            $full_url .=  's' ;
-        }
-
-        $full_url .=  '://' ;
-
-        if($_SERVER['SERVER_PORT'] != '80')
-        {
-            $full_url .= $_SERVER['HTTP_HOST'] . ':' .
-                $_SERVER['SERVER_PORT'] . $script_name ;
-        }
-        else
-        {
-            $full_url .=  $_SERVER['HTTP_HOST'] . $script_name ;
-        }
-
-       return $full_url ;
+        return $home ;
     }
 
     /**
@@ -79,35 +65,18 @@ class FlipTurnGUIBackHomeButtons extends SPANtag
      *
      * @return object - HTML span containing Back and Home buttons.
      */
-    function getButtons()
+    function getBackHomeButtons()
     {
-        /*
-        if (!array_key_exists('QUERY_STRING', $_SERVER))
-            $uri = $_SERVER['PHP_SELF'] ;
-        else
-            $uri = $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING'] ;
-        
-        $back = html_button("button", "Back") ;
-        $back->set_tag_attribute("onclick",
-            "javascript:document.location='" .
-            get_option('url') . $uri . "' ;") ;
-        $back->set_tag_attribute("style", "margin: 10px;") ;
-         */
+        //$back = html_button("button", "Back") ;
+        //$back->set_tag_attribute("onclick", "javascript:history.go(-1)") ;
+        //$back->set_style("margin: 10px; vertical-align: middle; width: 90px;") ;
 
-        $uri = FlipTurnGUIBackHomeButtons::getFullURLPath() ;
+        //$home = html_button("button", "Home") ;
+        //$home->set_tag_attribute("onclick", "javascript:document.location='/';") ;
+        //$home->set_style("margin: 10px; vertical-align: middle; width: 90px;") ;
 
-        $back = html_button("button", "Back") ;
-        $back->set_tag_attribute("onclick",
-            "javascript:document.location='" .
-             $uri . "' ;") ;
-        $back->set_tag_attribute("style", "margin: 10px;") ;
-
-        $home = html_button("button", "Home") ;
-        $home->set_tag_attribute("onclick",
-            "javascript:document.location='" .  get_option('url') . "' ;") ;
-        $home->set_tag_attribute("style", "margin: 10px;") ;
-
-        return html_span(null, $back, $home) ;
+        return html_span(null, FlipTurnGUIButtons::getBackButton(),
+            FlipTurnGUIButtons::getHomeButton()) ;
     }
 }
 
