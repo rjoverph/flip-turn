@@ -58,6 +58,7 @@ class SwimMeetsPage extends FlipTurnLayoutPage
         $it->BuildInfoTable() ;
 
         $container->add($it) ;
+        $container->add(FlipTurnGUIButtons::getBackHomeButtons()) ;
 
 	    return $container ;
     }
