@@ -1003,6 +1003,1019 @@ class SDIFC1Record extends SDIFRecord
 }
 
 /**
+ * SDIF D0 record
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see SDIFRecord
+ */
+class SDIFD0Record extends SDIFRecord
+{
+    /**
+     * Resultid property
+     */
+    var $_resultid ;
+
+    /**
+     * Swimmerid property
+     */
+    var $_swimmerid ;
+
+    /**
+     * Org Code property
+     */
+    var $_org_code ;
+
+    /**
+     * Future Use 1 property
+     */
+    var $_future_use_1 ;
+
+    /**
+     * Swimmer Name property
+     */
+    var $_swimmer_name ;
+
+    /**
+     * Uss property
+     */
+    var $_uss ;
+
+    /**
+     * Ft Uss property
+     */
+    var $_ft_uss ;
+
+    /**
+     * Ft Uss2 property
+     */
+    var $_ft_uss2 ;
+
+    /**
+     * Attach Code property
+     */
+    var $_attach_code ;
+
+    /**
+     * Citizen Code property
+     */
+    var $_citizen_code ;
+
+    /**
+     * Birth Date property
+     */
+    var $_birth_date ;
+
+    /**
+     * Age Or Class property
+     */
+    var $_age_or_class ;
+
+    /**
+     * Gender property
+     */
+    var $_gender ;
+
+    /**
+     * Event Gender property
+     */
+    var $_event_gender ;
+
+    /**
+     * Event Distance property
+     */
+    var $_event_distance ;
+
+    /**
+     * Stroke Code property
+     */
+    var $_stroke_code ;
+
+    /**
+     * Event Number property
+     */
+    var $_event_number ;
+
+    /**
+     * Event Age Code property
+     */
+    var $_event_age_code ;
+
+    /**
+     * Swim Date property
+     */
+    var $_swim_date ;
+
+    /**
+     * Seed Time property
+     */
+    var $_seed_time ;
+
+    /**
+     * Seed Course Code property
+     */
+    var $_seed_course_code ;
+
+    /**
+     * Prelim Time property
+     */
+    var $_prelim_time ;
+
+    /**
+     * Prelim Course Code property
+     */
+    var $_prelim_course_code ;
+
+    /**
+     * Swim Off Time property
+     */
+    var $_swim_off_time ;
+
+    /**
+     * Swim Off Course Code property
+     */
+    var $_swim_off_course_code ;
+
+    /**
+     * Finals Time property
+     */
+    var $_finals_time ;
+
+    /**
+     * Finals Course Code property
+     */
+    var $_finals_course_code ;
+
+    /**
+     * Prelim Heat Numner property
+     */
+    var $_prelim_heat_numner ;
+
+    /**
+     * Prelim Lane Number property
+     */
+    var $_prelim_lane_number ;
+
+    /**
+     * Finals Heat Number property
+     */
+    var $_finals_heat_number ;
+
+    /**
+     * Finals Lane Number property
+     */
+    var $_finals_lane_number ;
+
+    /**
+     * Prelim Place Ranking property
+     */
+    var $_prelim_place_ranking ;
+
+    /**
+     * Finals Place Ranking property
+     */
+    var $_finals_place_ranking ;
+
+    /**
+     * Finals Points property
+     */
+    var $_finals_points ;
+
+    /**
+     * Event Time Class Code property
+     */
+    var $_event_time_class_code ;
+
+    /**
+     * Swimmer Flight Status property
+     */
+    var $_swimmer_flight_status ;
+
+    /**
+     * Future Use 2 property
+     */
+    var $_future_use_2 ;
+
+    /**
+     * Timestamp property
+     */
+    var $_timestamp ;
+
+    /**
+     * Set Result Id
+     *
+     * @param string result id
+     */
+    function setResultId($txt)
+    {
+        $this->_resultid = $txt ;
+    }
+
+    /**
+     * Get Result Id
+     *
+     * @return string result id
+     */
+    function getResultId($txt)
+    {
+        return $this->_resultid ;
+    }
+
+    /**
+     * Set Swimmer Id
+     *
+     * @param string swimmer id
+     */
+    function setSwimmerId($txt)
+    {
+        $this->_swimmerid = $txt ;
+    }
+
+    /**
+     * Get Swimmer Id
+     *
+     * @return string swimmer id
+     */
+    function getSwimmerId($txt)
+    {
+        return $this->_swimmerid ;
+    }
+
+    /**
+     * Set Org Code
+     *
+     * @param string org code
+     */
+    function setOrgCode($txt)
+    {
+        $this->_org_code = $txt ;
+    }
+
+    /**
+     * Get Org Code
+     *
+     * @return string org code
+     */
+    function getOrgCode($txt)
+    {
+        return $this->_org_code ;
+    }
+
+    /**
+     * Set Future Use 1
+     *
+     * @param string future use 1
+     */
+    function setFutureUse1($txt)
+    {
+        $this->_future_use_1 = $txt ;
+    }
+
+    /**
+     * Get Future Use 1
+     *
+     * @return string future use 1
+     */
+    function getFutureUse1($txt)
+    {
+        return $this->_future_use_1 ;
+    }
+
+    /**
+     * Set Swimmer Name
+     *
+     * @param string swimmer name
+     */
+    function setSwimmerName($txt)
+    {
+        $this->_swimmer_name = $txt ;
+    }
+
+    /**
+     * Get Swimmer Name
+     *
+     * @return string swimmer name
+     */
+    function getSwimmerName($txt)
+    {
+        return $this->_swimmer_name ;
+    }
+
+    /**
+     * Set Uss
+     *
+     * @param string uss
+     */
+    function setUss($txt)
+    {
+        $this->_uss = $txt ;
+    }
+
+    /**
+     * Get Uss
+     *
+     * @return string uss
+     */
+    function getUss($txt)
+    {
+        return $this->_uss ;
+    }
+
+    /**
+     * Set Ft Uss
+     *
+     * @param string ft uss
+     */
+    function setFtUss($txt)
+    {
+        $this->_ft_uss = $txt ;
+    }
+
+    /**
+     * Get Ft Uss
+     *
+     * @return string ft uss
+     */
+    function getFtUss($txt)
+    {
+        return $this->_ft_uss ;
+    }
+
+    /**
+     * Set Ft Uss2
+     *
+     * @param string ft uss2
+     */
+    function setFtUss2($txt)
+    {
+        $this->_ft_uss2 = $txt ;
+    }
+
+    /**
+     * Get Ft Uss2
+     *
+     * @return string ft uss2
+     */
+    function getFtUss2($txt)
+    {
+        return $this->_ft_uss2 ;
+    }
+
+    /**
+     * Set Attach Code
+     *
+     * @param string attach code
+     */
+    function setAttachCode($txt)
+    {
+        $this->_attach_code = $txt ;
+    }
+
+    /**
+     * Get Attach Code
+     *
+     * @return string attach code
+     */
+    function getAttachCode($txt)
+    {
+        return $this->_attach_code ;
+    }
+
+    /**
+     * Set Citizen Code
+     *
+     * @param string citizen code
+     */
+    function setCitizenCode($txt)
+    {
+        $this->_citizen_code = $txt ;
+    }
+
+    /**
+     * Get Citizen Code
+     *
+     * @return string citizen code
+     */
+    function getCitizenCode($txt)
+    {
+        return $this->_citizen_code ;
+    }
+
+    /**
+     * Set Birth Date
+     *
+     * @param string birth date
+     */
+    function setBirthDate($txt)
+    {
+        $this->_birth_date = $txt ;
+    }
+
+    /**
+     * Get Birth Date
+     *
+     * @return string birth date
+     */
+    function getBirthDate($txt)
+    {
+        return $this->_birth_date ;
+    }
+
+    /**
+     * Set Age Or Class
+     *
+     * @param string age or class
+     */
+    function setAgeOrClass($txt)
+    {
+        $this->_age_or_class = $txt ;
+    }
+
+    /**
+     * Get Age Or Class
+     *
+     * @return string age or class
+     */
+    function getAgeOrClass($txt)
+    {
+        return $this->_age_or_class ;
+    }
+
+    /**
+     * Set Gender
+     *
+     * @param string gender
+     */
+    function setGender($txt)
+    {
+        $this->_gender = $txt ;
+    }
+
+    /**
+     * Get Gender
+     *
+     * @return string gender
+     */
+    function getGender($txt)
+    {
+        return $this->_gender ;
+    }
+
+    /**
+     * Set Event Gender
+     *
+     * @param string event gender
+     */
+    function setEventGender($txt)
+    {
+        $this->_event_gender = $txt ;
+    }
+
+    /**
+     * Get Event Gender
+     *
+     * @return string event gender
+     */
+    function getEventGender($txt)
+    {
+        return $this->_event_gender ;
+    }
+
+    /**
+     * Set Event Distance
+     *
+     * @param string event distance
+     */
+    function setEventDistance($txt)
+    {
+        $this->_event_distance = $txt ;
+    }
+
+    /**
+     * Get Event Distance
+     *
+     * @return string event distance
+     */
+    function getEventDistance($txt)
+    {
+        return $this->_event_distance ;
+    }
+
+    /**
+     * Set Stroke Code
+     *
+     * @param string stroke code
+     */
+    function setStrokeCode($txt)
+    {
+        $this->_stroke_code = $txt ;
+    }
+
+    /**
+     * Get Stroke Code
+     *
+     * @return string stroke code
+     */
+    function getStrokeCode($txt)
+    {
+        return $this->_stroke_code ;
+    }
+
+    /**
+     * Set Event Number
+     *
+     * @param string event number
+     */
+    function setEventNumber($txt)
+    {
+        $this->_event_number = $txt ;
+    }
+
+    /**
+     * Get Event Number
+     *
+     * @return string event number
+     */
+    function getEventNumber($txt)
+    {
+        return $this->_event_number ;
+    }
+
+    /**
+     * Set Event Age Code
+     *
+     * @param string event age code
+     */
+    function setEventAgeCode($txt)
+    {
+        $this->_event_age_code = $txt ;
+    }
+
+    /**
+     * Get Event Age Code
+     *
+     * @return string event age code
+     */
+    function getEventAgeCode($txt)
+    {
+        return $this->_event_age_code ;
+    }
+
+    /**
+     * Set Swim Date
+     *
+     * @param string swim date
+     */
+    function setSwimDate($txt)
+    {
+        $this->_swim_date = $txt ;
+    }
+
+    /**
+     * Get Swim Date
+     *
+     * @return string swim date
+     */
+    function getSwimDate($txt)
+    {
+        return $this->_swim_date ;
+    }
+
+    /**
+     * Set Seed Time
+     *
+     * @param string seed time
+     */
+    function setSeedTime($txt)
+    {
+        $this->_seed_time = $txt ;
+    }
+
+    /**
+     * Get Seed Time
+     *
+     * @return string seed time
+     */
+    function getSeedTime($txt)
+    {
+        return $this->_seed_time ;
+    }
+
+    /**
+     * Set Seed Course Code
+     *
+     * @param string seed course code
+     */
+    function setSeedCourseCode($txt)
+    {
+        $this->_seed_course_code = $txt ;
+    }
+
+    /**
+     * Get Seed Course Code
+     *
+     * @return string seed course code
+     */
+    function getSeedCourseCode($txt)
+    {
+        return $this->_seed_course_code ;
+    }
+
+    /**
+     * Set Prelim Time
+     *
+     * @param string prelim time
+     */
+    function setPrelimTime($txt)
+    {
+        $this->_prelim_time = $txt ;
+    }
+
+    /**
+     * Get Prelim Time
+     *
+     * @return string prelim time
+     */
+    function getPrelimTime($txt)
+    {
+        return $this->_prelim_time ;
+    }
+
+    /**
+     * Set Prelim Course Code
+     *
+     * @param string prelim course code
+     */
+    function setPrelimCourseCode($txt)
+    {
+        $this->_prelim_course_code = $txt ;
+    }
+
+    /**
+     * Get Prelim Course Code
+     *
+     * @return string prelim course code
+     */
+    function getPrelimCourseCode($txt)
+    {
+        return $this->_prelim_course_code ;
+    }
+
+    /**
+     * Set Swim Off Time
+     *
+     * @param string swim off time
+     */
+    function setSwimOffTime($txt)
+    {
+        $this->_swim_off_time = $txt ;
+    }
+
+    /**
+     * Get Swim Off Time
+     *
+     * @return string swim off time
+     */
+    function getSwimOffTime($txt)
+    {
+        return $this->_swim_off_time ;
+    }
+
+    /**
+     * Set Swim Off Course Code
+     *
+     * @param string swim off course code
+     */
+    function setSwimOffCourseCode($txt)
+    {
+        $this->_swim_off_course_code = $txt ;
+    }
+
+    /**
+     * Get Swim Off Course Code
+     *
+     * @return string swim off course code
+     */
+    function getSwimOffCourseCode($txt)
+    {
+        return $this->_swim_off_course_code ;
+    }
+
+    /**
+     * Set Finals Time
+     *
+     * @param string finals time
+     */
+    function setFinalsTime($txt)
+    {
+        $this->_finals_time = $txt ;
+    }
+
+    /**
+     * Get Finals Time
+     *
+     * @return string finals time
+     */
+    function getFinalsTime($txt)
+    {
+        return $this->_finals_time ;
+    }
+
+    /**
+     * Set Finals Course Code
+     *
+     * @param string finals course code
+     */
+    function setFinalsCourseCode($txt)
+    {
+        $this->_finals_course_code = $txt ;
+    }
+
+    /**
+     * Get Finals Course Code
+     *
+     * @return string finals course code
+     */
+    function getFinalsCourseCode($txt)
+    {
+        return $this->_finals_course_code ;
+    }
+
+    /**
+     * Set Prelim Heat Numner
+     *
+     * @param string prelim heat numner
+     */
+    function setPrelimHeatNumner($txt)
+    {
+        $this->_prelim_heat_numner = $txt ;
+    }
+
+    /**
+     * Get Prelim Heat Numner
+     *
+     * @return string prelim heat numner
+     */
+    function getPrelimHeatNumner($txt)
+    {
+        return $this->_prelim_heat_numner ;
+    }
+
+    /**
+     * Set Prelim Lane Number
+     *
+     * @param string prelim lane number
+     */
+    function setPrelimLaneNumber($txt)
+    {
+        $this->_prelim_lane_number = $txt ;
+    }
+
+    /**
+     * Get Prelim Lane Number
+     *
+     * @return string prelim lane number
+     */
+    function getPrelimLaneNumber($txt)
+    {
+        return $this->_prelim_lane_number ;
+    }
+
+    /**
+     * Set Finals Heat Number
+     *
+     * @param string finals heat number
+     */
+    function setFinalsHeatNumber($txt)
+    {
+        $this->_finals_heat_number = $txt ;
+    }
+
+    /**
+     * Get Finals Heat Number
+     *
+     * @return string finals heat number
+     */
+    function getFinalsHeatNumber($txt)
+    {
+        return $this->_finals_heat_number ;
+    }
+
+    /**
+     * Set Finals Lane Number
+     *
+     * @param string finals lane number
+     */
+    function setFinalsLaneNumber($txt)
+    {
+        $this->_finals_lane_number = $txt ;
+    }
+
+    /**
+     * Get Finals Lane Number
+     *
+     * @return string finals lane number
+     */
+    function getFinalsLaneNumber($txt)
+    {
+        return $this->_finals_lane_number ;
+    }
+
+    /**
+     * Set Prelim Place Ranking
+     *
+     * @param string prelim place ranking
+     */
+    function setPrelimPlaceRanking($txt)
+    {
+        $this->_prelim_place_ranking = $txt ;
+    }
+
+    /**
+     * Get Prelim Place Ranking
+     *
+     * @return string prelim place ranking
+     */
+    function getPrelimPlaceRanking($txt)
+    {
+        return $this->_prelim_place_ranking ;
+    }
+
+    /**
+     * Set Finals Place Ranking
+     *
+     * @param string finals place ranking
+     */
+    function setFinalsPlaceRanking($txt)
+    {
+        $this->_finals_place_ranking = $txt ;
+    }
+
+    /**
+     * Get Finals Place Ranking
+     *
+     * @return string finals place ranking
+     */
+    function getFinalsPlaceRanking($txt)
+    {
+        return $this->_finals_place_ranking ;
+    }
+
+    /**
+     * Set Finals Points
+     *
+     * @param string finals points
+     */
+    function setFinalsPoints($txt)
+    {
+        $this->_finals_points = $txt ;
+    }
+
+    /**
+     * Get Finals Points
+     *
+     * @return string finals points
+     */
+    function getFinalsPoints($txt)
+    {
+        return $this->_finals_points ;
+    }
+
+    /**
+     * Set Event Time Class Code
+     *
+     * @param string event time class code
+     */
+    function setEventTimeClassCode($txt)
+    {
+        $this->_event_time_class_code = $txt ;
+    }
+
+    /**
+     * Get Event Time Class Code
+     *
+     * @return string event time class code
+     */
+    function getEventTimeClassCode($txt)
+    {
+        return $this->_event_time_class_code ;
+    }
+
+    /**
+     * Set Swimmer Flight Status
+     *
+     * @param string swimmer flight status
+     */
+    function setSwimmerFlightStatus($txt)
+    {
+        $this->_swimmer_flight_status = $txt ;
+    }
+
+    /**
+     * Get Swimmer Flight Status
+     *
+     * @return string swimmer flight status
+     */
+    function getSwimmerFlightStatus($txt)
+    {
+        return $this->_swimmer_flight_status ;
+    }
+
+    /**
+     * Set Future Use 2
+     *
+     * @param string future use 2
+     */
+    function setFutureUse2($txt)
+    {
+        $this->_future_use_2 = $txt ;
+    }
+
+    /**
+     * Get Future Use 2
+     *
+     * @return string future use 2
+     */
+    function getFutureUse2($txt)
+    {
+        return $this->_future_use_2 ;
+    }
+
+    /**
+     * Set Timestamp
+     *
+     * @param string timestamp
+     */
+    function setTimestamp($txt)
+    {
+        $this->_timestamp = $txt ;
+    }
+
+    /**
+     * Get Timestamp
+     *
+     * @return string timestamp
+     */
+    function getTimestamp($txt)
+    {
+        return $this->_timestamp ;
+    }
+
+    /**
+     * Parse Record
+     */
+    function ParseRecord()
+    {
+        if (FT_DEBUG)
+        {
+            $c = container() ;
+            $c->add(html_pre(FT_SDIF_COLUMN_DEBUG1,
+                FT_SDIF_COLUMN_DEBUG2, $this->_sdif_record)) ;
+            print $c->render() ;
+        }
+
+        //  Extract the data from the SDIF record by substring position
+
+        $this->setOrgCode(trim(substr($this->_sdif_record, 2, 1))) ;
+        $this->setFutureUse1(trim(substr($this->_sdif_record, 3, 8))) ;
+        $this->setSwimmerName(trim(substr($this->_swimmer_name, 11, 28))) ;
+        $this->setUss(trim(substr($this->_uss, 39, 12))) ;
+        //$this->setFtUss(trim(substr($this->_ft_uss, 00, 00))) ;
+        //$this->setFtUss2(trim(substr($this->_ft_uss2, 00, 00))) ;
+        $this->setAttachCode(trim(substr($this->_attach_code, 51, 1))) ;
+        $this->setCitizenCode(trim(substr($this->_citizen_code, 52, 3))) ;
+        $this->setBirthDate(trim(substr($this->_birth_date, 55, 8))) ;
+        $this->setAgeOrClass(trim(substr($this->_age_or_class, 00, 00))) ;
+        $this->setGender(trim(substr($this->_gender, 00, 00))) ;
+        $this->setEventGender(trim(substr($this->_event_gender, 00, 00))) ;
+        $this->setEventDistance(trim(substr($this->_event_distance, 00, 00))) ;
+        $this->setStrokeCode(trim(substr($this->_stroke_code, 00, 00))) ;
+        $this->setEventNumber(trim(substr($this->_event_number, 00, 00))) ;
+        $this->setEventAgeCode(trim(substr($this->_event_age_code, 00, 00))) ;
+        $this->setSwimDate(trim(substr($this->_swim_date, 00, 00))) ;
+        $this->setSeedTime(trim(substr($this->_seed_time, 00, 00))) ;
+        $this->setSeedCourseCode(trim(substr($this->_seed_course_code, 00, 00))) ;
+        $this->setPrelimTime(trim(substr($this->_prelim_time, 00, 00))) ;
+        $this->setPrelimCourseCode(trim(substr($this->_prelim_course_code, 00, 00))) ;
+        $this->setSwimOffTime(trim(substr($this->_swim_off_time, 00, 00))) ;
+        $this->setSwimOffCourseCode(trim(substr($this->_swim_off_course_code, 00, 00))) ;
+        $this->setFinalsTime(trim(substr($this->_finals_time, 00, 00))) ;
+        $this->setFinalsCourseCode(trim(substr($this->_finals_course_code, 00, 00))) ;
+        $this->setPrelimHeatNumner(trim(substr($this->_prelim_heat_numner, 00, 00))) ;
+        $this->setPrelimLaneNumber(trim(substr($this->_prelim_lane_number, 00, 00))) ;
+        $this->setFinalsHeatNumber(trim(substr($this->_finals_heat_number, 00, 00))) ;
+        $this->setFinalsLaneNumber(trim(substr($this->_finals_lane_number, 00, 00))) ;
+        $this->setPrelimPlaceRanking(trim(substr($this->_prelim_place_ranking, 00, 00))) ;
+        $this->setFinalsPlaceRanking(trim(substr($this->_finals_place_ranking, 00, 00))) ;
+        $this->setFinalsPoints(trim(substr($this->_finals_points, 00, 00))) ;
+        $this->setEventTimeClassCode(trim(substr($this->_event_time_class_code, 00, 00))) ;
+        $this->setSwimmerFlightStatus(trim(substr($this->_swimmer_flight_status, 00, 00))) ;
+        $this->setFutureUse2(trim(substr($this->_future_use_2, 00, 00))) ;
+        $this->setTimestamp(trim(substr($this->_timestamp, 00, 00))) ;
+    }
+}
+
+/**
  * SDIF Z0 record
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
