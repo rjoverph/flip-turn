@@ -77,6 +77,7 @@ define('FT_MEETS_TABLE', FT_DB_PREFIX . 'meets') ;
 define('FT_RESULTS_TABLE', FT_DB_PREFIX . 'results') ;
 define('FT_SWIMMER_TABLE', FT_DB_PREFIX . 'swimmer') ;
 define('FT_SWIMMEETS_TABLE', FT_DB_PREFIX . 'swimmeets') ;
+define('FT_SWIMTEAMS_TABLE', FT_DB_PREFIX . 'swimteams') ;
 define('FT_SDIFQUEUE_TABLE', FT_DB_PREFIX . 'sdifqueue') ;
 define('FT_OPTIONS_TABLE', FT_DB_PREFIX . 'options') ;
 
