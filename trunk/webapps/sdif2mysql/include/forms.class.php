@@ -99,6 +99,31 @@ class FlipTurnForm extends StandardFormContent
     }
 
     /**
+     * Overload the build a cancel button with a button
+     * that performs a Javascript history.go(-1) action 
+     * when the cancel redirect is null.
+     *
+     * @param string - 'Cancel' string
+     * @return form button
+     */
+    function add_cancel($cancel = "Cancel")
+    {
+        if ($this->_cancel_action === null)
+        {
+            $cancel_button = form_button("cancel",
+                $cancel, array( "type"=>"button" ,"style"=>"width: 90px;",
+                "onclick"=> "javascript:history.go(-1)")) ;
+            $cancel_button->set_style("vertical-align:middle") ;
+        }
+        else
+        {
+            $cancel_button = parent::add_cancel($cancel) ;
+        }
+
+        return $cancel_button ;
+    }
+
+    /**
      * Provide a mechanism to overload form_content_buttons() method
      * to have the button display "Go" instead of "Save" and not
      * display the cancel button.
