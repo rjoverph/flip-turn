@@ -20,6 +20,7 @@
  */
 
 include_once("db.class.php") ;
+include_once("results.class.php") ;
 include_once("swimmeets.class.php") ;
 include_once("swimteams.class.php") ;
 
@@ -145,6 +146,8 @@ class SDIFResultsQueue extends SDIFQueue
         printf("<h4>%d</h4>", $count) ;
         $count += $this->ProcessQueueC1Records() ;
         printf("<h4>%d</h4>", $count) ;
+        $count += $this->ProcessQueueD0Records() ;
+        printf("<h4>%d</h4>", $count) ;
 
         return $count ;
     }
@@ -206,6 +209,80 @@ class SDIFResultsQueue extends SDIFQueue
             else
                 $this->add_status_message(sprintf('Swim Team "%s" already exists in the database, ignored.',
                     $sdifrecord->getTeamName())) ;
+        }
+
+        //return $this->getAffectedRows() ;
+        return $rsltscnt ;
+    }
+
+    /**
+     * Process D0 SDIF records from the Queue
+     *
+     * @return int number of records processed
+     */
+    function ProcessQueueD0Records()
+    {
+        //  Processing D0 records is trickier than B1 or C1
+        //  records because each D0 record is associated with
+        //  a C1 record prior to it and D0 and C1 records are
+        //  associated with the B1 record.
+ 
+        $this->setQuery(sprintf('SELECT sdifrecord FROM %s WHERE recordtype="B1"', FT_SDIFQUEUE_TABLE)) ;
+        $this->runSelectQuery(true) ;
+        $rslt = $this->getQueryResult() ;
+        $rsltscnt = $this->getQueryCount() ;
+
+        $b1_record = new SwimMeet() ;
+        $b1_record->setSDIFRecord($rslt["sdifrecord"]) ;
+        $b1_record->ParseRecord() ;
+        $swimmeetid = $b1_record->GetSwimMeetIdByName() ;
+        printf("<h3>Swim  Meet Id = %s</h3>", $swimmeetid['swimmeetid']) ;
+
+        //  Need D0 record to add or update the swim meet BUT
+        //  need to select the C1 records as well to ensure that
+        //  D0 records are associated with the proper team.
+ 
+        $this->setQuery(sprintf('SELECT recordtype, sdifrecord, linenumber
+            FROM %s WHERE recordtype="D0" OR recordtype="C1" ORDER BY
+            linenumber', FT_SDIFQUEUE_TABLE)) ;
+        $this->runSelectQuery(true) ;
+
+        $c1_record = new SwimTeam() ;
+        $d0_record = new SwimResult() ;
+        $rslts = $this->getQueryResults() ;
+        $rsltscnt = $this->getQueryCount() ;
+
+        //  Process each C1 and D0 record in the file.
+ 
+        foreach ($rslts as $rslt)
+        {
+            //  Look for C1 records to set swim team
+            if ($rslt['recordtype'] == 'C1')
+            {
+                $c1_record->setSDIFRecord($rslt["sdifrecord"]) ;
+                $c1_record->ParseRecord() ;
+                $swimteamid = $c1_record->GetSwimTeamIdByName() ;
+
+                printf("<h3>Swim  Team Id = %s</h3>", $swimteamid['swimteamid']) ;
+
+                //  Need to select swim team id based on C1 record
+            }
+            else
+            {
+                $d0_record->setSDIFRecord($rslt["sdifrecord"]) ;
+                $d0_record->ParseRecord() ;
+                $d0_record->setSwimMeetId($swimmeetid['swimmeetid']) ;
+                $d0_record->setSwimTeamId($swimteamid['swimteamid']) ;
+                $d0_record->setSwimmerId(0) ;
+
+                if (!$d0_record->ResultExistsByMeetTeamAndSwimmer())
+                {
+                    $d0_record->AddResult() ;
+                }
+                else
+                    $this->add_status_message(sprintf('Result for \"%s\" from line %d is already stored in the database, ignored.',
+                        $d0_record->getSwimmerName(), $rslt['linenumber'])) ;
+            }
         }
 
         //return $this->getAffectedRows() ;

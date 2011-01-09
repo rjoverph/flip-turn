@@ -136,6 +136,30 @@ class SwimTeam extends SDIFC1Record
     }
 
     /**
+     * Get Swim Team Id by Name
+     *
+     * @param string team name
+     * @return int swim team id
+     */
+    function GetSwimTeamIdByName($teamname = null)
+    {
+        if (is_null($teamname)) $teamname = $this->getTeamName() ;
+
+	    //  Is name already in the database?
+
+        $query = sprintf("SELECT swimteamid FROM %s WHERE team_name = \"%s\"",
+            FT_SWIMTEAMS_TABLE, $teamname) ;
+
+        $this->setQuery($query) ;
+        $this->runSelectQuery() ;
+
+	    //  Make sure name doesn't exist
+
+        return ($this->getQueryCount() > 0) ?
+            $this->getQueryResult() : array('swimteamid' => null) ;
+    }
+
+    /**
      *
      * Load team record by Id
      *

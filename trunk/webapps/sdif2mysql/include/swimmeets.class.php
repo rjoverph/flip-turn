@@ -136,6 +136,30 @@ class SwimMeet extends SDIFB1Record
     }
 
     /**
+     * Get Swim Meet Id by Name
+     *
+     * @param string meet name
+     * @return int swim meet id
+     */
+    function GetSwimMeetIdByName($meetname = null)
+    {
+        if (is_null($meetname)) $meetname = $this->getMeetName() ;
+
+	    //  Is name already in the database?
+
+        $query = sprintf("SELECT swimmeetid FROM %s WHERE meet_name = \"%s\"",
+            FT_SWIMMEETS_TABLE, $meetname) ;
+
+        $this->setQuery($query) ;
+        $this->runSelectQuery() ;
+
+	    //  Make sure name doesn't exist
+
+        return ($this->getQueryCount() > 0) ?
+            $this->getQueryResult() : array('swimmeetid' => null) ;
+    }
+
+    /**
      *
      * Load meet record by Id
      *

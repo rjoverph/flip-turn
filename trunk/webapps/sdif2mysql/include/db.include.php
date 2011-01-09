@@ -73,7 +73,6 @@ include_once(PHPHTMLLIB_ABSPATH . '/widgets/data_list/ADODBSQLDataListSource.inc
 
 
 //  Define database tables
-define('FT_MEETS_TABLE', FT_DB_PREFIX . 'meets') ;
 define('FT_RESULTS_TABLE', FT_DB_PREFIX . 'results') ;
 define('FT_SWIMMER_TABLE', FT_DB_PREFIX . 'swimmer') ;
 define('FT_SWIMMEETS_TABLE', FT_DB_PREFIX . 'swimmeets') ;
