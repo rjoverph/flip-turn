@@ -1012,16 +1012,6 @@ class SDIFC1Record extends SDIFRecord
 class SDIFD0Record extends SDIFRecord
 {
     /**
-     * Resultid property
-     */
-    var $_resultid ;
-
-    /**
-     * Swimmerid property
-     */
-    var $_swimmerid ;
-
-    /**
      * Org Code property
      */
     var $_org_code ;
@@ -1037,19 +1027,19 @@ class SDIFD0Record extends SDIFRecord
     var $_swimmer_name ;
 
     /**
-     * Uss property
+     * USS property
      */
     var $_uss ;
 
     /**
-     * Ft Uss property
+     * USS new property
      */
-    var $_ft_uss ;
+    var $_uss_new ;
 
     /**
-     * Ft Uss2 property
+     * USS old property
      */
-    var $_ft_uss2 ;
+    var $_uss_old ;
 
     /**
      * Attach Code property
@@ -1065,6 +1055,11 @@ class SDIFD0Record extends SDIFRecord
      * Birth Date property
      */
     var $_birth_date ;
+
+    /**
+     * Birth Date Database property
+     */
+    var $_birth_date_db ;
 
     /**
      * Age Or Class property
@@ -1107,6 +1102,11 @@ class SDIFD0Record extends SDIFRecord
     var $_swim_date ;
 
     /**
+     * Swim Date Database property
+     */
+    var $_swim_date_db ;
+
+    /**
      * Seed Time property
      */
     var $_seed_time ;
@@ -1142,14 +1142,19 @@ class SDIFD0Record extends SDIFRecord
     var $_finals_time ;
 
     /**
+     * Finals Time internal property
+     */
+    var $_finals_time_ft ;
+
+    /**
      * Finals Course Code property
      */
     var $_finals_course_code ;
 
     /**
-     * Prelim Heat Numner property
+     * Prelim Heat Number property
      */
-    var $_prelim_heat_numner ;
+    var $_prelim_heat_number ;
 
     /**
      * Prelim Lane Number property
@@ -1216,7 +1221,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string result id
      */
-    function getResultId($txt)
+    function getResultId()
     {
         return $this->_resultid ;
     }
@@ -1236,7 +1241,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string swimmer id
      */
-    function getSwimmerId($txt)
+    function getSwimmerId()
     {
         return $this->_swimmerid ;
     }
@@ -1256,7 +1261,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string org code
      */
-    function getOrgCode($txt)
+    function getOrgCode()
     {
         return $this->_org_code ;
     }
@@ -1276,7 +1281,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string future use 1
      */
-    function getFutureUse1($txt)
+    function getFutureUse1()
     {
         return $this->_future_use_1 ;
     }
@@ -1296,69 +1301,82 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string swimmer name
      */
-    function getSwimmerName($txt)
+    function getSwimmerName()
     {
         return $this->_swimmer_name ;
     }
 
     /**
-     * Set Uss
+     * Set USS
      *
      * @param string uss
      */
-    function setUss($txt)
+    function setUSS($txt)
     {
         $this->_uss = $txt ;
     }
 
     /**
-     * Get Uss
+     * Get USS
      *
      * @return string uss
      */
-    function getUss($txt)
+    function getUSS()
     {
         return $this->_uss ;
     }
 
     /**
-     * Set Ft Uss
+     * Set USS New
      *
-     * @param string ft uss
+     * Construct the new format of the USS swimmer number
+     * from the name and birth date fields.
      */
-    function setFtUss($txt)
+    function setUSSNew()
     {
-        $this->_ft_uss = $txt ;
+        $dob = split('-', $this->getBirthDate()) ;
+        $name = split(',', $this->getSwimmerName()) ;
+
+        //  Make sure there are 3 elements in the $name array
+        for ($i = 0 ; $i <= 2 ; $i++)
+            if (!array_key_exists($i, $name)) $name[$i] = '' ;
+
+        $first = strtoupper(trim($name[1])) ;
+        $last = strtoupper(trim($name[0])) ;
+        $middle = '*' ;
+
+        $this->_uss_new = sprintf('%02s%02s%02s%3s%1s%4s',
+            $dob[1], $dob[2], substr($dob[0], 2, 2), substr($first, 0, 3),
+            substr($middle, 0, 1), substr($last, 0, 4)) ;
     }
 
     /**
-     * Get Ft Uss
+     * Get USS New
      *
-     * @return string ft uss
+     * @return string ft uss new
      */
-    function getFtUss($txt)
+    function getUSSNew()
     {
-        return $this->_ft_uss ;
+        return $this->_uss_new ;
     }
 
     /**
-     * Set Ft Uss2
+     * Set USS Old
      *
-     * @param string ft uss2
      */
-    function setFtUss2($txt)
+    function setUSSOld()
     {
-        $this->_ft_uss2 = $txt ;
+        $this->_uss_old = substr($this->getUSSNew(), 0, 12) ;
     }
 
     /**
-     * Get Ft Uss2
+     * Get USS Old
      *
-     * @return string ft uss2
+     * @return string ft uss old
      */
-    function getFtUss2($txt)
+    function getUSSOld()
     {
-        return $this->_ft_uss2 ;
+        return $this->_uss_old ;
     }
 
     /**
@@ -1376,7 +1394,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string attach code
      */
-    function getAttachCode($txt)
+    function getAttachCode()
     {
         return $this->_attach_code ;
     }
@@ -1396,7 +1414,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string citizen code
      */
-    function getCitizenCode($txt)
+    function getCitizenCode()
     {
         return $this->_citizen_code ;
     }
@@ -1405,20 +1423,50 @@ class SDIFD0Record extends SDIFRecord
      * Set Birth Date
      *
      * @param string birth date
+     * @param boolean date provided in database format
      */
-    function setBirthDate($txt)
+    function setBirthDate($txt, $db = false)
     {
-        $this->_birth_date = $txt ;
+        if ($db)
+        {
+            $this->_birth_date_db = $txt ;
+ 
+            //  The birth date date is stored in YYYY-MM-DD in the database but
+            //  SDIF B1 record expects it in MMDDYYYY format so the dates are
+            //  reformatted appropriately.
+
+            $date = &$this->_birth_date_db ;
+
+            $this->_birth_date = sprintf("%02s%02s%04s",
+                substr($date, 5, 2), substr($date, 8, 2), substr($date, 0, 4)) ;
+        }
+        else
+        {
+            $this->_birth_date = $txt ;
+ 
+            //  The birth date date is stored in MMDDYYYY format in the SDIF B1
+            //  record.  The database needs dates in YYYY-MM-DD format so the
+            //  dates are reformatted appropriately.
+
+            $date = &$this->_birth_date ;
+
+            $this->_birth_date_db = sprintf("%04s-%02s-%02s",
+                substr($date, 4, 4), substr($date, 0, 2), substr($date, 2, 2)) ;
+        }
     }
 
     /**
      * Get Birth Date
      *
+     * @param boolean date returned in database format
      * @return string birth date
      */
-    function getBirthDate($txt)
+    function getBirthDate($db = true)
     {
-        return $this->_birth_date ;
+        if ($db)
+            return $this->_birth_date_db ;
+        else
+            return $this->_birth_date ;
     }
 
     /**
@@ -1436,7 +1484,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string age or class
      */
-    function getAgeOrClass($txt)
+    function getAgeOrClass()
     {
         return $this->_age_or_class ;
     }
@@ -1456,7 +1504,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string gender
      */
-    function getGender($txt)
+    function getGender()
     {
         return $this->_gender ;
     }
@@ -1476,7 +1524,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string event gender
      */
-    function getEventGender($txt)
+    function getEventGender()
     {
         return $this->_event_gender ;
     }
@@ -1496,7 +1544,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string event distance
      */
-    function getEventDistance($txt)
+    function getEventDistance()
     {
         return $this->_event_distance ;
     }
@@ -1516,7 +1564,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string stroke code
      */
-    function getStrokeCode($txt)
+    function getStrokeCode()
     {
         return $this->_stroke_code ;
     }
@@ -1528,6 +1576,8 @@ class SDIFD0Record extends SDIFRecord
      */
     function setEventNumber($txt)
     {
+        if (empty($txt)) $txt = 0 ;
+
         $this->_event_number = $txt ;
     }
 
@@ -1536,7 +1586,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string event number
      */
-    function getEventNumber($txt)
+    function getEventNumber()
     {
         return $this->_event_number ;
     }
@@ -1556,7 +1606,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string event age code
      */
-    function getEventAgeCode($txt)
+    function getEventAgeCode()
     {
         return $this->_event_age_code ;
     }
@@ -1565,20 +1615,50 @@ class SDIFD0Record extends SDIFRecord
      * Set Swim Date
      *
      * @param string swim date
+     * @param boolean date provided in database format
      */
-    function setSwimDate($txt)
+    function setSwimDate($txt, $db = false)
     {
-        $this->_swim_date = $txt ;
+        if ($db)
+        {
+            $this->_swim_date_db = $txt ;
+ 
+            //  The swim date date is stored in YYYY-MM-DD in the database but
+            //  SDIF B1 record expects it in MMDDYYYY format so the dates are
+            //  reformatted appropriately.
+
+            $date = &$this->_swim_date_db ;
+
+            $this->_swim_date = sprintf("%02s%02s%04s",
+                substr($date, 5, 2), substr($date, 8, 2), substr($date, 0, 4)) ;
+        }
+        else
+        {
+            $this->_swim_date = $txt ;
+ 
+            //  The swim date date is stored in MMDDYYYY format in the SDIF B1
+            //  record.  The database needs dates in YYYY-MM-DD format so the
+            //  dates are reformatted appropriately.
+
+            $date = &$this->_swim_date ;
+
+            $this->_swim_date_db = sprintf("%04s-%02s-%02s",
+                substr($date, 4, 4), substr($date, 0, 2), substr($date, 2, 2)) ;
+        }
     }
 
     /**
      * Get Swim Date
      *
+     * @param boolean date returned in database format
      * @return string swim date
      */
-    function getSwimDate($txt)
+    function getSwimDate($db = true)
     {
-        return $this->_swim_date ;
+        if ($db)
+            return $this->_swim_date_db ;
+        else
+            return $this->_swim_date ;
     }
 
     /**
@@ -1588,6 +1668,8 @@ class SDIFD0Record extends SDIFRecord
      */
     function setSeedTime($txt)
     {
+        if (empty($txt)) $txt = 0.0 ;
+
         $this->_seed_time = $txt ;
     }
 
@@ -1596,7 +1678,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string seed time
      */
-    function getSeedTime($txt)
+    function getSeedTime()
     {
         return $this->_seed_time ;
     }
@@ -1616,7 +1698,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string seed course code
      */
-    function getSeedCourseCode($txt)
+    function getSeedCourseCode()
     {
         return $this->_seed_course_code ;
     }
@@ -1628,6 +1710,8 @@ class SDIFD0Record extends SDIFRecord
      */
     function setPrelimTime($txt)
     {
+        if (empty($txt)) $txt = 0.0 ;
+
         $this->_prelim_time = $txt ;
     }
 
@@ -1636,7 +1720,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string prelim time
      */
-    function getPrelimTime($txt)
+    function getPrelimTime()
     {
         return $this->_prelim_time ;
     }
@@ -1656,7 +1740,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string prelim course code
      */
-    function getPrelimCourseCode($txt)
+    function getPrelimCourseCode()
     {
         return $this->_prelim_course_code ;
     }
@@ -1668,6 +1752,8 @@ class SDIFD0Record extends SDIFRecord
      */
     function setSwimOffTime($txt)
     {
+        if (empty($txt)) $txt = 0.0 ;
+
         $this->_swim_off_time = $txt ;
     }
 
@@ -1676,7 +1762,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string swim off time
      */
-    function getSwimOffTime($txt)
+    function getSwimOffTime()
     {
         return $this->_swim_off_time ;
     }
@@ -1696,7 +1782,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string swim off course code
      */
-    function getSwimOffCourseCode($txt)
+    function getSwimOffCourseCode()
     {
         return $this->_swim_off_course_code ;
     }
@@ -1706,9 +1792,42 @@ class SDIFD0Record extends SDIFRecord
      *
      * @param string finals time
      */
-    function setFinalsTime($txt)
+    function setFinalsTime($txt, $db = false)
     {
+        //  A time can be format can be formatted several way.
+        //
+        //  1)  All blanks
+        //  2)  mm:ss.ss - the mm: portion of the time is optional
+        //  3)  Time Code value - DQ, NS, etc. - from the Time Code table.
+        //
+        //  Internally Flip=Turn will store times as a floating point number
+        //  representing the total number of seconds for the time.  This means
+        //  a time such as 1:01.22 will be stored as 61.22.  Storing times in
+        //  this manner makes them much easier to compare for fastest and/or
+        //  slowest times.
+
         $this->_finals_time = $txt ;
+
+        //  Time in mm:ss.ss?
+        if (preg_match('/[0-9][0-9]:[0-9][0-9]\.[0-9][0-9]/', $txt))
+        {
+            printf("<h3>mm:ss.ss - %s</h3>", $txt) ;
+            $time = explode($txt, ':') ;
+            $this->_finals_time_ft = $time[0] * 60 + $time[1] ;
+
+        }
+        //  Time in ss.ss?
+        else if (preg_match('/[0-9][0-9]\.[0-9][0-9]/', $txt))
+        {
+            printf("<h3>ss.ss - %s</h3>", $txt) ;
+            $this->_finals_time_ft = (float)$txt ;
+        }
+        else
+        {
+            printf("<h3>????? - %s</h3>", $txt) ;
+            $this->_finals_time_ft = 0.0 ;
+        }
+
     }
 
     /**
@@ -1716,9 +1835,12 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string finals time
      */
-    function getFinalsTime($txt)
+    function getFinalsTime($ft = false)
     {
-        return $this->_finals_time ;
+        if ($ft)
+            return $this->_finals_time_ft ;
+        else
+            return $this->_finals_time ;
     }
 
     /**
@@ -1736,29 +1858,31 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string finals course code
      */
-    function getFinalsCourseCode($txt)
+    function getFinalsCourseCode()
     {
         return $this->_finals_course_code ;
     }
 
     /**
-     * Set Prelim Heat Numner
+     * Set Prelim Heat Number
      *
-     * @param string prelim heat numner
+     * @param string prelim heat number
      */
-    function setPrelimHeatNumner($txt)
+    function setPrelimHeatNumber($txt)
     {
-        $this->_prelim_heat_numner = $txt ;
+        if (empty($txt)) $txt = 0 ;
+
+        $this->_prelim_heat_number = $txt ;
     }
 
     /**
-     * Get Prelim Heat Numner
+     * Get Prelim Heat Number
      *
-     * @return string prelim heat numner
+     * @return string prelim heat number
      */
-    function getPrelimHeatNumner($txt)
+    function getPrelimHeatNumber()
     {
-        return $this->_prelim_heat_numner ;
+        return $this->_prelim_heat_number ;
     }
 
     /**
@@ -1768,6 +1892,8 @@ class SDIFD0Record extends SDIFRecord
      */
     function setPrelimLaneNumber($txt)
     {
+        if (empty($txt)) $txt = 0 ;
+
         $this->_prelim_lane_number = $txt ;
     }
 
@@ -1776,7 +1902,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string prelim lane number
      */
-    function getPrelimLaneNumber($txt)
+    function getPrelimLaneNumber()
     {
         return $this->_prelim_lane_number ;
     }
@@ -1788,6 +1914,8 @@ class SDIFD0Record extends SDIFRecord
      */
     function setFinalsHeatNumber($txt)
     {
+        if (empty($txt)) $txt = 0 ;
+
         $this->_finals_heat_number = $txt ;
     }
 
@@ -1796,7 +1924,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string finals heat number
      */
-    function getFinalsHeatNumber($txt)
+    function getFinalsHeatNumber()
     {
         return $this->_finals_heat_number ;
     }
@@ -1808,6 +1936,8 @@ class SDIFD0Record extends SDIFRecord
      */
     function setFinalsLaneNumber($txt)
     {
+        if (empty($txt)) $txt = 0 ;
+
         $this->_finals_lane_number = $txt ;
     }
 
@@ -1816,7 +1946,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string finals lane number
      */
-    function getFinalsLaneNumber($txt)
+    function getFinalsLaneNumber()
     {
         return $this->_finals_lane_number ;
     }
@@ -1828,6 +1958,8 @@ class SDIFD0Record extends SDIFRecord
      */
     function setPrelimPlaceRanking($txt)
     {
+        if (empty($txt)) $txt = 0 ;
+
         $this->_prelim_place_ranking = $txt ;
     }
 
@@ -1836,7 +1968,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string prelim place ranking
      */
-    function getPrelimPlaceRanking($txt)
+    function getPrelimPlaceRanking()
     {
         return $this->_prelim_place_ranking ;
     }
@@ -1848,6 +1980,8 @@ class SDIFD0Record extends SDIFRecord
      */
     function setFinalsPlaceRanking($txt)
     {
+        if (empty($txt)) $txt = 0 ;
+
         $this->_finals_place_ranking = $txt ;
     }
 
@@ -1856,7 +1990,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string finals place ranking
      */
-    function getFinalsPlaceRanking($txt)
+    function getFinalsPlaceRanking()
     {
         return $this->_finals_place_ranking ;
     }
@@ -1868,6 +2002,8 @@ class SDIFD0Record extends SDIFRecord
      */
     function setFinalsPoints($txt)
     {
+        if (empty($txt)) $txt = 0 ;
+
         $this->_finals_points = $txt ;
     }
 
@@ -1876,7 +2012,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string finals points
      */
-    function getFinalsPoints($txt)
+    function getFinalsPoints()
     {
         return $this->_finals_points ;
     }
@@ -1896,7 +2032,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string event time class code
      */
-    function getEventTimeClassCode($txt)
+    function getEventTimeClassCode()
     {
         return $this->_event_time_class_code ;
     }
@@ -1916,7 +2052,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string swimmer flight status
      */
-    function getSwimmerFlightStatus($txt)
+    function getSwimmerFlightStatus()
     {
         return $this->_swimmer_flight_status ;
     }
@@ -1936,7 +2072,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string future use 2
      */
-    function getFutureUse2($txt)
+    function getFutureUse2()
     {
         return $this->_future_use_2 ;
     }
@@ -1956,7 +2092,7 @@ class SDIFD0Record extends SDIFRecord
      *
      * @return string timestamp
      */
-    function getTimestamp($txt)
+    function getTimestamp()
     {
         return $this->_timestamp ;
     }
@@ -1978,40 +2114,50 @@ class SDIFD0Record extends SDIFRecord
 
         $this->setOrgCode(trim(substr($this->_sdif_record, 2, 1))) ;
         $this->setFutureUse1(trim(substr($this->_sdif_record, 3, 8))) ;
-        $this->setSwimmerName(trim(substr($this->_swimmer_name, 11, 28))) ;
-        $this->setUss(trim(substr($this->_uss, 39, 12))) ;
-        //$this->setFtUss(trim(substr($this->_ft_uss, 00, 00))) ;
-        //$this->setFtUss2(trim(substr($this->_ft_uss2, 00, 00))) ;
-        $this->setAttachCode(trim(substr($this->_attach_code, 51, 1))) ;
-        $this->setCitizenCode(trim(substr($this->_citizen_code, 52, 3))) ;
-        $this->setBirthDate(trim(substr($this->_birth_date, 55, 8))) ;
-        $this->setAgeOrClass(trim(substr($this->_age_or_class, 00, 00))) ;
-        $this->setGender(trim(substr($this->_gender, 00, 00))) ;
-        $this->setEventGender(trim(substr($this->_event_gender, 00, 00))) ;
-        $this->setEventDistance(trim(substr($this->_event_distance, 00, 00))) ;
-        $this->setStrokeCode(trim(substr($this->_stroke_code, 00, 00))) ;
-        $this->setEventNumber(trim(substr($this->_event_number, 00, 00))) ;
-        $this->setEventAgeCode(trim(substr($this->_event_age_code, 00, 00))) ;
-        $this->setSwimDate(trim(substr($this->_swim_date, 00, 00))) ;
-        $this->setSeedTime(trim(substr($this->_seed_time, 00, 00))) ;
-        $this->setSeedCourseCode(trim(substr($this->_seed_course_code, 00, 00))) ;
-        $this->setPrelimTime(trim(substr($this->_prelim_time, 00, 00))) ;
-        $this->setPrelimCourseCode(trim(substr($this->_prelim_course_code, 00, 00))) ;
-        $this->setSwimOffTime(trim(substr($this->_swim_off_time, 00, 00))) ;
-        $this->setSwimOffCourseCode(trim(substr($this->_swim_off_course_code, 00, 00))) ;
-        $this->setFinalsTime(trim(substr($this->_finals_time, 00, 00))) ;
-        $this->setFinalsCourseCode(trim(substr($this->_finals_course_code, 00, 00))) ;
-        $this->setPrelimHeatNumner(trim(substr($this->_prelim_heat_numner, 00, 00))) ;
-        $this->setPrelimLaneNumber(trim(substr($this->_prelim_lane_number, 00, 00))) ;
-        $this->setFinalsHeatNumber(trim(substr($this->_finals_heat_number, 00, 00))) ;
-        $this->setFinalsLaneNumber(trim(substr($this->_finals_lane_number, 00, 00))) ;
-        $this->setPrelimPlaceRanking(trim(substr($this->_prelim_place_ranking, 00, 00))) ;
-        $this->setFinalsPlaceRanking(trim(substr($this->_finals_place_ranking, 00, 00))) ;
-        $this->setFinalsPoints(trim(substr($this->_finals_points, 00, 00))) ;
-        $this->setEventTimeClassCode(trim(substr($this->_event_time_class_code, 00, 00))) ;
-        $this->setSwimmerFlightStatus(trim(substr($this->_swimmer_flight_status, 00, 00))) ;
-        $this->setFutureUse2(trim(substr($this->_future_use_2, 00, 00))) ;
-        $this->setTimestamp(trim(substr($this->_timestamp, 00, 00))) ;
+        $this->setSwimmerName(trim(substr($this->_sdif_record, 11, 28))) ;
+        $this->setUSS(trim(substr($this->_sdif_record, 39, 12))) ;
+        $this->setAttachCode(trim(substr($this->_sdif_record, 51, 1))) ;
+        $this->setCitizenCode(trim(substr($this->_sdif_record, 52, 3))) ;
+        $this->setBirthDate(trim(substr($this->_sdif_record, 55, 8))) ;
+        $this->setAgeOrClass(trim(substr($this->_sdif_record, 63, 2))) ;
+        $this->setGender(trim(substr($this->_sdif_record, 65, 1))) ;
+        $this->setEventGender(trim(substr($this->_sdif_record, 66, 1))) ;
+        $this->setEventDistance(trim(substr($this->_sdif_record, 67, 4))) ;
+        $this->setStrokeCode(trim(substr($this->_sdif_record, 71, 1))) ;
+        $this->setEventNumber(trim(substr($this->_sdif_record, 72, 4))) ;
+        $this->setEventAgeCode(trim(substr($this->_sdif_record, 76, 4))) ;
+        $this->setSwimDate(trim(substr($this->_sdif_record, 80, 8))) ;
+        $this->setSeedTime(trim(substr($this->_sdif_record, 88, 8))) ;
+        $this->setSeedCourseCode(trim(substr($this->_sdif_record, 96, 1))) ;
+        $this->setPrelimTime(trim(substr($this->_sdif_record, 97, 8))) ;
+        $this->setPrelimCourseCode(trim(substr($this->_sdif_record, 105, 1))) ;
+        $this->setSwimOffTime(trim(substr($this->_sdif_record, 106, 8))) ;
+        $this->setSwimOffCourseCode(trim(substr($this->_sdif_record, 114, 1))) ;
+        $this->setFinalsTime(trim(substr($this->_sdif_record, 115, 8))) ;
+        $this->setFinalsCourseCode(trim(substr($this->_sdif_record, 123, 1))) ;
+        $this->setPrelimHeatNumber(trim(substr($this->_sdif_record, 124, 2))) ;
+        $this->setPrelimLaneNumber(trim(substr($this->_sdif_record, 126, 2))) ;
+        $this->setFinalsHeatNumber(trim(substr($this->_sdif_record, 128, 2))) ;
+        $this->setFinalsLaneNumber(trim(substr($this->_sdif_record, 130, 2))) ;
+        $this->setPrelimPlaceRanking(trim(substr($this->_sdif_record, 132, 3))) ;
+        $this->setFinalsPlaceRanking(trim(substr($this->_sdif_record, 135, 3))) ;
+        $this->setFinalsPoints(trim(substr($this->_sdif_record, 138, 4))) ;
+        $this->setEventTimeClassCode(trim(substr($this->_sdif_record, 142, 2))) ;
+        $this->setSwimmerFlightStatus(trim(substr($this->_sdif_record, 144, 1))) ;
+        $this->setFutureUse2(trim(substr($this->_sdif_record, 145, 15))) ;
+
+        //  Construct 'new' and 'old' formats of the USS number
+        //  from the name and birthdate fields.
+
+        $this->setUSSNew() ;
+        $this->setUSSOld() ;
+
+        printf("Name:  %s  Birth Date:  %s Birth Date:  %s USS:  %s  USS New:  %s  USS Old:  %s  Finals Time:  %s  Finals Time:  %s\n", $this->getSwimmerName(),
+            $this->getBirthDate(), $this->getBirthDate(true),
+            $this->getUSS(), $this->getUSSNew(), $this->getUSSOld(),
+            $this->getFinalsTime(), $this->getFinalsTime(true)) ;
+        //die("<h1>here</h1>") ;
+        //var_dump($this) ;
     }
 }
 
@@ -2589,20 +2735,61 @@ class SDIFCodeTables
      * @param boolean optional invalid mapping
      * @return string course code description
      */
-    function GetCourseCode($code, $invalid = true)
+    function GetCourseCode($code, $alt = false, $invalid = true)
     {
-        $FT_SDIF_COURSE_CODES = array(
-            FT_SDIF_COURSE_STATUS_CODE_SCM_VALUE => FT_SDIF_COURSE_STATUS_CODE_SCM_LABEL
-           ,FT_SDIF_COURSE_STATUS_CODE_SCY_VALUE => FT_SDIF_COURSE_STATUS_CODE_SCY_LABEL
-           ,FT_SDIF_COURSE_STATUS_CODE_LCM_VALUE => FT_SDIF_COURSE_STATUS_CODE_LCM_LABEL
-           ,FT_SDIF_COURSE_STATUS_CODE_DQ_VALUE => FT_SDIF_COURSE_STATUS_CODE_DQ_LABEL
-           ,FT_SDIF_COURSE_STATUS_CODE_SCM_ALT_VALUE => FT_SDIF_COURSE_STATUS_CODE_SCM_LABEL
-           ,FT_SDIF_COURSE_STATUS_CODE_SCY_ALT_VALUE => FT_SDIF_COURSE_STATUS_CODE_SCY_LABEL
-           ,FT_SDIF_COURSE_STATUS_CODE_LCM_ALT_VALUE => FT_SDIF_COURSE_STATUS_CODE_LCM_LABEL
-        ) ;
+        if ($alt)
+            $FT_SDIF_COURSE_CODES = array(
+                FT_SDIF_COURSE_STATUS_CODE_SCM_VALUE => FT_SDIF_COURSE_STATUS_CODE_SCM_ALT_LABEL
+               ,FT_SDIF_COURSE_STATUS_CODE_SCY_VALUE => FT_SDIF_COURSE_STATUS_CODE_SCY_ALT_LABEL
+               ,FT_SDIF_COURSE_STATUS_CODE_LCM_VALUE => FT_SDIF_COURSE_STATUS_CODE_LCM_ALT_LABEL
+               ,FT_SDIF_COURSE_STATUS_CODE_DQ_VALUE => FT_SDIF_COURSE_STATUS_CODE_DQ_LABEL
+               ,FT_SDIF_COURSE_STATUS_CODE_SCM_ALT_VALUE => FT_SDIF_COURSE_STATUS_CODE_SCM_ALT_LABEL
+               ,FT_SDIF_COURSE_STATUS_CODE_SCY_ALT_VALUE => FT_SDIF_COURSE_STATUS_CODE_SCY_ALT_LABEL
+               ,FT_SDIF_COURSE_STATUS_CODE_LCM_ALT_VALUE => FT_SDIF_COURSE_STATUS_CODE_LCM_ALT_LABEL
+            ) ;
+
+        else
+            $FT_SDIF_COURSE_CODES = array(
+                FT_SDIF_COURSE_STATUS_CODE_SCM_VALUE => FT_SDIF_COURSE_STATUS_CODE_SCM_LABEL
+               ,FT_SDIF_COURSE_STATUS_CODE_SCY_VALUE => FT_SDIF_COURSE_STATUS_CODE_SCY_LABEL
+               ,FT_SDIF_COURSE_STATUS_CODE_LCM_VALUE => FT_SDIF_COURSE_STATUS_CODE_LCM_LABEL
+               ,FT_SDIF_COURSE_STATUS_CODE_DQ_VALUE => FT_SDIF_COURSE_STATUS_CODE_DQ_LABEL
+               ,FT_SDIF_COURSE_STATUS_CODE_SCM_ALT_VALUE => FT_SDIF_COURSE_STATUS_CODE_SCM_LABEL
+               ,FT_SDIF_COURSE_STATUS_CODE_SCY_ALT_VALUE => FT_SDIF_COURSE_STATUS_CODE_SCY_LABEL
+               ,FT_SDIF_COURSE_STATUS_CODE_LCM_ALT_VALUE => FT_SDIF_COURSE_STATUS_CODE_LCM_LABEL
+            ) ;
 
         if (array_key_exists($code, $FT_SDIF_COURSE_CODES))
             return $FT_SDIF_COURSE_CODES[$code] ;
+        else if ($invalid)
+            return "Invalid" ;
+        else
+            return "" ;
+    }
+
+    /**
+     * Return the Stroke Code text based on the supplied
+     * stroke code.  Return either "Invalid" or an empty
+     * string when the code cannot be mapped.
+     *
+     * @param string stroke code
+     * @param boolean optional invalid mapping
+     * @return string stroke code description
+     */
+    function GetStrokeCode($code, $invalid = true)
+    {
+        $FT_SDIF_EVENT_STROKE_CODES = array(
+            FT_SDIF_EVENT_STROKE_CODE_FREESTYLE_VALUE => FT_SDIF_EVENT_STROKE_CODE_FREESTYLE_LABEL
+           ,FT_SDIF_EVENT_STROKE_CODE_BACKSTROKE_VALUE => FT_SDIF_EVENT_STROKE_CODE_BACKSTROKE_LABEL
+           ,FT_SDIF_EVENT_STROKE_CODE_BREASTSTROKE_VALUE => FT_SDIF_EVENT_STROKE_CODE_BREASTSTROKE_LABEL
+           ,FT_SDIF_EVENT_STROKE_CODE_BUTTERFLY_VALUE => FT_SDIF_EVENT_STROKE_CODE_BUTTERFLY_LABEL
+           ,FT_SDIF_EVENT_STROKE_CODE_INDIVIDUAL_MEDLEY_VALUE => FT_SDIF_EVENT_STROKE_CODE_INDIVIDUAL_MEDLEY_LABEL
+           ,FT_SDIF_EVENT_STROKE_CODE_FREESTYLE_RELAY_VALUE => FT_SDIF_EVENT_STROKE_CODE_FREESTYLE_RELAY_LABEL
+           ,FT_SDIF_EVENT_STROKE_CODE_MEDLEY_RELAY_VALUE => FT_SDIF_EVENT_STROKE_CODE_MEDLEY_RELAY_LABEL
+        ) ;
+
+        if (array_key_exists($code, $FT_SDIF_EVENT_STROKE_CODES))
+            return $FT_SDIF_EVENT_STROKE_CODES[$code] ;
         else if ($invalid)
             return "Invalid" ;
         else
