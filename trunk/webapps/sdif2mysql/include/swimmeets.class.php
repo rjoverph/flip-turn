@@ -532,7 +532,7 @@ class SwimMeetInfoTable extends FlipTurnInfoTable
      * Construct a summary of the active season.
      *
      */
-    function BuildInfoTable($swimmeetid = null)
+    function BuildInfoTable($fulldetails = true, $swimmeetid = null)
     {
         //  Alternate the row colors
         $this->set_alt_color_flag(true) ;
@@ -549,18 +549,24 @@ class SwimMeetInfoTable extends FlipTurnInfoTable
             $meetenddate = date("D M j, Y", strtotime($meet->getMeetEnd(true))) ;
             $meetenddate = date("D M j, Y", strtotime($meet->getMeetEnd(true))) ;
 
-            $this->add_row(html_b("Organization"), SDIFCodeTables::GetOrgCode($meet->getOrgCode())) ;
+            if ($fulldetails)
+                $this->add_row(html_b("Organization"), SDIFCodeTables::GetOrgCode($meet->getOrgCode())) ;
             $this->add_row(html_b("Meet Name"), $meet->getMeetName()) ;
-            $this->add_row(html_b("Meet Addresss 1"), $meet->getMeetAddress1()) ;
-            $this->add_row(html_b("Meet Addresss 2"), $meet->getMeetAddress2()) ;
+            if ($fulldetails)
+                $this->add_row(html_b("Meet Addresss 1"), $meet->getMeetAddress1()) ;
+            if ($fulldetails)
+                $this->add_row(html_b("Meet Addresss 2"), $meet->getMeetAddress2()) ;
             $this->add_row(html_b("City"), $meet->getMeetCity()) ;
             $this->add_row(html_b("State"), $meet->getMeetState()) ;
-            $this->add_row(html_b("Postal Code"), $meet->getMeetPostalCode()) ;
-            $this->add_row(html_b("Country"), SDIFCodeTables::GetCountryCode($meet->getMeetCountryCode())) ;
+            if ($fulldetails)
+                $this->add_row(html_b("Postal Code"), $meet->getMeetPostalCode()) ;
+            if ($fulldetails)
+                $this->add_row(html_b("Country"), SDIFCodeTables::GetCountryCode($meet->getMeetCountryCode())) ;
             $this->add_row(html_b("Type"), SDIFCodeTables::GetMeetCode($meet->getMeetCode())) ;
             $this->add_row(html_b("Start Date"), $meetstartdate) ;
             $this->add_row(html_b("End Date"), $meetenddate) ;
-            $this->add_row(html_b("Pool Altitude (feet)"), $meet->getPoolAltitude()) ;
+            if ($fulldetails)
+                $this->add_row(html_b("Pool Altitude (feet)"), $meet->getPoolAltitude()) ;
             $this->add_row(html_b("Course"), SDIFCodeTables::GetCourseCode($meet->getCourseCode())) ;
 
             //$this->add_row(html_b("State"), ucfirst($meet->getLocation())) ;
