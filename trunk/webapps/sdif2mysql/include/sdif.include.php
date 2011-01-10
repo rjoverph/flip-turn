@@ -955,6 +955,9 @@ define("FT_SDIF_EVENT_STROKE_CODE_MEDLEY_RELAY_VALUE", 7) ;
 define("FT_SDIF_COURSE_STATUS_CODE_SCM_LABEL", "Short Course Meters") ;
 define("FT_SDIF_COURSE_STATUS_CODE_SCY_LABEL", "Short Course Yards") ;
 define("FT_SDIF_COURSE_STATUS_CODE_LCM_LABEL", "Long Course Meters") ;
+define("FT_SDIF_COURSE_STATUS_CODE_SCM_ALT_LABEL", "SC Meters") ;
+define("FT_SDIF_COURSE_STATUS_CODE_SCY_ALT_LABEL", "SC Yards") ;
+define("FT_SDIF_COURSE_STATUS_CODE_LCM_ALT_LABEL", "LC Meters") ;
 define("FT_SDIF_COURSE_STATUS_CODE_DQ_LABEL", "Disqualified") ;
 
 //  Define the values used in the records
