@@ -253,7 +253,7 @@ TD.divider {
   color: #000000;
 }
 
-#sdifqueuegdl td.datalist_data_cell, td.datalist_data_cell_odd {
+#sdifqueuegdl td.datalist_data_cell, #sdifqueuegdl td.datalist_data_cell_odd {
 	font-family: courier;
 }
 
