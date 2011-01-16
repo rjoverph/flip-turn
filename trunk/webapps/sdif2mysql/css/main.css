@@ -86,7 +86,7 @@ body {
 		
 .rightblock {
         width: 100%;
-	padding: 20px 20px 0px 20px;
+	padding: 0px 5px 0px 20px;
 	vertical-align: top;
 }
 		
@@ -268,4 +268,12 @@ TD.divider {
 
 .fterrormsg {
 	color: red;
+}
+
+.statusbar {
+    font-family: arial;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-align: right;
+    margin-bottom: 10px;
 }
