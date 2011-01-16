@@ -12,8 +12,7 @@
  */ 
 
 // * Include the phphtmllib libraries
-include("includes.inc") ;
-
+include("ft-setup.php") ;
 include("page.class.php") ;
 
 /**

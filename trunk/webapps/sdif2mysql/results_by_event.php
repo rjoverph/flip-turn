@@ -11,8 +11,8 @@
  *
  */ 
 
-// * Include the phphtmllib libraries
-include("includes.inc") ;
+// Setup the Flip-Turn application
+include('ft-setup.php') ;
 
 //  Include the page layout
 include_once("page.class.php") ;
