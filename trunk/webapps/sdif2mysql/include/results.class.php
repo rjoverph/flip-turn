@@ -717,7 +717,7 @@ class SwimResultsByEventDataList extends FlipTurnGUIDataList
         //  Add the buttons ...
 
         $t->add_row(
-            $this->action_button('Results', 'event_results.php')) ;
+            $this->action_button('Results', 'results_event.php')) ;
 
         $c->add($t) ;
 
@@ -788,6 +788,180 @@ class SwimResultsByEventDataList extends FlipTurnGUIDataList
         {
             case "Gender" :
                 $obj = SDIFCodeTables::getGenderCode($row_data['event_gender'], true) ;
+                break ;
+
+            case "Age Group" :
+                $a = &$row_data['event_age_code'] ;
+                $obj = substr($a, 0, 2) . ' - ' . substr($a, 2, 2) ;
+                break ;
+
+            case "Distance" :
+                $obj = $row_data['event_distance'] . ' ' .
+                    SDIFCodeTables::getCourseCode($row_data['finals_course_code'], true) ;
+                break ;
+
+            case "Stroke" :
+                $obj = SDIFCodeTables::getStrokeCode($row_data['stroke_code']) ;
+                break ;
+
+            case "Timestamp":
+                $obj = date("m/d/Y h:i A", strtotime($row_data["timestamp"])) ;
+                break;
+
+            default:
+                $obj = DefaultGUIDataList::build_column_item($row_data, $col_name) ;
+                break;
+        }
+
+        return $obj ;
+    }    
+}
+
+/**
+ * SwimResultsBySwimmerDataList class
+ *
+ * Child GUIDataList class to present the Swim Results in a
+ * GUIDataList widget to allow the user to take some action
+ * against it.
+ *
+ *
+ * @author Mike Walsh - mike_walsh@mindspring.com
+ * @access public
+ * @see FlipTurnGUIDataList
+ *
+ */
+class SwimResultsBySwimmerDataList extends FlipTurnGUIDataList
+{
+    /**
+     * This method is used to setup the options
+     * for the DataList object's display. 
+     * Which columns to show, their respective 
+     * source column name, width, etc. etc.
+     *
+     * The constructor automatically calls 
+     * this function.
+     *
+     */
+    function user_setup()
+    {
+        //  add the columns in the display that you want to view.
+        //  The API is:  Title, width, DB column name, field SORTABLE?,
+        //  field  SEARCHABLE?, align
+
+        $this->add_header_item("Name",
+            "150", "swimmer_name", SORTABLE, SEARCHABLE, "left") ;
+        $this->add_header_item("Gender",
+            "150", "gender", SORTABLE, SEARCHABLE, "left") ;
+        $this->add_header_item("USS",
+            "150", "uss_new", SORTABLE, SEARCHABLE, "left") ;
+        
+        $this->_db_setup() ;
+        $this->set_show_empty_datalist_actionbar(true) ;
+
+        //  This GDL is a form so actions can be performed on the data.
+
+        //turn on the 'collapsable' search block.
+        //The word 'Search' in the output will be clickable,
+        //and hide/show the search box.
+        $this->_collapsable_search = true ;
+
+        //lets add an action column of checkboxes,
+        //and allow us to save the checked items between pages.
+        $this->add_action_column('radio', 'FIRST', 'uss_new') ;
+
+        //we have to be in POST mode, or we could run out
+        //of space in the http request with the saved
+        //checkbox items
+        $this->set_form_method('POST') ;
+
+        //set the flag to save the checked items
+        //between pages.
+        $this->save_checked_items(true) ;
+    }
+
+    /**
+     * Define the action bar - actions which can be performed on
+     * the data in the GDL.
+     *
+     * @return container
+     */
+    function actionbar_cell()
+    {
+        $c = container() ;
+        $t = html_table("") ;
+
+        //  Add the buttons ...
+
+        $t->add_row(
+            $this->action_button('Results', 'results_swimmer.php')) ;
+
+        $c->add($t) ;
+
+        return $c ;
+    }
+    /**
+     * Build this method so we can override it in the child class
+     * for the advanced search capability.
+     * 
+     * @return VOID
+     */
+    function _db_setup()
+    {
+        $columns = 'DISTINCT swimmer_name, uss_new, gender' ;
+        $tables = FT_RESULTS_TABLE ;
+        $where_clause = "";
+        $this->_datasource->setup_db_options($columns, $tables, $where_clause) ;
+    }
+
+    /**
+     * This function is called automatically by
+     * the DataList constructor.  It must be
+     * extended by the child class to actually
+     * set the DataListSource object.
+     *
+     * 
+     */
+    function get_data_source()
+    {
+        //  Build the ADO DB object and connect to the database.
+        $db = &ADONewConnection(FT_DB_DSN) ;
+
+        //  Create the DataListSource object and pass in the ADO DB object
+        $source = new ADODBSQLDataListSource($db) ;
+ 
+        //  Set up the custom count based on distinct event combinations.
+        $source->set_count_column('DISTINCT uss_new') ;
+
+        //  Set the DataListSource for this DataList
+        //  Every DataList needs a Source for it's data.
+        $this->set_data_source($source) ;
+
+        //  set the prefix for all the internal query string 
+        //  variables.  You really only need to change this
+        //  if you have more then 1 DataList object per page.
+        $this->set_global_prefix(FT_DB_PREFIX) ;
+    }
+
+    /**
+     * This is the basic function for letting us
+     * do a mapping between the column name in
+     * the header, to the value found in the DataListSource.
+     *
+     * NOTE: this function is can be overridden
+     *       so that you can return whatever you want for
+     *       any given column.  
+     *
+     * @param array - $row_data - the entire data for the row
+     * @param string - $col_name - the name of the column header
+     *                             for this row to render.
+     * @return  mixed - either a HTMLTag object, or raw text.
+     */
+    function build_column_item($row_data, $col_name)
+    {
+        switch ($col_name)
+        {
+            case "Gender" :
+                $obj = SDIFCodeTables::getGenderCode($row_data['gender'], true) ;
                 break ;
 
             case "Age Group" :
