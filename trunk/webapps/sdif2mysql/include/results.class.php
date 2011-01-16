@@ -232,21 +232,44 @@ class SwimResult extends SDIFD0Record
             $result = $this->getQueryResult() ;
 
             $this->setResultId($result['resultid']) ;
+            $this->setSwimMeetId($result['swimmeetid']) ;
+            $this->setSwimTeamId($result['swimteamid']) ;
+            $this->setSwimmerId($result['swimmerid']) ;
             $this->setOrgCode($result['org_code']) ;
             $this->setFutureUse1($result['future_use_1']) ;
-            $this->setResultCode($result['result_code']) ;
-            $this->setResultName($result['result_name']) ;
-            $this->setResultNameAbrv($result['result_name_abrv']) ;
-            $this->setResultAddress1($result['result_address_1']) ;
-            $this->setResultAddress2($result['result_address_2']) ;
-            $this->setResultCity($result['result_city']) ;
-            $this->setResultState($result['result_state']) ;
-            $this->setResultPostalCode($result['result_postal_code']) ;
-            $this->setResultCountryCode($result['result_country_code']) ;
-            $this->setRegionCode($result['region_code']) ;
+            $this->setSwimmerName($result['swimmer_name']) ;
+            $this->setUSS($result['uss']) ;
+            $this->setUSSNew($result['uss_new']) ;
+            $this->setUSSOld($result['uss_old']) ;
+            $this->setAttachCode($result['attach_code']) ;
+            $this->setCitizenCode($result['citizen_code']) ;
+            $this->setBirthDate($result['birth_date'], true) ;
+            $this->setAgeOrClass($result['age_or_class']) ;
+            $this->setGender($result['gender']) ;
+            $this->setEventGender($result['event_gender']) ;
+            $this->setEventDistance($result['event_distance']) ;
+            $this->setStrokeCode($result['stroke_code']) ;
+            $this->setEventNumber($result['event_number']) ;
+            $this->setEventAgeCode($result['event_age_code']) ;
+            $this->setSwimDate($result['swim_date'], true) ;
+            $this->setSeedTime($result['seed_time']) ;
+            $this->setSeedCourseCode($result['seed_course_code']) ;
+            $this->setPrelimTime($result['prelim_time']) ;
+            $this->setPrelimCourseCode($result['prelim_course_code']) ;
+            $this->setSwimOffTime($result['swim_off_time']) ;
+            $this->setSwimOffCourseCode($result['swim_off_course_code']) ;
+            $this->setFinalsTime($result['finals_time'], true) ;
+            $this->setFinalsCourseCode($result['finals_course_code']) ;
+            $this->setPrelimHeatNumber($result['prelim_heat_number']) ;
+            $this->setPrelimLaneNumber($result['prelim_lane_number']) ;
+            $this->setFinalsHeatNumber($result['finals_heat_number']) ;
+            $this->setFinalsLaneNumber($result['finals_lane_number']) ;
+            $this->setPrelimPlaceRanking($result['prelim_place_ranking']) ;
+            $this->setFinalsPlaceRanking($result['finals_place_ranking']) ;
+            $this->setFinalsPoints($result['finals_points']) ;
+            $this->setEventTimeClassCode($result['event_time_class_code']) ;
+            $this->setSwimmerFlightStatus($result['swimmer_flight_status']) ;
             $this->setFutureUse2($result['future_use_2']) ;
-            $this->setResultCode5($result['result_code_5']) ;
-            $this->setFutureUse3($result['future_use_3']) ;
             $this->setTimestamp($result['timestamp']) ;
         }
 
@@ -436,10 +459,10 @@ class SwimResult extends SDIFD0Record
  *
  * @author Mike Walsh - mike_walsh@mindspring.com
  * @access public
- * @see DefaultGUIDataList
+ * @see FlipTurnGUIDataList
  *
  */
-class SwimResultsDataList extends DefaultGUIDataList
+class SwimResultsDataList extends FlipTurnGUIDataList
 {
     /**
      * default rows per page property
@@ -478,6 +501,8 @@ class SwimResultsDataList extends DefaultGUIDataList
             "50", "finals_lane_number", SORTABLE, SEARCHABLE, "left") ;
         $this->add_header_item("Time",
             "50", "finals_time_ft", SORTABLE, SEARCHABLE, "left") ;
+        $this->add_header_item("Date",
+            "50", "swim_date", SORTABLE, SEARCHABLE, "left") ;
         
         $this->_db_setup() ;
         $this->set_show_empty_datalist_actionbar(true) ;
@@ -517,35 +542,12 @@ class SwimResultsDataList extends DefaultGUIDataList
         //  Add the buttons ...
 
         $t->add_row(
-            $this->action_button('Details', 'result_details.php'),
-            _HTML_SPACE,
-            $this->action_button('Update', 'result_update.php')) ;
+            $this->action_button('Details', 'results_details.php')) ;
 
         $c->add($t) ;
 
         return $c ;
     }
-
-    /**
-     * Action Bar - build a set of Action Bar buttons
-     *
-     * @return container - container holding action bar content
-     */
-    function empty_datalist_actionbar_cell()
-    {
-        $c = container() ;
-        $t = html_table("") ;
-
-        //  Add the buttons ...
-
-        $t->add_row(
-            $this->action_button('Add', "result_add.php")) ;
-
-        $c->add($t) ;
-
-        return $c ;
-    }
-
     /**
      * Build this method so we can override it in the child class
      * for the advanced search capability.
@@ -556,7 +558,7 @@ class SwimResultsDataList extends DefaultGUIDataList
     {
         $columns = "*" ;
         $tables = FT_RESULTS_TABLE ;
-        $where_clause = "";
+        $where_clause = $this->getWhereClause() ;
         $this->_datasource->setup_db_options($columns, $tables, $where_clause) ;
     }
 
@@ -610,6 +612,191 @@ class SwimResultsDataList extends DefaultGUIDataList
 
             case "Distance" :
                 $obj = $row_data['event_distance'] . ' ' .
+                    SDIFCodeTables::GetCourseCode($row_data['finals_course_code'], true) ;
+                break ;
+
+            case "Stroke" :
+                $obj = SDIFCodeTables::GetStrokeCode($row_data['stroke_code']) ;
+                break ;
+
+            case "Timestamp":
+                $obj = date("m/d/Y h:i A", strtotime($row_data["timestamp"])) ;
+                break;
+
+            default:
+                $obj = DefaultGUIDataList::build_column_item($row_data, $col_name) ;
+                break;
+        }
+
+        return $obj ;
+    }    
+}
+
+/**
+ * SwimResultsDataList class
+ *
+ * Child GUIDataList class to present the Swim Results in a
+ * GUIDataList widget to allow the user to take some action
+ * against it.
+ *
+ *
+ * @author Mike Walsh - mike_walsh@mindspring.com
+ * @access public
+ * @see FlipTurnGUIDataList
+ *
+ */
+class SwimResultsByEventDataList extends FlipTurnGUIDataList
+{
+    /**
+     * default rows per page property
+     * overload the # of rows to display to 15 from 10
+     *
+     */
+    var $_default_rows_per_page = 15 ;
+
+    /**
+     * This method is used to setup the options
+     * for the DataList object's display. 
+     * Which columns to show, their respective 
+     * source column name, width, etc. etc.
+     *
+     * The constructor automatically calls 
+     * this function.
+     *
+     */
+    function user_setup()
+    {
+        //  add the columns in the display that you want to view.
+        //  The API is:  Title, width, DB column name, field SORTABLE?,
+        //  field  SEARCHABLE?, align
+
+        $this->add_header_item("Gender",
+            "150", "event_gender", SORTABLE, SEARCHABLE, "left") ;
+        $this->add_header_item("Age Group",
+            "150", "event_age_code", SORTABLE, SEARCHABLE, "left") ;
+        $this->add_header_item("Stroke",
+            "100", "stroke_code", SORTABLE, SEARCHABLE, "left") ;
+        $this->add_header_item("Distance",
+            "150", "event_distance", SORTABLE, SEARCHABLE, "left") ;
+        
+        $this->_db_setup() ;
+        $this->set_show_empty_datalist_actionbar(true) ;
+
+        //  This GDL is a form so actions can be performed on the data.
+
+        //turn on the 'collapsable' search block.
+        //The word 'Search' in the output will be clickable,
+        //and hide/show the search box.
+        $this->_collapsable_search = true ;
+
+        //lets add an action column of checkboxes,
+        //and allow us to save the checked items between pages.
+        $this->add_action_column('radio', 'FIRST', 'eventid') ;
+
+        //we have to be in POST mode, or we could run out
+        //of space in the http request with the saved
+        //checkbox items
+        $this->set_form_method('POST') ;
+
+        //set the flag to save the checked items
+        //between pages.
+        $this->save_checked_items(true) ;
+    }
+
+    /**
+     * Define the action bar - actions which can be performed on
+     * the data in the GDL.
+     *
+     * @return container
+     */
+    function actionbar_cell()
+    {
+        $c = container() ;
+        $t = html_table("") ;
+
+        //  Add the buttons ...
+
+        $t->add_row(
+            $this->action_button('Results', 'event_results.php')) ;
+
+        $c->add($t) ;
+
+        return $c ;
+    }
+    /**
+     * Build this method so we can override it in the child class
+     * for the advanced search capability.
+     * 
+     * @return VOID
+     */
+    function _db_setup()
+    {
+        $columns = "DISTINCT CONCAT(event_gender, '-', event_age_code, '-', stroke_code, '-',
+            event_distance) AS eventid, event_gender, event_age_code, stroke_code,
+            event_distance, finals_course_code" ;
+        $tables = FT_RESULTS_TABLE ;
+        $where_clause = "";
+        $this->_datasource->setup_db_options($columns, $tables, $where_clause) ;
+    }
+
+    /**
+     * This function is called automatically by
+     * the DataList constructor.  It must be
+     * extended by the child class to actually
+     * set the DataListSource object.
+     *
+     * 
+     */
+    function get_data_source()
+    {
+        //  Build the ADO DB object and connect to the database.
+        $db = &ADONewConnection(FT_DB_DSN) ;
+
+        //  Create the DataListSource object and pass in the ADO DB object
+        $source = new ADODBSQLDataListSource($db) ;
+ 
+        //  Set up the custom count based on distinct event combinations.
+        $source->set_count_column('distinct event_gender, event_age_code, stroke_code, event_distance') ;
+
+        //  Set the DataListSource for this DataList
+        //  Every DataList needs a Source for it's data.
+        $this->set_data_source($source) ;
+
+        //  set the prefix for all the internal query string 
+        //  variables.  You really only need to change this
+        //  if you have more then 1 DataList object per page.
+        $this->set_global_prefix(FT_DB_PREFIX) ;
+    }
+
+    /**
+     * This is the basic function for letting us
+     * do a mapping between the column name in
+     * the header, to the value found in the DataListSource.
+     *
+     * NOTE: this function is can be overridden
+     *       so that you can return whatever you want for
+     *       any given column.  
+     *
+     * @param array - $row_data - the entire data for the row
+     * @param string - $col_name - the name of the column header
+     *                             for this row to render.
+     * @return  mixed - either a HTMLTag object, or raw text.
+     */
+    function build_column_item($row_data, $col_name)
+    {
+        switch ($col_name)
+        {
+            case "Gender" :
+                $obj = SDIFCodeTables::getGenderCode($row_data['event_gender'], true) ;
+                break ;
+
+            case "Age Group" :
+                $a = &$row_data['event_age_code'] ;
+                $obj = substr($a, 0, 2) . ' - ' . substr($a, 2, 2) ;
+                break ;
+
+            case "Distance" :
+                $obj = $row_data['event_distance'] . ' ' .
                     SDIFCodeTables::getCourseCode($row_data['finals_course_code'], true) ;
                 break ;
 
@@ -631,13 +818,72 @@ class SwimResultsDataList extends DefaultGUIDataList
 }
 
 /**
+ * ResultsDataList class
+ *
+ * Child GUIDataList class to present the Swim Results in a
+ * GUIDataList widget to allow the user to take some action
+ * against it.
+ *
+ *
+ * @author Mike Walsh - mike_walsh@mindspring.com
+ * @access public
+ * @see SwimResultsDataList
+ *
+ */
+class SwimResultsAdminDataList extends SwimResultsDataList
+{
+    /**
+     * Define the action bar - actions which can be performed on
+     * the data in the GDL.
+     *
+     * @return container
+     */
+    function actionbar_cell()
+    {
+        $c = container() ;
+        $t = html_table("") ;
+
+        //  Add the buttons ...
+
+        $t->add_row(
+            $this->action_button('Details', 'results_details.php'),
+            _HTML_SPACE,
+            $this->action_button('Update', 'result_update.php')) ;
+
+        $c->add($t) ;
+
+        return $c ;
+    }
+
+    /**
+     * Action Bar - build a set of Action Bar buttons
+     *
+     * @return container - container holding action bar content
+     */
+    function empty_datalist_actionbar_cell()
+    {
+        $c = container() ;
+        $t = html_table("") ;
+
+        //  Add the buttons ...
+
+        $t->add_row(
+            $this->action_button('Add', "result_add.php")) ;
+
+        $c->add($t) ;
+
+        return $c ;
+    }
+}
+
+/**
  * Class definition of a result info table
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @access public
  * @see ResultInfoTable
  */
-class SwimResultInfoTable extends FlipTurnInfoTable
+class SwimResultsInfoTable extends FlipTurnInfoTable
 {
     /**
      * Property to hold the result id
@@ -673,7 +919,7 @@ class SwimResultInfoTable extends FlipTurnInfoTable
         //  Alternate the row colors
         $this->set_alt_color_flag(true) ;
 
-        $result = new Result() ;
+        $result = new SwimResult() ;
 
         if (is_null($resultid)) $resultid = $this->getResultId() ;
 
@@ -681,22 +927,124 @@ class SwimResultInfoTable extends FlipTurnInfoTable
         {
             $result->LoadResultById($resultid) ;
     
+            $this->add_row(html_b("Swim Meet Id"), $result->getSwimmeetid()) ;
+            $this->add_row(html_b("Swim Team Id"), $result->getSwimteamid()) ;
+            $this->add_row(html_b("Swimmer Id"), $result->getSwimmerid()) ;
             $this->add_row(html_b("Organization"), SDIFCodeTables::GetOrgCode($result->getOrgCode())) ;
-            $this->add_row(html_b("Result Code"), $result->getResultCode()) ;
-            $this->add_row(html_b("Result Name"), $result->getResultName()) ;
-            $this->add_row(html_b("Result Name Abbreviation"), $result->getResultNameAbrv()) ;
-            $this->add_row(html_b("Result Addresss 1"), $result->getResultAddress1()) ;
-            $this->add_row(html_b("Result Addresss 2"), $result->getResultAddress2()) ;
-            $this->add_row(html_b("City"), $result->getResultCity()) ;
-            $this->add_row(html_b("State"), $result->getResultState()) ;
-            $this->add_row(html_b("Postal Code"), $result->getResultPostalCode()) ;
-            $this->add_row(html_b("Country"), SDIFCodeTables::GetCountryCode($result->getResultCountryCode())) ;
-            $this->add_row(html_b("Region"), SDIFCodeTables::GetRegionCode($result->getRegionCode())) ;
-            $this->add_row(html_b("Result Code 5th Character"), $result->getResultCode5()) ;
+            $this->add_row(html_b("Swimmer Name"), $result->getSwimmerName()) ;
+            $this->add_row(html_b("USS"), $result->getUSS()) ;
+            $this->add_row(html_b("USS (new)"), $result->getUSSNew()) ;
+            $this->add_row(html_b("USS (old)"), $result->getUSSOld()) ;
+            $this->add_row(html_b("Attached"), SDIFCodeTables::GetAttachedCode($result->getAttachCode())) ;
+            $this->add_row(html_b("Citizen"), SDIFCOdeTables::GetCitizenCode($result->getCitizenCode())) ;
+            $this->add_row(html_b("Birth Date"), $result->getBirthDate(true)) ;
+            $this->add_row(html_b("Age or Class"), $result->getAgeOrClass()) ;
+            $this->add_row(html_b("Gender"), SDIFCodeTables::GetGenderCode($result->getGender())) ;
+            $this->add_row(html_b("Event Gender"), SDIFCodeTables::GetEventGenderCode($result->getEventGender())) ;
+            $this->add_row(html_b("Event Distance"), $result->getEventDistance()) ;
+            $this->add_row(html_b("Stroke Code"), SDIFCodeTables::GetStrokeCode($result->getStrokeCode())) ;
+            $this->add_row(html_b("Event Number"), $result->getEventNumber()) ;
+            $this->add_row(html_b("Event Age Code"), $result->getEventAgeCode()) ;
+            $this->add_row(html_b("Swim Date"), $result->getSwimDate(true)) ;
+            $this->add_row(html_b("Seed Time"), $result->getSeedTime()) ;
+            $this->add_row(html_b("Seed Course"), SDIFCodeTables::GetCourseCode($result->getSeedCourseCode())) ;
+            $this->add_row(html_b("Prelim Time"), $result->getPrelimTime()) ;
+            $this->add_row(html_b("Prelim Course"), SDIFCodeTables::GetCourseCode($result->getPrelimCourseCode())) ;
+            $this->add_row(html_b("Swim Off Time"), $result->getSwimOffTime()) ;
+            $this->add_row(html_b("Swim Off Course"), SDIFCodeTables::GetCourseCode($result->getSwimOffCourseCode())) ;
+            $this->add_row(html_b("Finals Time"), $result->getFinalsTime()) ;
+            $this->add_row(html_b("Finals Course"), SDIFCodeTables::GetCourseCode($result->getFinalsCourseCode())) ;
+            $this->add_row(html_b("Prelim Heat Number"), $result->getPrelimHeatNumber()) ;
+            $this->add_row(html_b("Prelim Lane Number"), $result->getPrelimLaneNumber()) ;
+            $this->add_row(html_b("Finals Heat Number"), $result->getFinalsHeatNumber()) ;
+            $this->add_row(html_b("Finals Lane Number"), $result->getFinalsLaneNumber()) ;
+            $this->add_row(html_b("Prelim Place Ranking"), $result->getPrelimPlaceRanking()) ;
+            $this->add_row(html_b("Finals Place Ranking"), $result->getFinalsPlaceRanking()) ;
+            $this->add_row(html_b("Finals Points"), $result->getFinalsPoints()) ;
+            $this->add_row(html_b("Event Time Class Code"), $result->getEventTimeClassCode()) ;
+            $this->add_row(html_b("Swimmer Flight Status"), $result->getSwimmerFlightStatus()) ;
         }
         else
         {
             $this->add_row("No swim result details available.") ;
+        }
+    }
+}
+
+/**
+ * Class definition of a event result info table
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FlipTurnInfoTable
+ */
+class EventEventInfoTable extends FlipTurnInfoTable
+{
+    /**
+     * Property to hold the event id
+     */
+    var $_eventid ;
+
+    /**
+     * Set Swim Event Id
+     *
+     * @param int - $id - Id of the swim event
+     */
+    function setEventId($id)
+    {
+        $this->_eventid = $id ;
+    }
+
+    /**
+     * Get Swim Event Id
+     *
+     * @return int - Id of the event
+     */
+    function getEventId()
+    {
+        return $this->_eventid ;
+    }
+
+    /**
+     * Construct a summary of the active season.
+     *
+     */
+    function BuildInfoTable($eventid = null)
+    {
+        //  Alternate the row colors
+        $this->set_alt_color_flag(true) ;
+
+        $result = new SwimResult() ;
+
+        if (is_null($eventid)) $eventid = $this->getEventId() ;
+
+        if (!is_null($eventid) || $event->EventExistsById($eventid))
+        {
+            var_dump($eventid) ;
+            $event = explode($eventid, '-') ;
+            $result->setEventCode($event[0]) ;
+            $result->setAgeGroupCode($event[1]) ;
+            $result->setEventCode($event[2]) ;
+
+            //$event->LoadEventById($eventid) ;
+    
+            $this->add_row("Event details available.") ;
+            //$this->add_row(html_b("Organization"), SDIFCodeTables::GetOrgCode($event->getOrgCode())) ;
+            //$this->add_row(html_b("Event Code"), $event->getEventCode()) ;
+            //$this->add_row(html_b("Event Name"), $event->getEventName()) ;
+            //$this->add_row(html_b("Event Name Abbreviation"), $event->getEventNameAbrv()) ;
+            //$this->add_row(html_b("Event Addresss 1"), $event->getEventAddress1()) ;
+            //$this->add_row(html_b("Event Addresss 2"), $event->getEventAddress2()) ;
+            //$this->add_row(html_b("City"), $event->getEventCity()) ;
+            //$this->add_row(html_b("State"), $event->getEventState()) ;
+            //$this->add_row(html_b("Postal Code"), $event->getEventPostalCode()) ;
+            //$this->add_row(html_b("Country"), SDIFCodeTables::GetCountryCode($event->getEventCountryCode())) ;
+            //$this->add_row(html_b("Region"), SDIFCodeTables::GetRegionCode($event->getRegionCode())) ;
+            //$this->add_row(html_b("Event Code 5th Character"), $event->getEventCode5()) ;
+        }
+        else
+        {
+            $this->add_row("No event details available.") ;
         }
     }
 }

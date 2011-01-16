@@ -27,6 +27,21 @@ include_once('ft.include.php') ;
  */
 class FlipTurnLayoutPage extends PageWidget
 {
+    /**
+     * User is logged in?
+     *
+     * @return boolean status of user login
+     */
+    function user_is_logged_in()
+    {
+        if (session_id() == "") session_start() ;
+
+        if (!isset($_SESSION[FT_LOGIN_STATUS]))
+            $_SESSION[FT_LOGIN_STATUS] = false ;
+
+        return $_SESSION[FT_LOGIN_STATUS] ;
+    }
+
 	/**
 	 * This is the constructor.
 	 *
@@ -115,12 +130,25 @@ class FlipTurnLayoutPage extends PageWidget
 		$table = html_table("100%",0);
 		$left_div = html_div("leftblock", $this->left_block() );		
 
-		$table->add_row( html_td("leftblock", "", $left_div ),
-						 html_td("divider", "", "&nbsp;"),
-						 html_td("rightblock", "", $this->content_block() ));
+		$table->add_row(html_td('leftblock', '', $left_div),
+            html_td('divider', '', '&nbsp;'), html_td('rightblock',
+            '', $this->status_bar(), html_br(), html_div(null, $this->content_block())));
         $main->add( $table );
 
 		return $main;
+    }
+
+    /**
+     * Status Bar
+     *
+     * @return container
+     */
+    function status_bar()
+    {
+        $c = container() ;
+        $c->add(html_div('statusbar', $this->DateMessage(), $this->LoginMessage())) ;
+
+        return $c ;
     }
 
 
@@ -140,21 +168,26 @@ class FlipTurnLayoutPage extends PageWidget
 		
    		//  End User actions
 		$navtable->add("/", "Home", "Flip-Turn Home") ;
+		//$navtable->add("admin.php", $this->user_is_logged_in() ? 'Logout' : 'Login') ;
+        //$navtable->add_text(_HTML_SPACE) ;
 		$navtable->add("results_by_event.php", "By Event", "By Event") ;
-		$navtable->add("results_by_meet.php", "By Swim Meet", "By Swim Meet") ;
+		$navtable->add("results_by_swimmeet.php", "By Swim Meet", "By Swim Meet") ;
 		$navtable->add("results_by_swimmer.php", "By Swimmer", "By Swimmer") ;
 
 		$div->add( $navtable, html_br());
 
-   		//  Administrative actions
-		$navtable = new VerticalCSSNavTable("Administration", "", "90%") ;
+        if ($this->user_is_logged_in())
+        {
+   		    //  Administrative actions
+		    $navtable = new VerticalCSSNavTable("Administration", "", "90%") ;
 		
-		$navtable->add("swimteams.php", "Swim Teams", "Swim Teams") ;
-		$navtable->add("swimmeets.php", "Swim Meets", "Swim Meets") ;
-		$navtable->add("queue.php", "Results Queue", "Results Queue") ;
-		$navtable->add("queue_upload.php", "Upload Results", "Upload Results") ;
+		    $navtable->add("swimteams.php", "Swim Teams", "Swim Teams") ;
+		    $navtable->add("swimmeets.php", "Swim Meets", "Swim Meets") ;
+		    $navtable->add("queue.php", "Results Queue", "Results Queue") ;
+		    $navtable->add("queue_upload.php", "Upload Results", "Upload Results") ;
 
-		$div->add( $navtable, html_br());
+		    $div->add( $navtable, html_br());
+        }
 
         return $div;
     }
@@ -170,11 +203,10 @@ class FlipTurnLayoutPage extends PageWidget
      */
     function content_block()
     {
-		$container = container( "CONTENT BLOCK", html_br(2),
-								html_a($_SERVER["PHP_SELF"]."?debug=1", 
-									   "Show Debug source"),
-								html_br(10));
-		return $container;
+        $container = container("CONTENT BLOCK",
+            html_br(2), html_a($_SERVER["PHP_SELF"]."?debug=1", 
+		   "Show Debug source"), html_br(10));
+		return $container ;
     }
 
 
@@ -187,6 +219,11 @@ class FlipTurnLayoutPage extends PageWidget
     function footer_block()
     {
         $f = new FooterNav("Flip-Turn.com") ;
+        $f->set_company_name("Flip-Turn.com");
+        $f->set_webmaster_email("admin@flip-turn.com");
+        $f->set_legalnotice_url("legal.php");
+        $f->set_privacypolicy_url("privacy.php");
+        
         $f->set_date_string(date("Y")) ;
         $f->add("index.php", "Home") ;
         $f->add("about.php", "About") ;
@@ -207,6 +244,98 @@ class FlipTurnLayoutPage extends PageWidget
         $c->add(html_div("fterrormsg", $msg)) ;
 
         return $c ;
+    }
+
+    /*
+     * This function returns a container with the appropriate "Date"
+     * message derived from the current date.
+     *
+     * @return HTMLTag object
+     */
+
+    function DateMessage()
+    {
+        $dm = html_div() ;
+        $dm->set_id("DateMessage") ;
+        $dm->set_style("float: right;") ;
+
+        $dm->add(date("l, F jS, Y", time())) ;
+
+        return $dm ;
+    }
+    /*
+     * This function returns a container with the appropriate
+     * "Login" or "Logout" message derived from the current status.
+     *
+     * @return HTMLTag object
+     */
+
+    function LoginMessage()
+    {
+        $lm = html_div() ;
+        $lm->set_id("LoginMessage") ;
+        $lm->set_style("float: left;") ;
+
+        $welcome = sprintf('Welcome %s - ', $this->user_is_logged_in() ? 'Admin' : 'Guest') ;
+
+        $lm->add($welcome, html_a('admin.php', $this->user_is_logged_in() ? 'Logout' : 'Login')) ;
+
+        return $lm ;
+    }
+}
+
+/**
+ * This is Flip-Turn Child of the PageWidget
+ * class that is used for the base page layout
+ * throughout the Flip-Turn web application.
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FlipTurnLayoutPage
+ *
+ */
+class FlipTurnLayoutPermissionsPage extends FlipTurnLayoutPage
+{
+	/**
+	 * This is the constructor.
+	 *
+	 * @param string - $title - the title for the page and the
+	 *                 titlebar object.
+	 * @param - string - The render type (HTML, XHTML, etc. )	 
+     *
+	 */
+    function FlipTurnLayoutPermissionsPage($title, $render_type = HTML)
+    {
+        //  Turn on the ability to do a permissions check
+        $this->allow_permissions_checks(true) ;
+ 
+        parent::FlipTurnLayoutPage($title, $render_type) ;
+    }
+
+    /**
+     * This method is called during constructor time to check
+     * to make sure the page is allowed to build and render
+     * any content.
+     * 
+     * @return boolean FALSE = not allowed.
+     */
+    function permission()
+    {
+        if (session_id() == "") session_start() ;
+
+        $ok = isset($_SESSION[FT_LOGIN_STATUS]) && $_SESSION[FT_LOGIN_STATUS] ;
+
+        //  Is Admin logged in?
+
+        if (!$ok)
+        {
+            //ok we 'failed'.  Lets set the specialized error message
+            $this->set_permissions_message("You do not have permission to view this page.") ;
+
+            return false ;
+        }
+
+        return true ;
     }
 }
 ?>

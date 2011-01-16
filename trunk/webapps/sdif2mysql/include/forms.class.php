@@ -627,4 +627,158 @@ class FlipTurnFileUploadForm extends FlipTurnForm
         return $this->form_content_buttons_Upload_Cancel() ;
     }
 }
+
+/**
+ * Construct the Flip Turn Admin login/logout form
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FlipTurnForm
+ */
+class FlipTurnAdminLoginForm extends FlipTurnForm
+{
+    /**
+     * This method gets called EVERY time the object is
+     * created.  It is used to build all of the 
+     * FormElement objects used in this Form.
+     *
+     */
+    function form_init_elements()
+    {
+        $password = new FEPassword("Password", true, "225px") ; 
+        $this->add_element($password) ;
+    }
+
+    /**
+     * This is the method that builds the layout of where the
+     * FormElements will live.  You can lay it out any way
+     * you like.
+     *
+     */
+    function form_content()
+    {
+        $table = html_table($this->_width,0,4) ;
+        $table->set_style("border: 0px solid") ;
+
+        $table->add_row($this->element_label('Password'),
+            $this->element_form('Password')) ;
+
+        $this->add_form_block(null, $table) ;
+    }
+
+    /**
+     * This method gets called after the FormElement data has
+     * passed the validation.  This enables you to validate the
+     * data against some backend mechanism, say a DB.
+     *
+     */
+    function form_backend_validation()
+    {
+        return ($this->get_element_value('Password') == FT_PASSWORD) ;
+    }
+
+    /**
+     * This method is called ONLY after ALL validation has
+     * passed.  This is the method that allows you to 
+     * do something with the data, say insert/update records
+     * in the DB.
+     */
+    function form_action()
+    {
+        var_dump(basename(__FILE__) . '::' . __LINE__) ;
+        if (session_id() == "") session_start() ;
+
+        $_SESSION[FT_LOGIN_STATUS] = true ;
+        $this->set_action_message("Admin login successful.") ;
+
+        return true ;
+    }
+
+    /**
+     * Overload form_content_buttons() method to have the
+     * button display "Upload" instead of the default "Save".
+     *
+     */
+    function form_content_buttons()
+    {
+        return $this->form_content_buttons_Confirm_Cancel() ;
+    }
+}
+
+/**
+ * Construct the Flip Turn Admin login/logout form
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FlipTurnForm
+ */
+class FlipTurnAdminLogoutForm extends FlipTurnForm
+{
+    /**
+     * This method gets called EVERY time the object is
+     * created.  It is used to build all of the 
+     * FormElement objects used in this Form.
+     *
+     */
+    function form_init_elements()
+    {
+        $logout = new FEYesNoRadioGroup('Confirm Logout') ;
+        $this->add_element($logout) ;
+    }
+
+    /**
+     * This is the method that builds the layout of where the
+     * FormElements will live.  You can lay it out any way
+     * you like.
+     *
+     */
+    function form_content()
+    {
+        $table = html_table($this->_width,0,4) ;
+        $table->set_style("border: 0px solid") ;
+
+        $table->add_row($this->element_label('Confirm Logout'),
+            $this->element_form('Confirm Logout')) ;
+
+        $this->add_form_block(null, $table) ;
+    }
+
+    /**
+     * This method gets called after the FormElement data has
+     * passed the validation.  This enables you to validate the
+     * data against some backend mechanism, say a DB.
+     *
+     */
+    function form_backend_validation()
+    {
+        return ($this->get_element_value('Confirm Logout') == 'yes') ;
+    }
+
+    /**
+     * This method is called ONLY after ALL validation has
+     * passed.  This is the method that allows you to 
+     * do something with the data, say insert/update records
+     * in the DB.
+     */
+    function form_action()
+    {
+        var_dump(basename(__FILE__) . '::' . __LINE__) ;
+        if (session_id() == "") session_start() ;
+
+        $_SESSION[FT_LOGIN_STATUS] = false ;
+
+        $this->set_action_message("Admin logout successful.") ;
+        return true ;
+    }
+
+    /**
+     * Overload form_content_buttons() method to have the
+     * button display "Upload" instead of the default "Save".
+     *
+     */
+    function form_content_buttons()
+    {
+        return $this->form_content_buttons_Confirm_Cancel() ;
+    }
+}
 ?>

@@ -22,6 +22,7 @@
 //  Need the DB defintions so everything will work
 
 require_once('db.include.php') ;
+include_once(PHPHTMLLIB_ABSPATH . "/widgets/data_list/includes.inc") ;
 
 /**
  * Class for managing the FlipTurn the database interface.

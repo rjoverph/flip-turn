@@ -17,7 +17,7 @@
  *
  */
 
-define('FT_DEBUG', true) ;
+define('FT_DEBUG', false) ;
 define('FT_CREATE', 'create') ;
 define('FT_IGNORE', 'ignore') ;
 
@@ -28,6 +28,9 @@ define('FT_ACTION_UPDATE', 'update') ;
 define('FT_ACTION_DELETE', 'delete') ;
 
 define('FT_US_ONLY', false) ;
+
+define('FT_LOGIN_STATUS', 'ft_login_status') ;
+define('FT_PASSWORD', 'SimpleSimon101') ;
 
 ?>
 

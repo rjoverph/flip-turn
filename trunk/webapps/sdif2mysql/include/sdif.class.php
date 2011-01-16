@@ -1332,22 +1332,28 @@ class SDIFD0Record extends SDIFRecord
      * Construct the new format of the USS swimmer number
      * from the name and birth date fields.
      */
-    function setUSSNew()
+    function setUSSNew($uss = null)
     {
-        $dob = split('-', $this->getBirthDate()) ;
-        $name = split(',', $this->getSwimmerName()) ;
+        if (is_null($uss))
+        {
+            $dob = split('-', $this->getBirthDate()) ;
+            $name = split(',', $this->getSwimmerName()) ;
+            var_dump($dob, $this->getBirthDate()) ;
 
-        //  Make sure there are 3 elements in the $name array
-        for ($i = 0 ; $i <= 2 ; $i++)
-            if (!array_key_exists($i, $name)) $name[$i] = '' ;
+            //  Make sure there are 3 elements in the $name array
+            for ($i = 0 ; $i <= 2 ; $i++)
+                if (!array_key_exists($i, $name)) $name[$i] = '' ;
 
-        $first = strtoupper(trim($name[1])) ;
-        $last = strtoupper(trim($name[0])) ;
-        $middle = '*' ;
+            $first = strtoupper(trim($name[1])) ;
+            $last = strtoupper(trim($name[0])) ;
+            $middle = '*' ;
 
-        $this->_uss_new = sprintf('%02s%02s%02s%3s%1s%4s',
-            $dob[1], $dob[2], substr($dob[0], 2, 2), substr($first, 0, 3),
-            substr($middle, 0, 1), substr($last, 0, 4)) ;
+            $this->_uss_new = sprintf('%02s%02s%02s%3s%1s%4s',
+                $dob[1], $dob[2], substr($dob[0], 2, 2), substr($first, 0, 3),
+                substr($middle, 0, 1), substr($last, 0, 4)) ;
+        }
+        else
+            $this->_uss_new = $uss ;
     }
 
     /**
@@ -1364,9 +1370,12 @@ class SDIFD0Record extends SDIFRecord
      * Set USS Old
      *
      */
-    function setUSSOld()
+    function setUSSOld($uss = null)
     {
-        $this->_uss_old = substr($this->getUSSNew(), 0, 12) ;
+        if (is_null($uss))
+            $this->_uss_old = substr($this->getUSSNew(), 0, 12) ;
+        else
+            $this->_uss_old = $uss ;
     }
 
     /**
@@ -2695,6 +2704,110 @@ class SDIFZ0Record extends SDIFRecord
  */
 class SDIFCodeTables
 {
+    /**
+     * Return the Gender Code text based on the supplied
+     * gender code.  Return either "Invalid" or an empty
+     * string when the code cannot be mapped.
+     *
+     * @param string gender code
+     * @param boolean optional invalid mapping
+     * @return string gender code description
+     */
+    function GetGenderCode($code, $invalid = true)
+    {
+        $FT_SDIF_GENDER_CODES = array(
+            FT_SDIF_SWIMMER_SEX_CODE_MALE_VALUE => FT_SDIF_SWIMMER_SEX_CODE_MALE_LABEL
+           ,FT_SDIF_SWIMMER_SEX_CODE_FEMALE_VALUE => FT_SDIF_SWIMMER_SEX_CODE_FEMALE_LABEL
+        ) ;
+
+        if (array_key_exists($code, $FT_SDIF_GENDER_CODES))
+            return $FT_SDIF_GENDER_CODES[$code] ;
+        else if ($invalid)
+            return "Invalid" ;
+        else
+            return "" ;
+    }
+
+    /**
+     * Return the Event Gender Code text based on the supplied
+     * event gender code.  Return either "Invalid" or an empty
+     * string when the code cannot be mapped.
+     *
+     * @param string event gender code
+     * @param boolean optional invalid mapping
+     * @return string event gender code description
+     */
+    function GetEventGenderCode($code, $invalid = true)
+    {
+        $FT_SDIF_EVENT_GENDER_CODES = array(
+            FT_SDIF_EVENT_SEX_CODE_MALE_VALUE => FT_SDIF_EVENT_SEX_CODE_MALE_LABEL
+           ,FT_SDIF_EVENT_SEX_CODE_FEMALE_VALUE => FT_SDIF_EVENT_SEX_CODE_FEMALE_LABEL
+           ,FT_SDIF_EVENT_SEX_CODE_MIXED_VALUE => FT_SDIF_EVENT_SEX_CODE_MIXED_LABEL
+        ) ;
+
+        if (array_key_exists($code, $FT_SDIF_EVENT_GENDER_CODES))
+            return $FT_SDIF_EVENT_GENDER_CODES[$code] ;
+        else if ($invalid)
+            return "Invalid" ;
+        else
+            return "" ;
+    }
+
+    /**
+     * Return the Attach Code text based on the supplied
+     * attached code.  Return either "Invalid" or an empty
+     * string when the code cannot be mapped.
+     *
+     * @param string attached code
+     * @param boolean optional invalid mapping
+     * @return string attached code description
+     */
+    function GetAttachedCode($code, $invalid = true)
+    {
+        $FT_SDIF_ATTACHED_CODES = array(
+            FT_SDIF_ATTACHED_CODE_ATTACHED_VALUE => FT_SDIF_ATTACHED_CODE_ATTACHED_LABEL
+           ,FT_SDIF_ATTACHED_CODE_UNATTACHED_VALUE => FT_SDIF_ATTACHED_CODE_UNATTACHED_LABEL
+        ) ;
+
+        if (array_key_exists($code, $FT_SDIF_ATTACHED_CODES))
+            return $FT_SDIF_ATTACHED_CODES[$code] ;
+        else if ($invalid)
+            return "Invalid" ;
+        else
+            return "" ;
+    }
+
+    /**
+     * Return the Citizen Code text based on the supplied
+     * citizen code.  Return either "Invalid" or an empty
+     * string when the code cannot be mapped.
+     *
+     * @param string citizen code
+     * @param boolean optional invalid mapping
+     * @return string citizen code description
+     */
+    function GetCitizenCode($code, $invalid = true)
+    {
+        $FT_SDIF_CITIZEN_CODES = array(
+            FT_SDIF_CITIZENSHIP_CODE_DUAL_VALUE => FT_SDIF_CITIZENSHIP_CODE_DUAL_LABEL
+           ,FT_SDIF_CITIZENSHIP_CODE_FOREIGN_VALUE => FT_SDIF_CITIZENSHIP_CODE_FOREIGN_LABEL
+        ) ;
+
+        //  The citizen code can also come from the list of
+        //  Country codes so look there first!
+
+        $cc = SDIFCodeTables::GetCountryCode($code) ;
+
+        if ($cc != "")
+            return $cc ;
+        else if (array_key_exists($code, $FT_SDIF_CITIZEN_CODES))
+            return $FT_SDIF_CITIZEN_CODES[$code] ;
+        else if ($invalid)
+            return "Invalid" ;
+        else
+            return "" ;
+    }
+
     /**
      * Return the Org Code text based on the supplied
      * org code.  Return either "Invalid" or an empty

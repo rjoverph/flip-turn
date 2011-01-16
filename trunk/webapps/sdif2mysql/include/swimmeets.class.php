@@ -395,9 +395,7 @@ class SwimMeetsDataList extends DefaultGUIDataList
         $t->add_row(
             $this->action_button('Details', 'swimmeet_details.php'),
             _HTML_SPACE,
-            $this->action_button('Results', 'swimmeet_results.php'),
-            _HTML_SPACE,
-            $this->action_button('Update', 'swimmeet_update.php')) ;
+            $this->action_button('Results', 'swimmeet_results.php')) ;
 
         $c->add($t) ;
 
@@ -492,6 +490,47 @@ class SwimMeetsDataList extends DefaultGUIDataList
 
         return $obj ;
     }    
+}
+
+/**
+ * SwimMeetsAdminDataList class
+ *
+ * Child GUIDataList class to present the Swim Meets in a
+ * GUIDataList widget to allow the user to take some action
+ * against it.
+ *
+ *
+ * @author Mike Walsh - mike_walsh@mindspring.com
+ * @access public
+ * @see SwimMeetsDataList
+ *
+ */
+class SwimMeetsAdminDataList extends SwimMeetsDataList
+{
+    /**
+     * Define the action bar - actions which can be performed on
+     * the data in the GDL.
+     *
+     * @return container
+     */
+    function actionbar_cell()
+    {
+        $c = container() ;
+        $t = html_table("") ;
+
+        //  Add the buttons ...
+
+        $t->add_row(
+            $this->action_button('Details', 'swimmeet_details.php'),
+            _HTML_SPACE,
+            $this->action_button('Results', 'swimmeet_results.php'),
+            _HTML_SPACE,
+            $this->action_button('Update', 'swimmeet_update.php')) ;
+
+        $c->add($t) ;
+
+        return $c ;
+    }
 }
 
 /**

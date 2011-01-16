@@ -97,9 +97,9 @@ class FlipTurnGUIDataList extends DefaultGUIDataList
      * Class properties to drive the GUIDataList
      */
 
-    var $__columns ;
-    var $__tables ;
-    var $__where_clause ;
+    var $__columns = "" ;
+    var $__tables = "" ;
+    var $__where_clause = "" ;
 
     /**
      * The constructor
@@ -114,12 +114,15 @@ class FlipTurnGUIDataList extends DefaultGUIDataList
      */
     function FlipTurnGUIDataList($title, $width = "100%",
         $default_orderby = '', $default_reverseorder = FALSE,
-        $columns, $tables, $where_clause)
+        $columns = null, $tables = null, $where_clause = null)
     {
         //  Set the properties for this child class
-        $this->setColumns($columns) ;
-        $this->setTables($tables) ;
-        $this->setWhereClause($where_clause) ;
+        if (!is_null($columns))
+            $this->setColumns($columns) ;
+        if (!is_null($tables))
+            $this->setTables($tables) ;
+        if (!is_null($where_clause))
+            $this->setWhereClause($where_clause) ;
 
         //  Call the constructor of the parent class
         $this->DefaultGUIDataList($title, $width,
@@ -205,26 +208,21 @@ class FlipTurnGUIDataList extends DefaultGUIDataList
 	 */
     function get_data_source()
     {
-		//build the PEAR DB object and connect
-		//to the database.
+        //  Build the ADO DB object and connect to the database.
+        $db = &ADONewConnection(FT_DB_DSN) ;
 
-        $db = new wpdb(WPST_DB_USERNAME,
-            WPST_DB_PASSWORD, WPST_DB_NAME, WPST_DB_HOSTNAME);
+        //  Create the DataListSource object and pass in the ADO DB object
+        $source = new ADODBSQLDataListSource($db) ;
 
-		//  Create the DataListSource object
-		//  and pass in the WordPress DB object
-		$source = new WordPressSQLDataListSource($db) ;
-		//$source = new PEARSQLDataListSource($wpdb->dbh) ;
+        //  Set the DataListSource for this DataList
+        //  Every DataList needs a Source for it's data.
+        $this->set_data_source($source) ;
 
-		//  Set the DataListSource for this DataList
-		//  Every DataList needs a Source for it's data.
-		$this->set_data_source($source) ;
-
-		//  Set the prefix for all the internal query string 
-		//  variables.  You really only need to change this
-		//  if you have more then 1 DataList object per page.
-		$this->set_global_prefix(WPST_DB_PREFIX) ;
-	}
+        //  set the prefix for all the internal query string 
+        //  variables.  You really only need to change this
+        //  if you have more then 1 DataList object per page.
+        $this->set_global_prefix(FT_DB_PREFIX) ;
+    }
 
 	/**
      * This method is used to setup the optons
