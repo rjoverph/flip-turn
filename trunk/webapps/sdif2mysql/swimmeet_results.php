@@ -62,7 +62,7 @@ class SwimMeetsPage extends FlipTurnLayoutPage
 
         //  Complex order by clause to make sure DQ and NS are shown
         //  after valid times.
-        $swimresults = new SwimResultsDataList('Results', 800, 'event_number,
+        $swimresults = new SwimResultsDataList('Results', '100%', 'event_number,
             case when finals_time_ft = 0.0 then 1 else 0 end,
             finals_time_ft') ;
         $swimresults->set_save_vars(array('swimmeetid' => $swimmeetid)) ;

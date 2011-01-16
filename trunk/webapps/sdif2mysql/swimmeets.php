@@ -37,7 +37,7 @@ class SwimMeetsPage extends FlipTurnLayoutPermissionsPage
 	    
         $container = container() ;
 
-        $swimmeets = new SwimMeetsAdminDataList("Swim Meets", 800, "swimmeetid") ;
+        $swimmeets = new SwimMeetsAdminDataList("Swim Meets", '100%', "swimmeetid") ;
         $div = html_div() ;
         $div->set_id("swimmeetsgdl") ;
         $div->add($swimmeets) ;

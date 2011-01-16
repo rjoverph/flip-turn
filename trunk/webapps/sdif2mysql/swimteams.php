@@ -37,7 +37,7 @@ class SwimTeamsPage extends FlipTurnLayoutPage
 	    
         $container = container() ;
 
-        $swimteams = new SwimTeamsDataList("Swim Teams", 800, "swimteamid") ;
+        $swimteams = new SwimTeamsDataList("Swim Teams", '100%', "swimteamid") ;
         $div = html_div() ;
         $div->set_id("swimteamsgdl") ;
         $div->add($swimteams) ;

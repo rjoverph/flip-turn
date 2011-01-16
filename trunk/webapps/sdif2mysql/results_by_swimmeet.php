@@ -7,7 +7,7 @@
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @package Flip-Turn
- * @subpackage SwimMeets
+ * @subpackage SwimMeetResults
  *
  */ 
 
@@ -25,10 +25,10 @@ include_once("swimmeets.class.php") ;
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @package Flip-Turn
- * @subpackage SwimMeets
+ * @subpackage SwimMeetResults
  *
  */
-class SwimMeetsPage extends FlipTurnLayoutPage
+class SwimMeetResultsPage extends FlipTurnLayoutPage
 {
     function content_block()
     {
@@ -37,7 +37,7 @@ class SwimMeetsPage extends FlipTurnLayoutPage
 	    
         $container = container() ;
 
-        $swimmeets = new SwimMeetsDataList("Swim Meets", 800, "swimmeetid") ;
+        $swimmeets = new SwimMeetsDataList("Swim Meets", '100%', "swimmeetid") ;
         $div = html_div() ;
         $div->set_id("swimmeetsgdl") ;
         $div->add($swimmeets) ;
@@ -48,6 +48,6 @@ class SwimMeetsPage extends FlipTurnLayoutPage
 }
 
 //  Create the page and render it.
-$page = new SwimMeetsPage("Swim Meets") ;
+$page = new SwimMeetResultsPage("Swim Meet Results") ;
 print $page->render() ;
 ?>

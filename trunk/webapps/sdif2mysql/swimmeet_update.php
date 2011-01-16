@@ -74,7 +74,7 @@ class SwimMeetUpdatePage extends FlipTurnLayoutPage
             //  Add the InfoTableCSS so the tables look right
 	        $this->add_head_css(new DefaultGUIDataListCSS) ;
 	    
-            $swimmeets = new SwimMeetsDataList("Swim Meets", 800, "swimmeetid") ;
+            $swimmeets = new SwimMeetsDataList("Swim Meets", '100%', "swimmeetid") ;
             $div = html_div() ;
             $div->set_id("swimmeetsgdl") ;
             $div->add($swimmeets) ;

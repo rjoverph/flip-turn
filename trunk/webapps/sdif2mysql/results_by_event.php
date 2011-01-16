@@ -1,13 +1,13 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /**
- * Swim Meets
+ * Swim Meets Results by Event
  *
  * $Id$
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @package Flip-Turn
- * @subpackage SwimMeets
+ * @subpackage Results
  *
  */ 
 
@@ -25,10 +25,10 @@ include_once("results.class.php") ;
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @package Flip-Turn
- * @subpackage SwimMeets
+ * @subpackage SwimMeetEvents
  *
  */
-class SwimMeetsPage extends FlipTurnLayoutPage
+class SwimMeetEventsPage extends FlipTurnLayoutPage
 {
     function content_block()
     {
@@ -37,7 +37,7 @@ class SwimMeetsPage extends FlipTurnLayoutPage
 	    
         $container = container() ;
 
-        $swimmeets = new SwimResultsByEventDataList("Events", 800, "eventid") ;
+        $swimmeets = new SwimResultsByEventDataList("Events", '100%', "eventid") ;
         $div = html_div() ;
         $div->set_id("swimmeetsgdl") ;
         $div->add($swimmeets) ;
@@ -48,6 +48,6 @@ class SwimMeetsPage extends FlipTurnLayoutPage
 }
 
 //  Create the page and render it.
-$page = new SwimMeetsPage("Swim Meets") ;
+$page = new SwimMeetEventsPage("Swim Meet Events") ;
 print $page->render() ;
 ?>
