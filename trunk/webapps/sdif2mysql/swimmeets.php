@@ -28,7 +28,7 @@ include_once("swimmeets.class.php") ;
  * @subpackage SwimMeets
  *
  */
-class SwimMeetsPage extends FlipTurnLayoutPage
+class SwimMeetsPage extends FlipTurnLayoutPermissionsPage
 {
     function content_block()
     {
@@ -37,7 +37,7 @@ class SwimMeetsPage extends FlipTurnLayoutPage
 	    
         $container = container() ;
 
-        $swimmeets = new SwimMeetsDataList("Swim Meets", 800, "swimmeetid") ;
+        $swimmeets = new SwimMeetsAdminDataList("Swim Meets", 800, "swimmeetid") ;
         $div = html_div() ;
         $div->set_id("swimmeetsgdl") ;
         $div->add($swimmeets) ;
