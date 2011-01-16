@@ -37,7 +37,7 @@ class SDIFQueuePage extends FlipTurnLayoutPage
 	    
         $container = container() ;
 
-        $sdifqueue = new SDIFQueueDataList("SDIF Queue", 800, "sdifrecordid") ;
+        $sdifqueue = new SDIFQueueDataList("SDIF Queue", '100%', "sdifrecordid") ;
         $div = html_div() ;
         $div->set_id("sdifqueuegdl") ;
         $div->add($sdifqueue) ;
