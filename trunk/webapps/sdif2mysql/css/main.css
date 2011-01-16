@@ -46,8 +46,28 @@ body {
 	/*background-color: #AFB5FF;	*/
 	background-color: #30669A;
 	width: 100%;
-	height:52px;
+	height:75px;
 	padding-top: 2px;	
+}
+
+.pageheader img {
+    float: left ;
+    margin: 2px 10px 0px 10px;
+}
+
+.pageheader h2 {
+    color: white;
+    clear: right;
+}
+
+.pageheader h4 {
+    color: white;
+    clear: none ;
+}
+
+.headerimage {
+    float: left ;
+    padding: 3px ;
 }
 
 .navheader {
@@ -75,9 +95,9 @@ body {
 }		
 		
 .leftblock {
-        width: 180px; 
+    width: 180px; 
 	padding-top: 10px;
-        background-color: #eeeeee;
+    background-color: #eeeeee;
 	vertical-align: top;
 	min-height: 600px;
 	height:auto !important;
@@ -85,9 +105,10 @@ body {
 }
 		
 .rightblock {
-        width: 100%;
+    width: 100%;
 	padding: 0px 5px 0px 20px;
 	vertical-align: top;
+    background: url("../images/OnYourMarksLtGreyLeft_400x400.png") no-repeat scroll 100% 100% #ffffff;} 
 }
 		
 #footerblock {	
@@ -276,4 +297,8 @@ TD.divider {
     font-weight: bold;
     text-align: right;
     margin-bottom: 10px;
+}
+
+a.navurl:hover {
+    background: url("../images/OnYourMarksBlackLeft.png") no-repeat scroll 98% 100% #ffffff;} 
 }
