@@ -18,31 +18,13 @@
  *
  */
 
-/**
- * The username to use
- */
-define('FT_DB_USERNAME', 'cl2db') ;
-
-/**
- * The password to use
- */
-define('FT_DB_PASSWORD', 'cl2db') ;
-
-/**
- * The database server to use
- */
-define('FT_DB_HOSTNAME', 'localhost');
-
-/**
- * The database name to use
- */
-define('FT_DB_NAME', 'cl2db') ;
+//  Need the FT Config settings ...
+require_once('ft-config.php') ;
 
 /**
  * build the DSN which is used by phpHtmlLib
  */
 define('FT_DB_DSN', 'mysql://' . FT_DB_USERNAME . ':' . FT_DB_PASSWORD . '@' . FT_DB_HOSTNAME . '/' . FT_DB_NAME) ;
-
 
 /**
  * Define table prefix

@@ -27,10 +27,10 @@ define('FT_ACTION_ADD', 'add') ;
 define('FT_ACTION_UPDATE', 'update') ;
 define('FT_ACTION_DELETE', 'delete') ;
 
-define('FT_US_ONLY', false) ;
+//define('FT_US_ONLY', false) ;
 
 define('FT_LOGIN_STATUS', 'ft_login_status') ;
-define('FT_PASSWORD', 'SimpleSimon101') ;
+//define('FT_PASSWORD', 'SimpleSimon101') ;
 
 ?>
 

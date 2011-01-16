@@ -13,6 +13,7 @@
  *
  */
 
+require_once('ft-config.php') ;
 include_once('ft.include.php') ;
 
 /**
@@ -108,9 +109,14 @@ class FlipTurnLayoutPage extends PageWidget
      */
     function header_block()
     {
-        $header = html_div("pageheader");
+        $header = html_div('pageheader');
+		$header->add(html_comment('HEADER BLOCK AREA')) ;
+        $logo = html_a('/', html_img('/images/OnYourMarksWhite_080x066.png'), null, null, 'Home') ;
+        $logo->set_style('headerimage') ;
 
-		$header->add( "HEADER BLOCK AREA" );
+        $header->add($logo,
+            html_h2(FT_PAGE_HEADER), html_h4(FT_PAGE_SUBHEADER)) ;
+
         return $header;
     }
 
@@ -164,10 +170,10 @@ class FlipTurnLayoutPage extends PageWidget
 		$div = html_div();
 		$div->set_style("padding-left: 6px;");
 
-		$navtable = new VerticalCSSNavTable("Results", "", "90%") ;
+		$navtable = new VerticalCSSNavTable('Browse Results', '', '90%') ;
 		
    		//  End User actions
-		$navtable->add("/", "Home", "Flip-Turn Home") ;
+		$navtable->add('/', 'Home', 'Flip-Turn Home') ;
 		//$navtable->add("admin.php", $this->user_is_logged_in() ? 'Logout' : 'Login') ;
         //$navtable->add_text(_HTML_SPACE) ;
 		$navtable->add("results_by_event.php", "By Event", "By Event") ;

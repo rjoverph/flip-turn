@@ -37,4 +37,23 @@ define('FT_DB_HOSTNAME', 'tbd');
  */
 define('FT_DB_NAME', 'tbd') ;
 
-?>
+/**
+ * Web site header tag line
+ */
+define('FT_PAGE_HEADER', 'Flip-Turn') ;
+
+/**
+ * Web site subheader tag line
+ */
+define('FT_PAGE_SUBHEADER', 'Swim Meet Results Management') ;
+
+/**
+ * Web site admin password
+ */
+define('FT_PASSWORD', 'tbd') ;
+
+/**
+ * Config Flip-Turn for US-only use - causes only country
+ * choices to US and adds drop down for State choices.
+ */
+define('FT_US_ONLY', false) ;?>
