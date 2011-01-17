@@ -506,4 +506,52 @@ class SwimTeamDeleteForm extends SwimTeamUpdateForm
         return $this->form_content_buttons_Delete_Cancel() ;
     }
 }
+
+/**
+ * Construct the Swim Teams Purge form
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FlipTurnSwimTeamForm
+ */
+class SwimTeamsPurgeForm extends FlipTurnPurgeForm
+{
+    /**
+     * This method gets called EVERY time the object is
+     * created.  It is used to build all of the 
+     * FormElement objects used in this Form.
+     *
+     */
+    function form_init_elements()
+    {
+        $this->setPurgeLabel('Purge Swim Teams') ;
+        $this->setPurgeMessage('Purging the Swim Teams will delete all
+            swim teams currently stored in the database.  This action
+            cannot be reversed.  Make sure all data has been saved
+            appropriately prior to performing this action.') ;
+
+        parent::form_init_elements() ;
+    }
+
+    /**
+     * This method is called ONLY after ALL validation has
+     * passed.  This is the method that allows you to 
+     * do something with the data, say insert/update records
+     * in the DB.
+     */
+    function form_action()
+    {
+        $success = true ;
+
+        $swimteam = new SwimTeam() ;
+        $swimteam->PurgeSwimTeams() ;
+
+        $this->set_action_message(sprintf("%d record%s purged from Swim Teams database.",
+            $swimteam->getAffectedRows(), $swimteam->getAffectedRows() == 1 ? "" : "s")) ;
+
+        unset($swimteam) ;
+
+        return $success ;
+    }
+}
 ?>
