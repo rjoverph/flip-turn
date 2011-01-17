@@ -282,6 +282,10 @@ TD.divider {
   color: blue;
 }
 
+.errorbox {
+    border: 1px solid #30669A !important;
+}
+
 .errorcell {
 	color: red;
 	font-family: arial,helvetica,sans-serif;
