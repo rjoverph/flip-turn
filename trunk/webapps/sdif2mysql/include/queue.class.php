@@ -143,11 +143,8 @@ class SDIFResultsQueue extends SDIFQueue
         $count = 0 ;
 
         $count += $this->ProcessQueueB1Record() ;
-        printf("<h4>%d</h4>", $count) ;
         $count += $this->ProcessQueueC1Records() ;
-        printf("<h4>%d</h4>", $count) ;
         $count += $this->ProcessQueueD0Records() ;
-        printf("<h4>%d</h4>", $count) ;
 
         return $count ;
     }
@@ -236,7 +233,6 @@ class SDIFResultsQueue extends SDIFQueue
         $b1_record->setSDIFRecord($rslt["sdifrecord"]) ;
         $b1_record->ParseRecord() ;
         $swimmeetid = $b1_record->GetSwimMeetIdByName() ;
-        printf("<h3>Swim  Meet Id = %s</h3>", $swimmeetid['swimmeetid']) ;
 
         //  Need D0 record to add or update the swim meet BUT
         //  need to select the C1 records as well to ensure that
@@ -262,8 +258,6 @@ class SDIFResultsQueue extends SDIFQueue
                 $c1_record->setSDIFRecord($rslt["sdifrecord"]) ;
                 $c1_record->ParseRecord() ;
                 $swimteamid = $c1_record->GetSwimTeamIdByName() ;
-
-                printf("<h3>Swim  Team Id = %s</h3>", $swimteamid['swimteamid']) ;
 
                 //  Need to select swim team id based on C1 record
             }
@@ -337,9 +331,9 @@ class SDIFQueueDataList extends DefaultGUIDataList
         //  The API is:  Title, width, DB column name, field SORTABLE?,
         //  field  SEARCHABLE?, align
 
-        $this->add_header_item("Line<br/>Number",
+        $this->add_header_item("Line Number",
             "50", "linenumber", NOT_SORTABLE, SEARCHABLE, "center") ;
-        $this->add_header_item("Record<br/>Type",
+        $this->add_header_item("Record Type" ,
             "50", "recordtype", NOT_SORTABLE, SEARCHABLE, "center") ;
         $this->add_header_item("SDIF Record",
             "500", "sdifrecord", NOT_SORTABLE, SEARCHABLE, "left") ;

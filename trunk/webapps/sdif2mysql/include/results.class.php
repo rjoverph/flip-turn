@@ -447,6 +447,18 @@ class SwimResult extends SDIFD0Record
         return $success ;
     }
 
+    /**
+     * Purge results records from the database
+     *
+     * @return int number of records purged
+     */
+    function PurgeResults()
+    {
+        $this->setQuery(sprintf("DELETE FROM %s", FT_RESULTS_TABLE)) ;
+        $this->runDeleteQuery() ;
+
+        return $this->getAffectedRows() ;
+    }
 }
 
 /**
@@ -992,7 +1004,7 @@ class SwimResultsBySwimmerDataList extends FlipTurnGUIDataList
 }
 
 /**
- * ResultsDataList class
+ * SwimResultsDataList class
  *
  * Child GUIDataList class to present the Swim Results in a
  * GUIDataList widget to allow the user to take some action
@@ -1022,7 +1034,9 @@ class SwimResultsAdminDataList extends SwimResultsDataList
         $t->add_row(
             $this->action_button('Details', 'results_details.php'),
             _HTML_SPACE,
-            $this->action_button('Update', 'result_update.php')) ;
+            $this->action_button('Update', 'results_update.php'),
+            _HTML_SPACE,
+            $this->action_button('Purge', 'results_purge.php')) ;
 
         $c->add($t) ;
 

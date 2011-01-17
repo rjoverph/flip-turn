@@ -187,6 +187,7 @@ class FlipTurnLayoutPage extends PageWidget
 		
 		    $navtable->add("swimteams.php", "Swim Teams", "Swim Teams") ;
 		    $navtable->add("swimmeets.php", "Swim Meets", "Swim Meets") ;
+		    $navtable->add("results.php", "Results", "Results") ;
 		    $navtable->add("queue.php", "Results Queue", "Results Queue") ;
 		    $navtable->add("queue_upload.php", "Upload Results", "Upload Results") ;
 

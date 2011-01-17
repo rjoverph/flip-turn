@@ -58,7 +58,6 @@ class SwimMeetsPage extends FlipTurnLayoutPage
 
         $container = container() ;
 
-        $container->add($eventid) ;
         $e = explode('-', $eventid) ;
 
         //$it = new SwimMeetInfoTable('Swim Meet Details', '500') ;

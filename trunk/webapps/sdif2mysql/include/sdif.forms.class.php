@@ -299,19 +299,14 @@ class SDIFFileUploadForm extends FlipTurnFileUploadForm
 }
 
 /**
- * Construct the SDIF Queue Purge form
+ * Construct the Results Queue Purge form
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @access public
- * @see FlipTurnSwimMeetForm
+ * @see FlipTurnPurgeForm
  */
-class SDIFQueuePurgeForm extends FlipTurnForm
+class ResultsQueuePurgeForm extends FlipTurnPurgeForm
 {
-    /**
-     * Label
-     */
-    var $_confirm_label = 'Purge SDIF Queue' ;
-
     /**
      * This method gets called EVERY time the object is
      * created.  It is used to build all of the 
@@ -320,62 +315,13 @@ class SDIFQueuePurgeForm extends FlipTurnForm
      */
     function form_init_elements()
     {
-        $confirm = new FECheckBox($this->_confirm_label) ;
-        $this->add_element($confirm) ;
-    }
+        $this->setPurgeLabel('Purge Results Queue') ;
+        $this->setPurgeMessage('Purging the  Queue will delete all records
+            currently stored in the  Results Queue.  This action cannot be
+            reversed.  Make sure all data has been saved appropriately prior
+            to performing this action') ;
 
-    /**
-     * This method is called only the first time the form
-     * page is hit.  This enables u to query a DB and 
-     * pre populate the FormElement objects with data.
-     *
-     */
-    function form_init_data()
-    {
-    }
-
-    /**
-     * This is the method that builds the layout of where the
-     * FormElements will live.  You can lay it out any way
-     * you like.
-     *
-     */
-    function form_content()
-    {
-        $table = html_table($this->_width,0,4) ;
-        $table->set_style("border: 0px solid") ;
-
-        $msg = html_div("ft_form_msg") ;
-        $msg->add(html_p("Purging the  Queue will delete all records
-            currently stored in the  Queue.  This action cannot be
-            reversed.  Make sure all data has been saved appropriately
-            prior to performing this action.", html_br())) ;
-
-        $table->add_row($msg) ;
-        $table->add_row($this->element_form($this->_confirm_label)) ;
-
-        $this->add_form_block(null, $table) ;
-    }
-
-    /**
-     * This method gets called after the FormElement data has
-     * passed the validation.  This enables you to validate the
-     * data against some backend mechanism, say a DB.
-     *
-     */
-    function form_backend_validation()
-    {
-        $valid = true ;
-
-        //  User must tick the checkbox to proceed!
-
-        if (is_null($this->get_element_value($this->_confirm_label)))
-        {
-            $valid = false ;
-            $this->add_error($this->_confirm_label, "Checkbox not selected.") ;
-        }
-
-	    return $valid ;
+        parent::form_init_elements() ;
     }
 
     /**
@@ -398,31 +344,6 @@ class SDIFQueuePurgeForm extends FlipTurnForm
 
         return $success ;
     }
-
-    /**
-     * Overload form_content_buttons() method to have the
-     * button display "Confirm" instead of the default "Save".
-     *
-     */
-    function form_content_buttons()
-    {
-        return $this->form_content_buttons_Confirm_Cancel() ;
-    }
-}
-
-/**
- * Construct the SDIF Queue Purge form
- *
- * @author Mike Walsh <mike_walsh@mindspring.com>
- * @access public
- * @see SDIFQueuePurgeForm
- */
-class ResultsQueuePurgeForm extends SDIFQueuePurgeForm
-{
-    /**
-     * Label
-     */
-    var $_confirm_label = "Purge Results Queue" ;
 }
 
 /**

@@ -539,9 +539,10 @@ class SDIFB1Record extends SDIFRecord
     function ParseRecord()
     {
         $c = container() ;
-        $c->add(html_pre(FT_SDIF_COLUMN_DEBUG1,
-            FT_SDIF_COLUMN_DEBUG2, $this->_sdif_record)) ;
-        print $c->render() ;
+        if (FT_DEBUG)
+            $c->add(html_pre(FT_SDIF_COLUMN_DEBUG1,
+                FT_SDIF_COLUMN_DEBUG2, $this->_sdif_record)) ;
+        //print $c->render() ;
 
         //  This doesn't work right and I am not sure why ...
         //  it ends reading data from the wrong character position.
@@ -979,7 +980,7 @@ class SDIFC1Record extends SDIFRecord
             $c = container() ;
             $c->add(html_pre(FT_SDIF_COLUMN_DEBUG1,
                 FT_SDIF_COLUMN_DEBUG2, $this->_sdif_record)) ;
-            print $c->render() ;
+            //print $c->render() ;
         }
 
         //  Extract the data from the SDIF record by substring position
@@ -2159,13 +2160,6 @@ class SDIFD0Record extends SDIFRecord
 
         $this->setUSSNew() ;
         $this->setUSSOld() ;
-
-        printf("Name:  %s  Birth Date:  %s Birth Date:  %s USS:  %s  USS New:  %s  USS Old:  %s  Finals Time:  %s  Finals Time:  %s\n", $this->getSwimmerName(),
-            $this->getBirthDate(), $this->getBirthDate(true),
-            $this->getUSS(), $this->getUSSNew(), $this->getUSSOld(),
-            $this->getFinalsTime(), $this->getFinalsTime(true)) ;
-        //die("<h1>here</h1>") ;
-        //var_dump($this) ;
     }
 }
 

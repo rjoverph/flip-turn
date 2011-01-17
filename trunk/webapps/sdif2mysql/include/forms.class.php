@@ -237,6 +237,21 @@ class FlipTurnForm extends StandardFormContent
 
     /**
      * Provide a mechanism to overload form_content_buttons() method
+     * to have the button display "Confirm" instead of "Save".
+     *
+     * @return HTMLTag object
+     */
+    function form_content_buttons_Confirm_Only()
+    {
+        $div = new DIVtag(array("style" => "background-color: #eeeeee;".
+            "padding-top:5px;padding-bottom:5px", "align"=>"center", "nowrap"),
+            $this->add_action("Confirm")) ;
+
+        return $div;
+    }
+
+    /**
+     * Provide a mechanism to overload form_content_buttons() method
      * to have the button display "Delete" instead of "Save".
      *
      * @return HTMLTag object
@@ -777,6 +792,153 @@ class FlipTurnAdminLogoutForm extends FlipTurnForm
     function form_content_buttons()
     {
         return $this->form_content_buttons_Confirm_Cancel() ;
+    }
+}
+
+/**
+ * Construct the Genereic Purge form
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FlipTurnForm
+ */
+class FlipTurnPurgeForm extends FlipTurnForm
+{
+    /**
+     * Purge Label
+     */
+    var $_purge_label = 'Purge' ;
+
+    /**
+     * Purge Message
+     */
+    var $_purge_message = 'Purging will delete all records
+        currently stored in the  database.  This action cannot be
+        reversed.  Make sure all data has been saved appropriately
+        prior to performing this action.' ;
+
+    /**
+     * Set Purge Label
+     *
+     * @param string label
+     */
+    function setPurgeLabel($label = 'Purge')
+    {
+        $this->_purge_label = $label ;
+    }
+
+    /**
+     * Get Purge Label
+     *
+     * @return string label
+     */
+    function getPurgeLabel()
+    {
+        return $this->_purge_label ;
+    }
+
+    /**
+     * Set Purge Message
+     *
+     * @param string message
+     */
+    function setPurgeMessage($message = 'Purge')
+    {
+        $this->_purge_message = $message ;
+    }
+
+    /**
+     * Get Purge Message
+     *
+     * @return string message
+     */
+    function getPurgeMessage()
+    {
+        return $this->_purge_message ;
+    }
+
+    /**
+     * This method gets called EVERY time the object is
+     * created.  It is used to build all of the 
+     * FormElement objects used in this Form.
+     *
+     */
+    function form_init_elements()
+    {
+        $confirm = new FECheckBox($this->getPurgeLabel()) ;
+        $this->add_element($confirm) ;
+    }
+
+    /**
+     * This method is called only the first time the form
+     * page is hit.  This enables u to query a DB and 
+     * pre populate the FormElement objects with data.
+     *
+     */
+    function form_init_data()
+    {
+    }
+
+    /**
+     * This is the method that builds the layout of where the
+     * FormElements will live.  You can lay it out any way
+     * you like.
+     *
+     */
+    function form_content()
+    {
+        $table = html_table($this->_width,0,4) ;
+        $table->set_style("border: 0px solid") ;
+
+        $msg = html_div("ft_form_msg") ;
+        $msg->add(html_p($this->getPurgeMessage(), html_br())) ;
+
+        $table->add_row($msg) ;
+        $table->add_row($this->element_form($this->getPurgeLabel())) ;
+
+        $this->add_form_block(null, $table) ;
+    }
+
+    /**
+     * This method gets called after the FormElement data has
+     * passed the validation.  This enables you to validate the
+     * data against some backend mechanism, say a DB.
+     *
+     */
+    function form_backend_validation()
+    {
+        $valid = true ;
+
+        //  User must tick the checkbox to proceed!
+
+        if (is_null($this->get_element_value($this->getPurgeLabel())))
+        {
+            $valid = false ;
+            $this->add_error($this->getPurgeLabel(), "Checkbox not selected.") ;
+        }
+
+	    return $valid ;
+    }
+
+    /**
+     * This method is called ONLY after ALL validation has
+     * passed.  This is the method that allows you to 
+     * do something with the data, say insert/update records
+     * in the DB.
+     */
+    function form_action()
+    {
+        user_error("FlipTurnPurgeForm::form_action() - Child must override") ;
+    }
+
+    /**
+     * Overload form_content_buttons() method to have the
+     * button display "Confirm" instead of the default "Save".
+     *
+     */
+    function form_content_buttons()
+    {
+        return $this->form_content_buttons_Confirm_Only() ;
     }
 }
 ?>
