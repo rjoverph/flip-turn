@@ -685,7 +685,6 @@ class FlipTurnAdminLoginForm extends FlipTurnForm
      */
     function form_action()
     {
-        var_dump(basename(__FILE__) . '::' . __LINE__) ;
         if (session_id() == "") session_start() ;
 
         $_SESSION[FT_LOGIN_STATUS] = true ;
@@ -762,7 +761,6 @@ class FlipTurnAdminLogoutForm extends FlipTurnForm
      */
     function form_action()
     {
-        var_dump(basename(__FILE__) . '::' . __LINE__) ;
         if (session_id() == "") session_start() ;
 
         $_SESSION[FT_LOGIN_STATUS] = false ;

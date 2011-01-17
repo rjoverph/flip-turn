@@ -1194,7 +1194,6 @@ class EventEventInfoTable extends FlipTurnInfoTable
 
         if (!is_null($eventid) || $event->EventExistsById($eventid))
         {
-            var_dump($eventid) ;
             $event = explode($eventid, '-') ;
             $result->setEventCode($event[0]) ;
             $result->setAgeGroupCode($event[1]) ;

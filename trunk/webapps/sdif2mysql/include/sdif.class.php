@@ -1338,7 +1338,6 @@ class SDIFD0Record extends SDIFRecord
         {
             $dob = split('-', $this->getBirthDate()) ;
             $name = split(',', $this->getSwimmerName()) ;
-            var_dump($dob, $this->getBirthDate()) ;
 
             //  Make sure there are 3 elements in the $name array
             for ($i = 0 ; $i <= 2 ; $i++)
