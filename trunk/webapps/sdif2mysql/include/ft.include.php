@@ -33,4 +33,3 @@ define('FT_LOGIN_STATUS', 'ft_login_status') ;
 //define('FT_PASSWORD', 'SimpleSimon101') ;
 
 ?>
-

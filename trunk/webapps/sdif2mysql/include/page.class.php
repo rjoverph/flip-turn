@@ -174,8 +174,6 @@ class FlipTurnLayoutPage extends PageWidget
 		
    		//  End User actions
 		$navtable->add('/', 'Home', 'Flip-Turn Home') ;
-		//$navtable->add("admin.php", $this->user_is_logged_in() ? 'Logout' : 'Login') ;
-        //$navtable->add_text(_HTML_SPACE) ;
 		$navtable->add("results_by_event.php", "By Event", "By Event") ;
 		$navtable->add("results_by_swimmeet.php", "By Swim Meet", "By Swim Meet") ;
 		$navtable->add("results_by_swimmer.php", "By Swimmer", "By Swimmer") ;
@@ -284,7 +282,7 @@ class FlipTurnLayoutPage extends PageWidget
 
         $welcome = sprintf('Welcome %s - ', $this->user_is_logged_in() ? 'Admin' : 'Guest') ;
 
-        $lm->add($welcome, html_a('admin.php', $this->user_is_logged_in() ? 'Logout' : 'Login')) ;
+        $lm->add($welcome, html_a('login-logout.php', $this->user_is_logged_in() ? 'Logout' : 'Login')) ;
 
         return $lm ;
     }

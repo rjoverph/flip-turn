@@ -63,4 +63,3 @@ define('FT_SDIFQUEUE_TABLE', FT_DB_PREFIX . 'sdifqueue') ;
 define('FT_OPTIONS_TABLE', FT_DB_PREFIX . 'options') ;
 
 ?>
-

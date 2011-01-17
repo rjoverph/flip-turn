@@ -326,7 +326,7 @@ class SwimResult extends SDIFD0Record
             finals_time="%s",
             finals_time_ft="%s",
             finals_course_code="%s",
-            prelim_heat_numner="%s",
+            prelim_heat_number="%s",
             prelim_lane_number="%s",
             finals_heat_number="%s",
             finals_lane_number="%s",
