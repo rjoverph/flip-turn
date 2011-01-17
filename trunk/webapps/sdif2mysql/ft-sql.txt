@@ -60,7 +60,7 @@ CREATE TABLE `ft_results` (
 	`future_use_2` TEXT NOT NULL,
 	`timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	INDEX `resultid` (`resultid`)
-) ;
+);
 
 ##  Setup the SDIF Queue table
 CREATE TABLE `ft_sdifqueue` (
@@ -70,7 +70,7 @@ CREATE TABLE `ft_sdifqueue` (
 	`sdifrecord` TEXT NOT NULL,
 	`timestamp` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	INDEX `rawsdifid` (`sdifrecordid`)
-)
+);
 
 ##  Setup the Swim Meets table
 CREATE TABLE `ft_swimmeets` (
@@ -93,7 +93,7 @@ CREATE TABLE `ft_swimmeets` (
 	`future_use_3` TEXT NULL,
 	`timestamp` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`swimmeetid`)
-)
+);
 
 ##  Setup the Swim Teams table
 CREATE TABLE `ft_swimteams` (
@@ -115,4 +115,4 @@ CREATE TABLE `ft_swimteams` (
 	`future_use_3` TEXT NULL,
 	`timestamp` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`swimteamid`)
-)
+);

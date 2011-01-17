@@ -72,7 +72,6 @@ class FlipTurnAdminPage extends FlipTurnLayoutPage
 	        $container->add($fp) ;
         }
 
-
 	    return $container ;
     }
 }
