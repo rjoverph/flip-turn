@@ -28,7 +28,7 @@ include_once("forms.class.php") ;
 include_once("results.class.php") ;
 
 /**
- * Construct the SDIF Queue Purge form
+ * Construct the Results Purge form
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @access public

@@ -301,7 +301,18 @@ class SwimTeam extends SDIFC1Record
         return $success ;
     }
 
-}
+    /**
+     * Purge swim teams records from the database
+     *
+     * @return int number of records purged
+     */
+    function PurgeSwimTeams()
+    {
+        $this->setQuery(sprintf("DELETE FROM %s", FT_SWIMTEAMS_TABLE)) ;
+        $this->runDeleteQuery() ;
+
+        return $this->getAffectedRows() ;
+    }}
 
 /**
  * SwimTeamsDataList class
@@ -390,7 +401,9 @@ class SwimTeamsDataList extends DefaultGUIDataList
             _HTML_SPACE,
             $this->action_button('Results', 'swimteam_results.php'),
             _HTML_SPACE,
-            $this->action_button('Update', 'swimteam_update.php')) ;
+            $this->action_button('Update', 'swimteam_update.php'),
+            _HTML_SPACE,
+            $this->action_button('Purge', 'swimteams_purge.php')) ;
 
         $c->add($t) ;
 

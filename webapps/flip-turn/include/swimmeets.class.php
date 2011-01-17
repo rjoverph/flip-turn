@@ -306,6 +306,18 @@ class SwimMeet extends SDIFB1Record
         return $success ;
     }
 
+    /**
+     * Purge swim meets records from the database
+     *
+     * @return int number of records purged
+     */
+    function PurgeSwimMeets()
+    {
+        $this->setQuery(sprintf("DELETE FROM %s", FT_SWIMMEETS_TABLE)) ;
+        $this->runDeleteQuery() ;
+
+        return $this->getAffectedRows() ;
+    }
 }
 
 /**
@@ -525,7 +537,9 @@ class SwimMeetsAdminDataList extends SwimMeetsDataList
             _HTML_SPACE,
             $this->action_button('Results', 'swimmeet_results.php'),
             _HTML_SPACE,
-            $this->action_button('Update', 'swimmeet_update.php')) ;
+            $this->action_button('Update', 'swimmeet_update.php'),
+            _HTML_SPACE,
+            $this->action_button('Purge', 'swimmeets_purge.php')) ;
 
         $c->add($t) ;
 

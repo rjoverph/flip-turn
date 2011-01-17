@@ -25,7 +25,7 @@ require_once("forms.class.php") ;
 require_once("swimmeets.class.php") ;
 
 /**
- * Construct the base SwimMeet form
+ * Construct the base Swim Meet form
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @access public
@@ -94,7 +94,7 @@ class FlipTurnSwimMeetForm extends FlipTurnForm
 }
 
 /**
- * Construct the Add SwimMeet form
+ * Construct the Add Swim Meet form
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @access public
@@ -348,7 +348,7 @@ class SwimMeetAddForm extends FlipTurnSwimMeetForm
 }
 
 /**
- * Construct the Update SwimMeet form
+ * Construct the Update Swim Meet form
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @access public
@@ -469,7 +469,7 @@ class SwimMeetUpdateForm extends SwimMeetAddForm
 }
 
 /**
- * Construct the Delete SwimMeet form
+ * Construct the Delete Swim Meet form
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @access public
@@ -514,9 +514,9 @@ class SwimMeetDeleteForm extends SwimMeetUpdateForm
         $success = $meet->deleteSwimMeet() ;
 
         if ($success) 
-            $this->set_action_message("SwimMeet successfully deleted.") ;
+            $this->set_action_message("Swim Meet successfully deleted.") ;
         else
-            $this->set_action_message("SwimMeet was not successfully deleted.") ;
+            $this->set_action_message("Swim Meet was not successfully deleted.") ;
 
         return $success ;
     }
@@ -529,6 +529,54 @@ class SwimMeetDeleteForm extends SwimMeetUpdateForm
     function form_content_buttons()
     {
         return $this->form_content_buttons_Delete_Cancel() ;
+    }
+}
+
+/**
+ * Construct the Swim Meets Purge form
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FlipTurnSwimMeetForm
+ */
+class SwimMeetsPurgeForm extends FlipTurnPurgeForm
+{
+    /**
+     * This method gets called EVERY time the object is
+     * created.  It is used to build all of the 
+     * FormElement objects used in this Form.
+     *
+     */
+    function form_init_elements()
+    {
+        $this->setPurgeLabel('Purge Swim Meets') ;
+        $this->setPurgeMessage('Purging the Swim Meets will delete all
+            swim meets currently stored in the database.  This action
+            cannot be reversed.  Make sure all data has been saved
+            appropriately prior to performing this action.') ;
+
+        parent::form_init_elements() ;
+    }
+
+    /**
+     * This method is called ONLY after ALL validation has
+     * passed.  This is the method that allows you to 
+     * do something with the data, say insert/update records
+     * in the DB.
+     */
+    function form_action()
+    {
+        $success = true ;
+
+        $swimmeet = new SwimMeet() ;
+        $swimmeet->PurgeSwimMeets() ;
+
+        $this->set_action_message(sprintf("%d record%s purged from Swim Meets database.",
+            $swimmeet->getAffectedRows(), $swimmeet->getAffectedRows() == 1 ? "" : "s")) ;
+
+        unset($swimmeet) ;
+
+        return $success ;
     }
 }
 ?>
