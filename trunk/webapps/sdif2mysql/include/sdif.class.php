@@ -1819,7 +1819,7 @@ class SDIFD0Record extends SDIFRecord
         //  Time in mm:ss.ss?
         if (preg_match('/[0-9][0-9]:[0-9][0-9]\.[0-9][0-9]/', $txt))
         {
-            printf("<h3>mm:ss.ss - %s</h3>", $txt) ;
+            //printf("<h3>mm:ss.ss - %s</h3>", $txt) ;
             $time = explode($txt, ':') ;
             $this->_finals_time_ft = $time[0] * 60 + $time[1] ;
 
@@ -1827,12 +1827,12 @@ class SDIFD0Record extends SDIFRecord
         //  Time in ss.ss?
         else if (preg_match('/[0-9][0-9]\.[0-9][0-9]/', $txt))
         {
-            printf("<h3>ss.ss - %s</h3>", $txt) ;
+            //printf("<h3>ss.ss - %s</h3>", $txt) ;
             $this->_finals_time_ft = (float)$txt ;
         }
         else
         {
-            printf("<h3>????? - %s</h3>", $txt) ;
+            //printf("<h3>????? - %s</h3>", $txt) ;
             $this->_finals_time_ft = 0.0 ;
         }
 
