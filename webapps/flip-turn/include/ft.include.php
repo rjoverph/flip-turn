@@ -20,6 +20,9 @@
 define('FT_DEBUG', false) ;
 define('FT_CREATE', 'create') ;
 define('FT_IGNORE', 'ignore') ;
+define('FT_NOTE', 'note') ;
+define('FT_WARNING', 'warning') ;
+define('FT_ERROR', 'error') ;
 
 define('FT_NULL_STRING', '') ;
 

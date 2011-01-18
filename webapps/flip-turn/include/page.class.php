@@ -238,15 +238,17 @@ class FlipTurnLayoutPage extends PageWidget
     }
 
     /**
-     * Error Message
+     * Status Message
      *
-     * @param string error
+     * @param string severity
+     * @param string status
      * @return mixed container
      */
-    function error_message($msg)
+    function status_message($msg, $severity = FT_NOTE)
     {
         $c = container() ;
-        $c->add(html_div("fterrormsg", $msg)) ;
+        $c->add(html_div(sprintf('ft-%s-msg', $severity),
+           sprintf('%s:  %s', ucfirst($severity), $msg))) ;
 
         return $c ;
     }

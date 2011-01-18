@@ -24,23 +24,23 @@ include_once("results.class.php") ;
 include_once("swimmeets.class.php") ;
 include_once("swimteams.class.php") ;
 
-include_once(PHPHTMLLIB_ABSPATH . "/widgets/data_list/includes.inc") ;
+//include_once(PHPHTMLLIB_ABSPATH . "/widgets/data_list/includes.inc") ;
 
 //  Add the include path for adodb - assumed in the document root.  Where
 //  is document root?  Count the number of slahes in PHPHTMLLIB_RELPATH and
 //  back track up the hierarchy the appropriate number of times.
 
-$relpath = "/" ;
-$nodes = explode("/", PHPHTMLLIB_RELPATH) ;
+//$relpath = "/" ;
+//$nodes = explode("/", PHPHTMLLIB_RELPATH) ;
 
-if (!empty($nodes) && $nodes[0] == "") array_shift($nodes) ;
+//if (!empty($nodes) && $nodes[0] == "") array_shift($nodes) ;
 
-foreach($nodes as $node) $relpath .= "../" ;
+//foreach($nodes as $node) $relpath .= "../" ;
 
-require_once(PHPHTMLLIB_ABSPATH . $relpath . "external/adodb5/adodb.inc.php" );
+//require_once(PHPHTMLLIB_ABSPATH . $relpath . "external/adodb5/adodb.inc.php" );
 
-include_once(PHPHTMLLIB_ABSPATH . "/form/includes.inc");
-include_once(PHPHTMLLIB_ABSPATH . "/widgets/data_list/ADODBSQLDataListSource.inc");
+//include_once(PHPHTMLLIB_ABSPATH . "/form/includes.inc");
+//include_once(PHPHTMLLIB_ABSPATH . "/widgets/data_list/ADODBSQLDataListSource.inc");
 
 /**
  * SDIFQueue
@@ -63,12 +63,14 @@ class SDIFQueue extends FlipTurnDBI
      * Add status message
      *
      * @param string error message
+     * @param optional severity
      */
-    function add_status_message($msg)
+    function add_status_message($msg, $severity = FT_NOTE)
     {
-        $this->_sdif_queue_status_msg[] = $msg ;
+        $m = &$this->_sdif_queue_status_msg ;
+        $m = array_merge($m, array(array('msg' => $msg, 'severity' => $severity))) ;
     }
-
+ 
     /**
      * Get error message
      *
@@ -126,8 +128,9 @@ class SDIFResultsQueue extends SDIFQueue
         if ($this->getQueryCount() != 1)
         {
             $valid = false ;
-            $this->set_status_message(sprintf('Error:  %d \"B1\" records found in the SDIF queue.',
-                $this->getRecordCount())) ;
+            $this->add_status_message(
+                sprintf('%d "B1" records found in the SDIF queue.',
+                $this->getQueryCount()), FT_ERROR) ;
         }
 
         return $valid ;
@@ -170,8 +173,9 @@ class SDIFResultsQueue extends SDIFQueue
         if (!$sdifrecord->SwimMeetExistsByName())
             $sdifrecord->AddSwimMeet() ;
         else
-            $this->add_status_message(sprintf('Swim Meet "%s" already exists in the database, ignored.',
-                $sdifrecord->getMeetName())) ;
+            $this->add_status_message(
+                sprintf('Swim Meet "%s" already exists in the database, ignored.',
+                $sdifrecord->getMeetName()), FT_WARNING) ;
 
         //return $this->getAffectedRows() ;
         return $rsltscnt ;
@@ -204,8 +208,9 @@ class SDIFResultsQueue extends SDIFQueue
             if (!$sdifrecord->SwimTeamExistsByName())
                 $sdifrecord->AddSwimTeam() ;
             else
-                $this->add_status_message(sprintf('Swim Team "%s" already exists in the database, ignored.',
-                    $sdifrecord->getTeamName())) ;
+                $this->add_status_message(
+                    sprintf('Swim Team "%s" already exists in the database, ignored.',
+                    $sdifrecord->getTeamName()), FT_WARNING) ;
         }
 
         //return $this->getAffectedRows() ;
@@ -274,8 +279,10 @@ class SDIFResultsQueue extends SDIFQueue
                     $d0_record->AddResult() ;
                 }
                 else
-                    $this->add_status_message(sprintf('Result for \"%s\" from line %d is already stored in the database, ignored.',
-                        $d0_record->getSwimmerName(), $rslt['linenumber'])) ;
+                    $this->add_status_message(
+                        sprintf('Result for \"%s\" from line %d is already stored in the database, ignored.',
+                        $d0_record->getSwimmerName(), $rslt['linenumber']),
+                        FT_WARNING) ;
             }
         }
 

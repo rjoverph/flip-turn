@@ -321,11 +321,11 @@ class SwimMeetAddForm extends FlipTurnSwimMeetForm
         if ($success) 
         {
             $meet->setMeetId($success) ;
-            $this->set_action_message("Swim Meet successfully added.") ;
+            $this->set_action_message(html_div('ft-note-msg', 'Swim Meet successfully added.')) ;
         }
         else
         {
-            $this->set_action_message("Swim Meet was not successfully added.") ;
+            $this->set_action_message(html_div('ft-warning-msg', 'Swim Meet was not successfully added.')) ;
         }
 
         return $success ;
@@ -457,11 +457,11 @@ class SwimMeetUpdateForm extends SwimMeetAddForm
         if ($success) 
         {
             $swimmeet->setSwimMeetId($success) ;
-            $this->set_action_message("Swim Meet successfully updated.") ;
+            $this->set_action_message(html_div('ft-note-msg', 'Swim Meet successfully updated.')) ;
         }
         else
         {
-            $this->set_action_message("Swim Meet was not successfully updated.") ;
+            $this->set_action_message(html_div('ft-warning-msg', 'Swim Meet was not successfully updated.')) ;
         }
 
         return $success ;
@@ -514,9 +514,9 @@ class SwimMeetDeleteForm extends SwimMeetUpdateForm
         $success = $meet->deleteSwimMeet() ;
 
         if ($success) 
-            $this->set_action_message("Swim Meet successfully deleted.") ;
+            $this->set_action_message(html_div('ft-note-msg', 'Swim Meet successfully deleted.')) ;
         else
-            $this->set_action_message("Swim Meet was not successfully deleted.") ;
+            $this->set_action_message(html_div('ft-warning-msg', 'Swim Meet was not successfully deleted.')) ;
 
         return $success ;
     }
@@ -571,8 +571,10 @@ class SwimMeetsPurgeForm extends FlipTurnPurgeForm
         $swimmeet = new SwimMeet() ;
         $swimmeet->PurgeSwimMeets() ;
 
-        $this->set_action_message(sprintf("%d record%s purged from Swim Meets database.",
-            $swimmeet->getAffectedRows(), $swimmeet->getAffectedRows() == 1 ? "" : "s")) ;
+        $this->set_action_message(html_div('ft-note-msg',
+            sprintf('%d record%s purged from Swim Meets database.',
+            $swimmeet->getAffectedRows(),
+            $swimmeet->getAffectedRows() == 1 ? '' : 's'))) ;
 
         unset($swimmeet) ;
 
