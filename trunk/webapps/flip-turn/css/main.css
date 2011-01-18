@@ -295,6 +295,34 @@ TD.divider {
 	color: red;
 }
 
+
+.ft-error-msg {
+    margin: 10px 0px;
+    padding: 5px;
+    color: #9c0006;
+    background-color: #ffc7ce;
+    border: 1px solid #9c0006;
+    font-size: 1.5em;
+}
+
+.ft-warning-msg {
+    margin: 10px 0px;
+    padding: 5px;
+    color: #9c6500;
+    background-color: #ffeb9c;
+    border: 1px solid #9c6500;
+    font-size: 1.5em;
+}
+
+.ft-note-msg {
+    margin: 10px 0px;
+    padding: 5px;
+    color: #006100;
+    background-color: #c6efce;
+    border: 1px solid #006100;
+    font-size: 1.5em;
+}
+
 .statusbar {
     font-family: arial;
     font-size: 0.8em;
@@ -304,5 +332,5 @@ TD.divider {
 }
 
 a.navurl:hover {
-    background: url("../images/OnYourMarksBlackLeft.png") no-repeat scroll 98% 100% #ffffff;} 
+    background: url("../images/OnYourMarksBlackLeft.png") no-repeat scroll 98% 100% #ffffff;
 }

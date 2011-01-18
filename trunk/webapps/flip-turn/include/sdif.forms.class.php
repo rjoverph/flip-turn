@@ -287,12 +287,13 @@ class SDIFFileUploadForm extends FlipTurnFileUploadForm
         //  Delete the file so we don't keep a lot of stuff around. 
 
         if (!unlink($fileInfo['tmp_name'])) 
-            $this->add_error($this->getUploadFileLabel(),
-                "Unable to remove uploaded file."); 
+            $this->add_error(html_div('ft-error-msg',
+                $this->getUploadFileLabel(),
+                'Unable to remove uploaded file.')) ; 
 
-        $this->set_action_message("File \"" . 
+        $this->set_action_message(html_div('ft-note-msg', 'File "' . 
             $this->get_element_value($this->getUploadFileLabel()) .
-            "\" successfully uploaded.") ; 
+            '" successfully uploaded.')) ; 
 
         return $success ;
     }
@@ -337,8 +338,10 @@ class ResultsQueuePurgeForm extends FlipTurnPurgeForm
         $sdifqueue = new SDIFResultsQueue() ;
         $sdifqueue->PurgeQueue() ;
 
-        $this->set_action_message(sprintf("%d record%s purged from SDIF Queue.",
-            $sdifqueue->getAffectedRows(), $sdifqueue->getAffectedRows() == 1 ? "" : "s")) ;
+        $this->set_action_message(html_div('ft-note-msg',
+            sprintf('%d record%s purged from SDIF Queue.',
+            $sdifqueue->getAffectedRows(),
+            $sdifqueue->getAffectedRows() == 1 ? "" : "s"))) ;
 
         unset($sdifqueue) ;
 
@@ -465,15 +468,12 @@ class SDIFQueueProcessForm extends FlipTurnForm
         $msgs = $sdifqueue->get_status_message() ;
 
         foreach ($msgs as $msg)
-            $c->add($msg, html_br()) ;
-
-
-        $c->add(sprintf("%d record%s processed from SDIF Queue.",
-            $cnt, $cnt == 1 ? "" : "s")) ;
+            $c->add(html_div(sprintf('ft-%s-msg', $msg['severity']), $msg['msg'])) ;
+        $c->add(html_div('ft-note-msg',
+            sprintf("%d record%s processed from SDIF Queue.",
+            $cnt, $cnt == 1 ? "" : "s"))) ;
 
         $this->set_action_message($c) ;
-        //$this->set_action_message(sprintf("%d record%s processed from SDIF Queue.",
-        //    $cnt, $cnt == 1 ? "" : "s")) ;
 
         unset($sdifqueue) ;
 

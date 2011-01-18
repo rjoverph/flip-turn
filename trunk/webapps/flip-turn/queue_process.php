@@ -42,7 +42,12 @@ class SDIFQueueProcessPage extends FlipTurnLayoutPage
 
         if (!$sdifqueue->ValidateQueue())
         {
-            $container->add($this->error_message($sdifqueue->get_status_message())) ;
+            $msgs = $sdifqueue->get_status_message() ;
+
+            foreach ($msgs as $msg)
+            {
+                $container->add($this->status_message($msg['msg'], $msg['severity'])) ;
+            }
 
             return $container ;
         }
