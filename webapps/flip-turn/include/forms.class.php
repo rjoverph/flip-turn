@@ -20,6 +20,7 @@
  */
 
 include_once('ft.include.php') ;
+include_once('options.class.php') ;
 
 /**
  * Include the Form Processing objects
@@ -93,7 +94,7 @@ class FlipTurnForm extends StandardFormContent
      * @param String message content
      */
     
-    function set_action_message($message, $class = "ftactionmsg")
+    function set_action_message($message, $class = "ft-note-msg")
     {
         parent::set_action_message(html_div($class, html_h4($message))) ;
     }
@@ -939,6 +940,258 @@ class FlipTurnPurgeForm extends FlipTurnForm
     function form_content_buttons()
     {
         return $this->form_content_buttons_Confirm_Only() ;
+    }
+}
+
+/**
+ * Construct the Genereic EditPage form
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FlipTurnForm
+ */
+class FlipTurnEditPageForm extends FlipTurnForm
+{
+    /**
+     * Edit Page Label
+     */
+    var $_edit_page_label = 'Edit Page' ;
+
+    /**
+     * Set Edit Page Label
+     *
+     * @param string label
+     */
+    function setEditPageLabel($label = 'EditPage')
+    {
+        $this->_edit_page_label = $label ;
+    }
+
+    /**
+     * Get Edit Page Label
+     *
+     * @return string label
+     */
+    function getEditPageLabel()
+    {
+        return $this->_edit_page_label ;
+    }
+
+    /**
+     * This method gets called EVERY time the object is
+     * created.  It is used to build all of the 
+     * FormElement objects used in this Form.
+     *
+     */
+    function form_init_elements()
+    {
+        $content = new FETextArea($this->getEditPageLabel(),
+            true, 30, 132, '100%', '500px') ;
+        $this->add_element($content) ;
+    }
+
+    /**
+     * This method is called only the first time the form
+     * page is hit.  This enables u to query a DB and 
+     * pre populate the FormElement objects with data.
+     *
+     */
+    function form_init_data()
+    {
+    }
+
+    /**
+     * This is the method that builds the layout of where the
+     * FormElements will live.  You can lay it out any way
+     * you like.
+     *
+     */
+    function form_content()
+    {
+        $table = html_table($this->_width,0,4) ;
+        $table->set_style("border: 0px solid") ;
+
+        $table->add_row($this->element_label($this->getEditPageLabel())) ;
+        $table->add_row($this->element_form($this->getEditPageLabel())) ;
+
+        $this->add_form_block(null, $table) ;
+    }
+
+    /**
+     * This method gets called after the FormElement data has
+     * passed the validation.  This enables you to validate the
+     * data against some backend mechanism, say a DB.
+     *
+     */
+    function form_backend_validation()
+    {
+        $valid = true ;
+
+	    return $valid ;
+    }
+
+    /**
+     * This method is called ONLY after ALL validation has
+     * passed.  This is the method that allows you to 
+     * do something with the data, say insert/update records
+     * in the DB.
+     */
+    function form_action()
+    {
+        user_error("FlipTurnEditPageForm::form_action() - Child must override") ;
+    }
+
+}
+
+/**
+ * Construct the About Edit Page form
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FlipTurnForm
+ */
+class FlipTurnEditAboutPageForm extends FlipTurnEditPageForm
+{
+    /**
+     * This method gets called EVERY time the object is
+     * created.  It is used to build all of the 
+     * FormElement objects used in this Form.
+     *
+     */
+    function form_init_elements()
+    {
+        $this->setEditPageLabel('Edit About Page') ;
+        parent::form_init_elements() ;
+    }
+
+    /**
+     * This method is called ONLY after ALL validation has
+     * passed.  This is the method that allows you to 
+     * do something with the data, say insert/update records
+     * in the DB.
+     */
+    function form_action()
+    {
+        $content = new FlipTurnOptionMeta() ;
+        $content->setOptionMetaKey(FT_ABOUT_PAGE_OPTION) ;
+        $content->setOptionMetaValue(htmlspecialchars($this->get_element_value($this->getEditPageLabel()))) ;
+        $content->saveOptionMeta() ;
+        $this->set_action_message('About page content updated.') ;
+        return true ;
+    }
+}
+
+/**
+ * Construct the Legal Edit Page form
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FlipTurnForm
+ */
+class FlipTurnEditLegalPageForm extends FlipTurnEditPageForm
+{
+    /**
+     * This method gets called EVERY time the object is
+     * created.  It is used to build all of the 
+     * FormElement objects used in this Form.
+     *
+     */
+    function form_init_elements()
+    {
+        $this->setEditPageLabel('Edit Legal Page') ;
+        parent::form_init_elements() ;
+    }
+
+    /**
+     * This method is called ONLY after ALL validation has
+     * passed.  This is the method that allows you to 
+     * do something with the data, say insert/update records
+     * in the DB.
+     */
+    function form_action()
+    {
+        $content = new FlipTurnOptionMeta() ;
+        $content->setOptionMetaKey(FT_LEGAL_PAGE_OPTION) ;
+        $content->setOptionMetaValue(htmlspecialchars($this->get_element_value($this->getEditPageLabel()))) ;
+        $content->saveOptionMeta() ;
+        $this->set_action_message('Legal page content updated.') ;
+        return true ;
+    }
+}
+
+/**
+ * Construct the Privacy Edit Page form
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FlipTurnForm
+ */
+class FlipTurnEditPrivacyPageForm extends FlipTurnEditPageForm
+{
+    /**
+     * This method gets called EVERY time the object is
+     * created.  It is used to build all of the 
+     * FormElement objects used in this Form.
+     *
+     */
+    function form_init_elements()
+    {
+        $this->setEditPageLabel('Edit Privacy Page') ;
+        parent::form_init_elements() ;
+    }
+
+    /**
+     * This method is called ONLY after ALL validation has
+     * passed.  This is the method that allows you to 
+     * do something with the data, say insert/update records
+     * in the DB.
+     */
+    function form_action()
+    {
+        $content = new FlipTurnOptionMeta() ;
+        $content->setOptionMetaKey(FT_PRIVACY_PAGE_OPTION) ;
+        $content->setOptionMetaValue(htmlspecialchars($this->get_element_value($this->getEditPageLabel()))) ;
+        $content->saveOptionMeta() ;
+        $this->set_action_message('Privacy page content updated.') ;
+        return true ;
+    }
+}
+
+/**
+ * Construct the Home Edit Page form
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FlipTurnForm
+ */
+class FlipTurnEditHomePageForm extends FlipTurnEditPageForm
+{
+    /**
+     * This method gets called EVERY time the object is
+     * created.  It is used to build all of the 
+     * FormElement objects used in this Form.
+     *
+     */
+    function form_init_elements()
+    {
+        $this->setEditPageLabel('Edit Home Page') ;
+        parent::form_init_elements() ;
+    }
+
+    /**
+     * This method is called ONLY after ALL validation has
+     * passed.  This is the method that allows you to 
+     * do something with the data, say insert/update records
+     * in the DB.
+     */
+    function form_action()
+    {
+        $content = new FlipTurnOptionMeta() ;
+        $content->setOptionMetaKey(FT_HOME_PAGE_OPTION) ;
+        $content->setOptionMetaValue(htmlspecialchars($this->get_element_value($this->getEditPageLabel()))) ;
+        $content->saveOptionMeta() ;
+        $this->set_action_message('Home page content updated.') ;
+        return true ;
     }
 }
 ?>
