@@ -12,8 +12,9 @@
  */ 
 
 // Application setup
-include("ft-setup.php") ;
-include("page.class.php") ;
+include_once("ft-setup.php") ;
+include_once("page.class.php") ;
+include_once("options.class.php") ;
 
 /**
  * About stuff
@@ -26,6 +27,29 @@ include("page.class.php") ;
 class FlipTurnAboutPage extends FlipTurnLayoutPage
 {
     function content_block()
+    {
+	    $container = container() ;
+
+        $content = new FlipTurnOptionMeta() ;
+
+        //  Account for no data in the options table
+        if ($content->existOptionMetaByKey(FT_ABOUT_PAGE_OPTION))
+        {
+            $content->loadOptionMetaByKey(FT_ABOUT_PAGE_OPTION) ;
+            $container->add(htmlspecialchars_decode($content->getOptionMetaValue())) ;
+        }
+        else
+            $container->add(FT_ABOUT_PAGE_OPTION_DEFAULT_CONTENT) ;
+
+        //  Allow the Admin to Edit the page content
+ 
+        if ($this->user_is_logged_in())
+            $container->add(div_font8bold(html_a('about_edit.php', 'Edit'))) ;
+
+	    return $container ;
+    }
+
+    function content_block_old()
     {
         $sdif_spec_doc = 'http://www.usaswimming.org/_Rainbow/Documents/521e8fae-ce81-4c73-a51a-3653a1304a30/Standard%20Data%20Interchange%20Format.doc' ;
         $sdif_spec_url = 'http://www.usaswimming.org/DesktopDefault.aspx?TabId=1792&Alias=Rainbow&Lang=en-US' ;

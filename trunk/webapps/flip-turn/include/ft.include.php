@@ -36,4 +36,9 @@ define('FT_HOME_PAGE_OPTION', 'ft_home_page_content') ;
 define('FT_ABOUT_PAGE_OPTION', 'ft_about_page_content') ;
 define('FT_LEGAL_PAGE_OPTION', 'ft_legal_page_content') ;
 define('FT_PRIVACY_PAGE_OPTION', 'ft_privacy_page_content') ;
+
+define('FT_HOME_PAGE_OPTION_DEFAULT_CONTENT', '<h3>Home Page Content</h3>') ;
+define('FT_ABOUT_PAGE_OPTION_DEFAULT_CONTENT', '<h3>About Page Content</h3>') ;
+define('FT_LEGAL_PAGE_OPTION_DEFAULT_CONTENT', '<h3>Legal Page Content</h3>') ;
+define('FT_PRIVACY_PAGE_OPTION_DEFAULT_CONTENT', '<h3>Privacy Page Content</h3>') ;
 ?>

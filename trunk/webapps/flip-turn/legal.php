@@ -12,8 +12,9 @@
  */ 
 
 // * Include the phphtmllib libraries
-include("ft-setup.php") ;
-include("page.class.php") ;
+include_once("ft-setup.php") ;
+include_once("page.class.php") ;
+include_once("options.class.php") ;
 
 /**
  * Legal stuff
@@ -29,7 +30,21 @@ class FlipTurnLegalPage extends FlipTurnLayoutPage
     {
 	    $container = container() ;
 
-        $container->add("Legal content goes here.") ;
+        $content = new FlipTurnOptionMeta() ;
+
+        //  Account for no data in the options table
+        if ($content->existOptionMetaByKey(FT_LEGAL_PAGE_OPTION))
+        {
+            $content->loadOptionMetaByKey(FT_LEGAL_PAGE_OPTION) ;
+            $container->add(htmlspecialchars_decode($content->getOptionMetaValue())) ;
+        }
+        else
+            $container->add(FT_LEGAL_PAGE_OPTION_DEFAULT_CONTENT) ;
+
+        //  Allow the Admin to Edit the page content
+ 
+        if ($this->user_is_logged_in())
+            $container->add(div_font8bold(html_a('legal_edit.php', 'Edit'))) ;
 
 	    return $container ;
     }

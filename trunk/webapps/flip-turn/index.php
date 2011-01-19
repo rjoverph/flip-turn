@@ -12,8 +12,9 @@
  */ 
 
 // * Include the phphtmllib libraries
-include("ft-setup.php") ;
-include("page.class.php") ;
+include_once("ft-setup.php") ;
+include_once("page.class.php") ;
+include_once("options.class.php") ;
 
 /**
  * Home stuff
@@ -29,7 +30,16 @@ class FlipTurnHomePage extends FlipTurnLayoutPage
     {
 	    $container = container() ;
 
-        $container->add("Home content goes here.") ;
+         $content = new FlipTurnOptionMeta() ;
+
+        //  Account for no data in the options table
+        if ($content->existOptionMetaByKey(FT_HOME_PAGE_OPTION))
+        {
+            $content->loadOptionMetaByKey(FT_HOME_PAGE_OPTION) ;
+            $container->add(htmlspecialchars_decode($content->getOptionMetaValue())) ;
+        }
+        else
+            $container->add(FT_HOME_PAGE_OPTION_DEFAULT_CONTENT) ;
 
 	    return $container ;
     }

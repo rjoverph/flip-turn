@@ -60,6 +60,6 @@ define('FT_SWIMMER_TABLE', FT_DB_PREFIX . 'swimmer') ;
 define('FT_SWIMMEETS_TABLE', FT_DB_PREFIX . 'swimmeets') ;
 define('FT_SWIMTEAMS_TABLE', FT_DB_PREFIX . 'swimteams') ;
 define('FT_SDIFQUEUE_TABLE', FT_DB_PREFIX . 'sdifqueue') ;
-define('FT_OPTIONS_TABLE', FT_DB_PREFIX . 'options') ;
+define('FT_OPTIONS_META_TABLE', FT_DB_PREFIX . 'optionsmeta') ;
 
 ?>
