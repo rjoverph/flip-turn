@@ -116,3 +116,13 @@ CREATE TABLE `ft_swimteams` (
 	`timestamp` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`swimteamid`)
 );
+
+##  Setup the Options Meta table
+CREATE TABLE `ft_optionsmeta` (
+	`ometaid` INT(10) NOT NULL AUTO_INCREMENT,
+	`ometakey` TEXT NULL,
+	`ometavalue` TEXT NULL,
+	`timestamp` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`optionid`)
+);
+
