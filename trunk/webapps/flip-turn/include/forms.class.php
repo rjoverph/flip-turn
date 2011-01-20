@@ -985,9 +985,10 @@ class FlipTurnEditPageForm extends FlipTurnForm
      */
     function form_init_elements()
     {
-        $content = new FETextArea($this->getEditPageLabel(),
+        $content = new FETinyMCETextArea($this->getEditPageLabel(),
             true, 30, 132, '100%', '500px') ;
         $this->add_element($content) ;
+        //var_dump($content->javascript()) ;
     }
 
     /**
@@ -1065,6 +1066,26 @@ class FlipTurnEditAboutPageForm extends FlipTurnEditPageForm
     }
 
     /**
+     * This method is called only the first time the form
+     * page is hit.  This enables u to query a DB and 
+     * pre populate the FormElement objects with data.
+     *
+     */
+    function form_init_data()
+    {
+        $content = new FlipTurnOptionMeta() ;
+
+        //  Account for no data in the options table
+        if ($content->existOptionMetaByKey(FT_ABOUT_PAGE_OPTION))
+        {
+            $content->loadOptionMetaByKey(FT_ABOUT_PAGE_OPTION) ;
+            $this->set_element_value($this->getEditPageLabel(), $content->getOptionMetaValue()) ;
+        }
+        else
+            $this->set_element_value($this->getEditPageLabel(), FT_ABOUT_PAGE_OPTION_DEFAULT_CONTENT) ;
+    }
+
+    /**
      * This method is called ONLY after ALL validation has
      * passed.  This is the method that allows you to 
      * do something with the data, say insert/update records
@@ -1100,6 +1121,26 @@ class FlipTurnEditLegalPageForm extends FlipTurnEditPageForm
     {
         $this->setEditPageLabel('Edit Legal Page') ;
         parent::form_init_elements() ;
+    }
+
+    /**
+     * This method is called only the first time the form
+     * page is hit.  This enables u to query a DB and 
+     * pre populate the FormElement objects with data.
+     *
+     */
+    function form_init_data()
+    {
+        $content = new FlipTurnOptionMeta() ;
+
+        //  Account for no data in the options table
+        if ($content->existOptionMetaByKey(FT_LEGAL_PAGE_OPTION))
+        {
+            $content->loadOptionMetaByKey(FT_LEGAL_PAGE_OPTION) ;
+            $this->set_element_value($this->getEditPageLabel(), $content->getOptionMetaValue()) ;
+        }
+        else
+            $this->set_element_value($this->getEditPageLabel(), FT_LEGAL_PAGE_OPTION_DEFAULT_CONTENT) ;
     }
 
     /**
@@ -1141,6 +1182,26 @@ class FlipTurnEditPrivacyPageForm extends FlipTurnEditPageForm
     }
 
     /**
+     * This method is called only the first time the form
+     * page is hit.  This enables u to query a DB and 
+     * pre populate the FormElement objects with data.
+     *
+     */
+    function form_init_data()
+    {
+        $content = new FlipTurnOptionMeta() ;
+
+        //  Account for no data in the options table
+        if ($content->existOptionMetaByKey(FT_PRIVACY_PAGE_OPTION))
+        {
+            $content->loadOptionMetaByKey(FT_PRIVACY_PAGE_OPTION) ;
+            $this->set_element_value($this->getEditPageLabel(), $content->getOptionMetaValue()) ;
+        }
+        else
+            $this->set_element_value($this->getEditPageLabel(), FT_PRIVACY_PAGE_OPTION_DEFAULT_CONTENT) ;
+    }
+
+    /**
      * This method is called ONLY after ALL validation has
      * passed.  This is the method that allows you to 
      * do something with the data, say insert/update records
@@ -1179,6 +1240,26 @@ class FlipTurnEditHomePageForm extends FlipTurnEditPageForm
     }
 
     /**
+     * This method is called only the first time the form
+     * page is hit.  This enables u to query a DB and 
+     * pre populate the FormElement objects with data.
+     *
+     */
+    function form_init_data()
+    {
+        $content = new FlipTurnOptionMeta() ;
+
+        //  Account for no data in the options table
+        if ($content->existOptionMetaByKey(FT_HOME_PAGE_OPTION))
+        {
+            $content->loadOptionMetaByKey(FT_HOME_PAGE_OPTION) ;
+            $this->set_element_value($this->getEditPageLabel(), $content->getOptionMetaValue()) ;
+        }
+        else
+            $this->set_element_value($this->getEditPageLabel(), FT_HOME_PAGE_OPTION_DEFAULT_CONTENT) ;
+    }
+
+    /**
      * This method is called ONLY after ALL validation has
      * passed.  This is the method that allows you to 
      * do something with the data, say insert/update records
@@ -1192,6 +1273,61 @@ class FlipTurnEditHomePageForm extends FlipTurnEditPageForm
         $content->saveOptionMeta() ;
         $this->set_action_message('Home page content updated.') ;
         return true ;
+    }
+}
+
+/**
+ * This is the TinyMCETextArea FormElement which builds a 
+ * textarea field with TinyMCE controls. It has no validation method.
+ * 
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see FETextArea
+ *
+ * @copyright LGPL - See LICENCE
+ */
+class FETinyMCETextArea extends FETextArea
+{
+    /**
+     * The constructor
+     *
+     * @param label string - text label for the element
+     * @param bool required - is this a required element
+     * @param int required - the rows attribute
+     * @param int required - the cols attribute
+     * @param int optional - element width in pixels (px), percentage (%) or elements (em)
+     * @param int optional - element height in pixels (px), percentage (%) or elements (em)     
+     * @param int optional - the number of characters to limit the value to.
+     */
+    function FETinyMCETextArea($label, $required = TRUE, $rows,
+        $cols, $width = NULL, $height = NULL, $limit_char_count=-1)
+    {        
+        parent::FETextArea($label, $required, $rows, $cols, $width, $height, $limit_char_count) ;
+    }
+
+    /**
+     * Javascript for the TinyMCE Text Area
+     *
+     * @return mixed container
+     */
+    function javascript()
+    {
+        $js = 'tinyMCE.init({
+            mode : "exact", elements : "' .  $this->get_element_name() . '",
+            theme : "advanced",
+            skin : "o2k7",
+		    plugins : "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups,autosave",
+            // Theme options
+		    theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+		    theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+		    theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+		    theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,pagebreak,restoredraft",
+   	        theme_advanced_toolbar_location : "top",
+		    theme_advanced_toolbar_align : "left",
+            theme_advanced_statusbar_location : "bottom"
+        });' ;
+
+        return $js ;
     }
 }
 ?>

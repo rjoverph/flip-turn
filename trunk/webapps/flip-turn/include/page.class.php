@@ -55,6 +55,7 @@ class FlipTurnLayoutPage extends PageWidget
     {
         $this->PageWidget("Flip-Turn :: " . $title, $render_type) ;
 
+        $this->add_js_link('/external/tinymce/jscripts/tiny_mce/tiny_mce.js') ;
 		//add some css links
 		//assuming that phphtmllib is installed in the doc root
 		$this->add_css_link("/css/main.css") ;
