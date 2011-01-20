@@ -41,7 +41,13 @@ class FlipTurnHomePage extends FlipTurnLayoutPage
         else
             $container->add(FT_HOME_PAGE_OPTION_DEFAULT_CONTENT) ;
 
-	    return $container ;
+        //  Allow the Admin to Edit the page content
+ 
+        if ($this->user_is_logged_in())
+            $container->add(div_font8bold(html_a('home_edit.php', 'Edit'))) ;
+
+        return $container ;
+
     }
 }
 
