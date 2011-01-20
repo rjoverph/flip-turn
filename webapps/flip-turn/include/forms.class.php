@@ -94,9 +94,9 @@ class FlipTurnForm extends StandardFormContent
      * @param String message content
      */
     
-    function set_action_message($message, $class = "ft-note-msg")
+    function set_action_message2($message, $class = "ft-note-msg")
     {
-        parent::set_action_message(html_div($class, html_h4($message))) ;
+        parent::set_action_message(html_div($class, $message)) ;
     }
 
     /**
@@ -613,9 +613,9 @@ class FlipTurnFileUploadForm extends FlipTurnForm
     {
         $success = true ;
 
-        $this->set_action_message("File \"" . 
+        $this->set_action_message(html_div('ft-note-nsg', 'File "' . 
             $this->get_element_value($this->getUploadFileLabel()) .
-            "\" successfully uploaded.") ; 
+            '" successfully uploaded.')) ; 
         $file = $this->get_element($this->getUploadFileLabel()) ; 
         $fileInfo = $file->get_file_info() ; 
 
@@ -628,7 +628,7 @@ class FlipTurnFileUploadForm extends FlipTurnForm
             $this->add_error($this->getUploadFileLabel(),
                 "Unable to remove uploaded file."); 
 
-        $this->set_action_message("File successfully uploaded.") ;
+        $this->set_action_message(html_div('ft-note-msg', 'File successfully uploaded.')) ;
 
         return $success ;
     }
@@ -704,7 +704,7 @@ class FlipTurnAdminLoginForm extends FlipTurnForm
         if (session_id() == "") session_start() ;
 
         $_SESSION[FT_LOGIN_STATUS] = true ;
-        $this->set_action_message("Admin login successful.") ;
+        $this->set_action_message(html_div('ft-note-msg', 'Admin login successful.')) ;
 
         return true ;
     }
@@ -781,7 +781,7 @@ class FlipTurnAdminLogoutForm extends FlipTurnForm
 
         $_SESSION[FT_LOGIN_STATUS] = false ;
 
-        $this->set_action_message("Admin logout successful.") ;
+        $this->set_action_message(html_div('ft-note-msg', 'Admin logout successful.')) ;
         return true ;
     }
 
@@ -1097,7 +1097,7 @@ class FlipTurnEditAboutPageForm extends FlipTurnEditPageForm
         $content->setOptionMetaKey(FT_ABOUT_PAGE_OPTION) ;
         $content->setOptionMetaValue(htmlspecialchars($this->get_element_value($this->getEditPageLabel()))) ;
         $content->saveOptionMeta() ;
-        $this->set_action_message('About page content updated.') ;
+        $this->set_action_message(html_div('ft-note-msg', 'About page content updated.')) ;
         return true ;
     }
 }
@@ -1155,7 +1155,7 @@ class FlipTurnEditLegalPageForm extends FlipTurnEditPageForm
         $content->setOptionMetaKey(FT_LEGAL_PAGE_OPTION) ;
         $content->setOptionMetaValue(htmlspecialchars($this->get_element_value($this->getEditPageLabel()))) ;
         $content->saveOptionMeta() ;
-        $this->set_action_message('Legal page content updated.') ;
+        $this->set_action_message(html_div('ft-note-msg', 'Legal page content updated.')) ;
         return true ;
     }
 }
@@ -1213,7 +1213,7 @@ class FlipTurnEditPrivacyPageForm extends FlipTurnEditPageForm
         $content->setOptionMetaKey(FT_PRIVACY_PAGE_OPTION) ;
         $content->setOptionMetaValue(htmlspecialchars($this->get_element_value($this->getEditPageLabel()))) ;
         $content->saveOptionMeta() ;
-        $this->set_action_message('Privacy page content updated.') ;
+        $this->set_action_message(html_div('ft-note-msg', 'Privacy page content updated.')) ;
         return true ;
     }
 }
@@ -1271,7 +1271,7 @@ class FlipTurnEditHomePageForm extends FlipTurnEditPageForm
         $content->setOptionMetaKey(FT_HOME_PAGE_OPTION) ;
         $content->setOptionMetaValue(htmlspecialchars($this->get_element_value($this->getEditPageLabel()))) ;
         $content->saveOptionMeta() ;
-        $this->set_action_message('Home page content updated.') ;
+        $this->set_action_message(html_div('ft-note-msg', 'Home page content updated.')) ;
         return true ;
     }
 }
