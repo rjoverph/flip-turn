@@ -306,11 +306,13 @@ class SwimTeamAddForm extends FlipTurnSwimTeamForm
         if ($success) 
         {
             $swimteam->setSwimTeamId($success) ;
-            $this->set_action_message("Swim Team successfully added.") ;
+            $this->set_action_message(html_div('ft-note-msg',
+                'Swim Team successfully added.')) ;
         }
         else
         {
-            $this->set_action_message("Swim Team was not successfully added.") ;
+            $this->set_action_message(html_div('ft-note-msg',
+                'Swim Team was not successfully added.')) ;
         }
 
         return $success ;
@@ -432,11 +434,13 @@ class SwimTeamUpdateForm extends SwimTeamAddForm
         if ($success) 
         {
             $swimteam->setSwimTeamId($success) ;
-            $this->set_action_message("Swim Team successfully updated.") ;
+            $this->set_action_message(html_div('ft-note-msg',
+                'Swim Team successfully updated.')) ;
         }
         else
         {
-            $this->set_action_message("Swim Team was not successfully updated.") ;
+            $this->set_action_message(html_div('ft-note-msg',
+                'Swim Team was not successfully updated.')) ;
         }
 
         return $success ;
@@ -489,9 +493,11 @@ class SwimTeamDeleteForm extends SwimTeamUpdateForm
         $success = $team->deleteSwimTeam() ;
 
         if ($success) 
-            $this->set_action_message("SwimTeam successfully deleted.") ;
+            $this->set_action_message(html_div('ft-note-msg',
+                'SwimTeam successfully deleted.')) ;
         else
-            $this->set_action_message("SwimTeam was not successfully deleted.") ;
+            $this->set_action_message(html_div('ft-note-msg',
+                'SwimTeam was not successfully deleted.')) ;
 
         return $success ;
     }
@@ -546,8 +552,11 @@ class SwimTeamsPurgeForm extends FlipTurnPurgeForm
         $swimteam = new SwimTeam() ;
         $swimteam->PurgeSwimTeams() ;
 
-        $this->set_action_message(sprintf("%d record%s purged from Swim Teams database.",
-            $swimteam->getAffectedRows(), $swimteam->getAffectedRows() == 1 ? "" : "s")) ;
+        $this->set_action_message(html_div(sprintf('ft-%s-msg',
+            $swimteam->getAffectedRows() == 0 ? 'warning' : 'note'),
+            sprintf('%d record%s purged from Swim Teams database.',
+            $swimteam->getAffectedRows(),
+            $swimteam->getAffectedRows() == 1 ? '' : 's'))) ;
 
         unset($swimteam) ;
 

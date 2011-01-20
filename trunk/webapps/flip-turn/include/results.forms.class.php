@@ -66,8 +66,11 @@ class ResultsPurgeForm extends FlipTurnPurgeForm
         $result = new SwimResult() ;
         $result->PurgeResults() ;
 
-        $this->set_action_message(sprintf("%d record%s purged from Results database.",
-            $result->getAffectedRows(), $result->getAffectedRows() == 1 ? "" : "s")) ;
+        $this->set_action_message(html_div(sprintf('ft-%s-msg',
+            $result->getAffectedRows() == 0 ? 'warning' : 'note'),
+            sprintf('%d record%s purged from Results database.',
+            $result->getAffectedRows(),
+            $result->getAffectedRows() == 1 ? '' : 's'))) ;
 
         unset($result) ;
 

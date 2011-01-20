@@ -571,7 +571,8 @@ class SwimMeetsPurgeForm extends FlipTurnPurgeForm
         $swimmeet = new SwimMeet() ;
         $swimmeet->PurgeSwimMeets() ;
 
-        $this->set_action_message(html_div('ft-note-msg',
+        $this->set_action_message(html_div(sprintf('ft-%s-msg',
+            $swimmeet->getAffectedRows() == 0 ? 'warning' : 'note'),
             sprintf('%d record%s purged from Swim Meets database.',
             $swimmeet->getAffectedRows(),
             $swimmeet->getAffectedRows() == 1 ? '' : 's'))) ;
