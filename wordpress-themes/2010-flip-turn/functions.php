@@ -64,7 +64,7 @@ function twentyten_setup() {
 	set_post_thumbnail_size( HEADER_IMAGE_WIDTH, HEADER_IMAGE_HEIGHT, true );
 
 	// Don't support text inside the header image.
-	define( 'NO_HEADER_TEXT', false );
+	define( 'NO_HEADER_TEXT', true );
 
 	// Add a way for the custom header to be styled in the admin panel that controls
 	// custom headers. See twentyten_admin_header_style(), below.
@@ -75,8 +75,8 @@ function twentyten_setup() {
 	// Default custom headers packaged with the theme. %s is a placeholder for the theme template directory URI.
 	register_default_headers( array(
 		'flip-turn' => array(
-			'url' => '%s/images/flip-turn-2010-header.png',
-			'thumbnail_url' => '%s/images/flip-turn-2010-header-thumbnail.png',
+			'url' => get_bloginfo('stylesheet_directory') . '/images/flip-turn-2010-header.png',
+			'thumbnail_url' => get_bloginfo('stylesheet_directory') . '/images/flip-turn-2010-header-thumbnail.png',
 			/* translators: header image description */
 			'description' => __( 'Flip-Turn', 'flip-turn-2010' )
 		)
