@@ -1,0 +1,89 @@
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/*
+Theme Name:     2010-Flip-Turn
+Theme URI:      http: //michaelwalsh.org/
+Description:    Flip-Turn child theme for the Twenty Ten theme 
+Author:         Mike Walsh
+Author URI:     http: //michaelwalsh.org/about/
+Template:       twentyten
+Version:        0.1.0
+*/
+
+@import url("../twentyten/style.css");
+
+html {
+    background: #efefef;
+}
+
+body {
+    margin: 30px 50px;
+    border: 1px solid black;
+    font-family: 'Trebuchet MS', Verdana, Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+    color: #000000;
+    background: #ffffff;
+}
+
+#container {
+	background-image: url(images/OnYourMarksLtGreyLeft_400x400.png);
+    background-repeat: no-repeat;
+    background-position: right bottom;
+}
+
+#header {
+    padding: 0px;
+}
+
+#content {
+    padding-right: 10px;
+    border-right: 1px solid #efefef;
+}
+
+.widget-title {
+    border-bottom: 3px solid #30669a;
+}
+
+.entry-title {
+    border-bottom: 4px solid #30669a;
+}
+
+.entry-title a:active, .entry-title a:hover {
+    color: #30669a;
+}
+
+#site-title {
+    position: relative;
+    top: 70px;
+    left: 250px;
+    z-index: 10;
+    font-size: 3.0em;
+    width: 675px;
+    height: auto;
+    float: left;
+}
+
+#site-title a {
+    color: #ffffff;
+}
+
+#site-description {
+    position: relative;
+    top: 70px;
+    left: 250px;
+    z-index: 10;
+    color: #ffffff;
+    width: 675px;
+    font-size: 1.8em;
+    float: left;
+    height: auto;
+}
+
+#branding {
+    height: 208px;
+}
+
+#branding img {
+    position: relative;
+    top: -100px;
+    left: 0px;
+}
