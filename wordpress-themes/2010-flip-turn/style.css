@@ -25,6 +25,7 @@ body {
 }
 
 #container {
+    min-height: 500px;
 	background-image: url(images/OnYourMarksLtGreyLeft_400x400.png);
     background-repeat: no-repeat;
     background-position: right bottom;
