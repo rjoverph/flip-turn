@@ -284,9 +284,25 @@ class SwimResult extends SDIFD0Record
      *
      * @return boolean existance of result
      */
-    function ResultExistsByMeetTeamAndSwimmer()
+    function ResultExistsByMeetTeamAndSwimmer($swimmeetid = null,
+        $swimteamid = null, $uss = null)
     {
-        return false ;
+        if (is_null($swimmeetid)) $swimmeetid = $this->getSwimMeetId() ;
+        if (is_null($swimteamid)) $swimteamid = $this->getSwimTeamId() ;
+        if (is_null($uss)) $uss = $this->getUSSNew() ;
+
+	    //  Is id already in the database?
+
+        $query = sprintf("SELECT resultid FROM %s WHERE swimmeetid=\"%s\"
+            AND swimteamid=\"%s\" AND uss_new=\"%s\"",
+            FT_RESULTS_TABLE, $swimmeetid, $swimteamid, $uss) ;
+
+        $this->setQuery($query) ;
+        $this->runSelectQuery(false) ;
+
+	    //  Make sure id doesn't exist
+
+        return (bool)($this->getQueryCount() > 0) ;
     }
 
     /**

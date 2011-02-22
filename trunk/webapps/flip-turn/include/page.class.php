@@ -186,6 +186,7 @@ class FlipTurnLayoutPage extends PageWidget
    		    //  Administrative actions
 		    $navtable = new VerticalCSSNavTable("Administration", "", "90%") ;
 		
+		    $navtable->add("swimmers.php", "Swimmers", "Swimmers") ;
 		    $navtable->add("swimteams.php", "Swim Teams", "Swim Teams") ;
 		    $navtable->add("swimmeets.php", "Swim Meets", "Swim Meets") ;
 		    $navtable->add("results.php", "Results", "Results") ;
