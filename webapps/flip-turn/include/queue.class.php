@@ -21,6 +21,7 @@
 
 include_once("db.class.php") ;
 include_once("results.class.php") ;
+include_once("swimmers.class.php") ;
 include_once("swimmeets.class.php") ;
 include_once("swimteams.class.php") ;
 
@@ -248,6 +249,7 @@ class SDIFResultsQueue extends SDIFQueue
             linenumber', FT_SDIFQUEUE_TABLE)) ;
         $this->runSelectQuery(true) ;
 
+        $swimmer = new Swimmer() ;
         $c1_record = new SwimTeam() ;
         $d0_record = new SwimResult() ;
         $rslts = $this->getQueryResults() ;
@@ -272,17 +274,67 @@ class SDIFResultsQueue extends SDIFQueue
                 $d0_record->ParseRecord() ;
                 $d0_record->setSwimMeetId($swimmeetid['swimmeetid']) ;
                 $d0_record->setSwimTeamId($swimteamid['swimteamid']) ;
-                $d0_record->setSwimmerId(0) ;
 
-                if (!$d0_record->ResultExistsByMeetTeamAndSwimmer())
+                //  Does the swimmer exist?  If not, the swimmer
+                //  record needs to be created.  The USS ID can be
+                //  used to determine uniqueness BUT there is a chance
+                //  that more than one swimmer id could be returned.
+
+
+                $swimmer->setUSSNew($d0_record->getUSSNew()) ;
+                $swimmer->setSwimTeamId($d0_record->getSwimTeamId()) ;
+
+                if ($swimmer->SwimmerExistsByUSSNewAndSwimTeamId())
                 {
-                    $d0_record->AddResult() ;
+                    $swimmerid = $swimmer->GetSwimmerIdByUSSNewAndSwimTeamId() ;
                 }
                 else
-                    $this->add_status_message(
-                        sprintf('Result for \"%s\" from line %d is already stored in the database, ignored.',
-                        $d0_record->getSwimmerName(), $rslt['linenumber']),
-                        FT_WARNING) ;
+                {
+                    print '<h1>' . basename(__FILE__) . '::' . __LINE__ . '</h1>' ;
+                    $swimmer->setSwimTeamId($d0_record->getSwimTeamId()) ;
+                    $swimmer->setBirthDate($d0_record->getBirthDate(true), true) ;
+
+                    $name = $d0_record->getSwimmerName() ;
+                    list($last, $first, $middle) = explode(',', $name . ',,', 3) ;
+                    if ($first == ',') $first = '' ;
+                    if ($middle == ',') $middle = '' ;
+
+                    $swimmer->setSwimmerLastName($last) ;
+                    $swimmer->setSwimmerFirstName($first) ;
+                    $swimmer->setSwimmerMiddleName($middle) ;
+
+                    $swimmer->setUSS($d0_record->getUSS()) ;
+                    $swimmer->setUSSNew($d0_record->getUSSNew()) ;
+                    $swimmer->setGender($d0_record->getGender()) ;
+
+                    $swimmer->AddSwimmer() ;
+                    $swimmerid = $swimmer->getSwimmerId() ;
+
+                    if ($swimmerid == null)
+                    {
+                        $this->add_status_message(
+                            sprintf('Unable to add swimmer "%s" from line %d to the database, result record skipped.',
+                            $d0_record->getSwimmerName(), $rslt['linenumber']),
+                            FT_WARNING) ;
+                    }
+                }
+
+                if ($swimmerid != null)
+                {
+                    $d0_record->setSwimmerId($swimmerid) ;
+
+                    if (!$d0_record->ResultExistsByMeetTeamAndSwimmer())
+                    {
+                        $d0_record->AddResult() ;
+                    }
+                    else
+                    {
+                        $this->add_status_message(
+                            sprintf('Result for "%s" from line %d is already stored in the database, ignored.',
+                            $d0_record->getSwimmerName(), $rslt['linenumber']),
+                            FT_WARNING) ;
+                    }
+                }
             }
         }
 

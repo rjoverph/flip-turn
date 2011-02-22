@@ -56,7 +56,7 @@ include_once(PHPHTMLLIB_ABSPATH . '/widgets/data_list/ADODBSQLDataListSource.inc
 
 //  Define database tables
 define('FT_RESULTS_TABLE', FT_DB_PREFIX . 'results') ;
-define('FT_SWIMMER_TABLE', FT_DB_PREFIX . 'swimmer') ;
+define('FT_SWIMMERS_TABLE', FT_DB_PREFIX . 'swimmers') ;
 define('FT_SWIMMEETS_TABLE', FT_DB_PREFIX . 'swimmeets') ;
 define('FT_SWIMTEAMS_TABLE', FT_DB_PREFIX . 'swimteams') ;
 define('FT_SDIFQUEUE_TABLE', FT_DB_PREFIX . 'sdifqueue') ;

@@ -44,6 +44,537 @@ class SDIFRecord extends FlipTurnDBI
     var $_sdif_record_type ;
 
     /**
+     * Org Code
+     */
+    var $_org_code ;
+
+    /**
+     * Course Code
+     */
+    var $_course_code ;
+
+    /**
+     * Team Code
+     */
+    var $_team_code ;
+
+    /**
+     * Team Code 5th Character
+     */
+    var $_team_code_5 ;
+
+    /**
+     * Region Code
+     */
+    var $_region_code ;
+
+    /**
+     * Swimmer Name property
+     */
+    var $_swimmer_name ;
+
+    /**
+     * USS property
+     */
+    var $_uss ;
+
+    /**
+     * USS new property
+     */
+    var $_uss_new ;
+
+    /**
+     * USS old property
+     */
+    var $_uss_old ;
+
+    /**
+     * Attach Code property
+     */
+    var $_attach_code ;
+
+    /**
+     * Citizen Code property
+     */
+    var $_citizen_code ;
+
+    /**
+     * Birth Date property
+     */
+    var $_birth_date ;
+
+    /**
+     * Birth Date Database property
+     */
+    var $_birth_date_db ;
+
+    /**
+     * Age Or Class property
+     */
+    var $_age_or_class ;
+
+    /**
+     * Gender property
+     */
+    var $_gender ;
+
+    /**
+     * Phone Number property
+     */
+    var $_phone_number ;
+
+    /**
+     * Future Use #1
+     */
+    var $_future_use_1 ;
+
+    /**
+     * Future Use #2
+     */
+    var $_future_use_2 ;
+
+    /**
+     * Future Use #3
+     */
+    var $_future_use_3 ;
+
+    /**
+     * Timestamp property
+     */
+    var $_timestamp ;
+
+    /**
+     * Set Org Code
+     *
+     * @param int org code
+     */
+    function setOrgCode($code)
+    {
+        $this->_org_code = $code ;
+    }
+
+    /**
+     * Get Org Code
+     *
+     * @return int org code
+     */
+    function getOrgCode()
+    {
+        return $this->_org_code ;
+    }
+
+    /**
+     * Set Team Code
+     *
+     * @param string team code
+     */
+    function setTeamCode($txt)
+    {
+        $this->_team_code = $txt ;
+    }
+
+    /**
+     * Get Team Code
+     *
+     * @return string team code
+     */
+    function getTeamCode()
+    {
+        return $this->_team_code ;
+    }
+
+    /**
+     * Set Team Code 5th character
+     *
+     * @param string team code 5th character
+     */
+    function setTeamCode5($txt)
+    {
+        $this->_team_code_5 = $txt ;
+    }
+
+    /**
+     * Get Team Code 5th character
+     *
+     * @return string team code 5th character
+     */
+    function getTeamCode5()
+    {
+        return $this->_team_code_5 ;
+    }
+
+    /**
+     * Set Course Code
+     *
+     * @param string course code
+     */
+    function setCourseCode($txt)
+    {
+        $this->_course_code = $txt ;
+    }
+
+    /**
+     * Get Course Code
+     *
+     * @return string course code
+     */
+    function getCourseCode()
+    {
+        return $this->_course_code ;
+    }
+
+    /**
+     * Set Region Code
+     *
+     * @param string region code
+     */
+    function setRegionCode($txt)
+    {
+        $this->_region_code = $txt ;
+    }
+
+    /**
+     * Get Region Code
+     *
+     * @return string region code
+     */
+    function getRegionCode()
+    {
+        return $this->_region_code ;
+    }
+
+    /**
+     * Set Stroke Code
+     *
+     * @param string stroke code
+     */
+    function setStrokeCode($txt)
+    {
+        $this->_stroke_code = $txt ;
+    }
+
+    /**
+     * Get Stroke Code
+     *
+     * @return string stroke code
+     */
+    function getStrokeCode()
+    {
+        return $this->_stroke_code ;
+    }
+
+    /**
+     * Set Age Or Class
+     *
+     * @param string age or class
+     */
+    function setAgeOrClass($txt)
+    {
+        $this->_age_or_class = $txt ;
+    }
+
+    /**
+     * Get Age Or Class
+     *
+     * @return string age or class
+     */
+    function getAgeOrClass()
+    {
+        return $this->_age_or_class ;
+    }
+
+    /**
+     * Set Birth Date
+     *
+     * @param string birth date
+     * @param boolean date provided in database format
+     */
+    function setBirthDate($txt, $db = false)
+    {
+        if ($db)
+        {
+            $this->_birth_date_db = $txt ;
+ 
+            //  The birth date date is stored in YYYY-MM-DD in the database but
+            //  SDIF B1 record expects it in MMDDYYYY format so the dates are
+            //  reformatted appropriately.
+
+            $date = &$this->_birth_date_db ;
+
+            $this->_birth_date = sprintf("%02s%02s%04s",
+                substr($date, 5, 2), substr($date, 8, 2), substr($date, 0, 4)) ;
+        }
+        else
+        {
+            $this->_birth_date = $txt ;
+ 
+            //  The birth date date is stored in MMDDYYYY format in the SDIF B1
+            //  record.  The database needs dates in YYYY-MM-DD format so the
+            //  dates are reformatted appropriately.
+
+            $date = &$this->_birth_date ;
+
+            $this->_birth_date_db = sprintf("%04s-%02s-%02s",
+                substr($date, 4, 4), substr($date, 0, 2), substr($date, 2, 2)) ;
+        }
+    }
+
+    /**
+     * Get Birth Date
+     *
+     * @param boolean date returned in database format
+     * @return string birth date
+     */
+    function getBirthDate($db = true)
+    {
+        if ($db)
+            return $this->_birth_date_db ;
+        else
+            return $this->_birth_date ;
+    }
+
+    /**
+     * Set Gender
+     *
+     * @param string gender
+     */
+    function setGender($txt)
+    {
+        $this->_gender = $txt ;
+    }
+
+    /**
+     * Get Gender
+     *
+     * @return string gender
+     */
+    function getGender()
+    {
+        return $this->_gender ;
+    }
+
+    /**
+     * Set Swimmer Name
+     *
+     * @param string swimmer name
+     */
+    function setSwimmerName($txt)
+    {
+        $this->_swimmer_name = $txt ;
+    }
+
+    /**
+     * Get Swimmer Name
+     *
+     * @return string swimmer name
+     */
+    function getSwimmerName()
+    {
+        return $this->_swimmer_name ;
+    }
+
+    /**
+     * Set USS
+     *
+     * @param string uss
+     */
+    function setUSS($txt)
+    {
+        $this->_uss = $txt ;
+    }
+
+    /**
+     * Get USS
+     *
+     * @return string uss
+     */
+    function getUSS()
+    {
+        return $this->_uss ;
+    }
+
+    /**
+     * Set USS New
+     *
+     * Construct the new format of the USS swimmer number
+     * from the name and birth date fields.
+     */
+    function setUSSNew($uss = null)
+    {
+        if (is_null($uss))
+        {
+            $dob = split('-', $this->getBirthDate()) ;
+            $name = split(',', $this->getSwimmerName()) ;
+
+            //  Make sure there are 3 elements in the $name array
+            for ($i = 0 ; $i <= 2 ; $i++)
+                if (!array_key_exists($i, $name)) $name[$i] = '' ;
+
+            $first = strtoupper(trim($name[1])) ;
+            $last = strtoupper(trim($name[0])) ;
+            $middle = '*' ;
+
+            $this->_uss_new = sprintf('%02s%02s%02s%3s%1s%4s',
+                $dob[1], $dob[2], substr($dob[0], 2, 2), substr($first, 0, 3),
+                substr($middle, 0, 1), substr($last, 0, 4)) ;
+        }
+        else
+            $this->_uss_new = $uss ;
+    }
+
+    /**
+     * Get USS New
+     *
+     * @return string ft uss new
+     */
+    function getUSSNew()
+    {
+        return $this->_uss_new ;
+    }
+
+    /**
+     * Set USS Old
+     *
+     */
+    function setUSSOld($uss = null)
+    {
+        if (is_null($uss))
+            $this->_uss_old = substr($this->getUSSNew(), 0, 12) ;
+        else
+            $this->_uss_old = $uss ;
+    }
+
+    /**
+     * Get USS Old
+     *
+     * @return string ft uss old
+     */
+    function getUSSOld()
+    {
+        return $this->_uss_old ;
+    }
+
+    /**
+     * Set Attach Code
+     *
+     * @param string attach code
+     */
+    function setAttachCode($txt)
+    {
+        $this->_attach_code = $txt ;
+    }
+
+    /**
+     * Get Attach Code
+     *
+     * @return string attach code
+     */
+    function getAttachCode()
+    {
+        return $this->_attach_code ;
+    }
+
+    /**
+     * Set Citizen Code
+     *
+     * @param string citizen code
+     */
+    function setCitizenCode($txt)
+    {
+        $this->_citizen_code = $txt ;
+    }
+
+    /**
+     * Get Citizen Code
+     *
+     * @return string citizen code
+     */
+    function getCitizenCode()
+    {
+        return $this->_citizen_code ;
+    }
+
+    /**
+     * Set Phone Number
+     *
+     * @param string phone number
+     */
+    function setPhoneNumber($txt)
+    {
+        $this->_phone_number = $txt ;
+    }
+
+    /**
+     * Get Phone Number
+     *
+     * @return string phone number
+     */
+    function getPhoneNumber()
+    {
+        return $this->_phone_number ;
+    }
+
+    /**
+     * Set Future Use 1
+     *
+     * @param string future use 1
+     */
+    function setFutureUse1($txt)
+    {
+        $this->_future_use_1 = $txt ;
+    }
+
+    /**
+     * Get Future Use 1
+     *
+     * @return string future use 1
+     */
+    function getFutureUse1()
+    {
+        return $this->_future_use_1 ;
+    }
+
+    /**
+     * Set Future Use 2
+     *
+     * @param string future use 2
+     */
+    function setFutureUse2($txt)
+    {
+        $this->_future_use_2 = $txt ;
+    }
+
+    /**
+     * Get Future Use 2
+     *
+     * @return string future use 2
+     */
+    function getFutureUse2()
+    {
+        return $this->_future_use_2 ;
+    }
+
+    /**
+     * Set Future Use 3
+     *
+     * @param string future use 3
+     */
+    function setFutureUse3($txt)
+    {
+        $this->_future_use_3 = $txt ;
+    }
+
+    /**
+     * Get Future Use 3
+     *
+     * @return string future use 3
+     */
+    function getFutureUse3()
+    {
+        return $this->_future_use_3 ;
+    }
+
+    /**
      * Set SDIF record
      *
      * @param string SDIF record
@@ -52,27 +583,37 @@ class SDIFRecord extends FlipTurnDBI
     {
         $this->_sdif_record = $rec ;
     }
+
+    /**
+     * Set Timestamp
+     *
+     * @param string timestamp
+     */
+    function setTimestamp($txt)
+    {
+        $this->_timestamp = $txt ;
+    }
+
+    /**
+     * Get Timestamp
+     *
+     * @return string timestamp
+     */
+    function getTimestamp()
+    {
+        return $this->_timestamp ;
+    }
 }
 
 /**
- * SDIF B1 record
+ * SDIF Bx record
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @access public
  * @see SDIFRecord
  */
-class SDIFB1Record extends SDIFRecord
+class SDIFBxRecord extends SDIFRecord
 {
-    /**
-     * Org Code
-     */
-    var $_org_code ;
-
-    /**
-     * Future Use #1
-     */
-    var $_future_use_1 ;
-
     /**
      * Meet Name
      */
@@ -137,61 +678,6 @@ class SDIFB1Record extends SDIFRecord
      * Pool Altitude
      */
     var $_pool_altitude ;
-
-    /**
-     * Future Use #2
-     */
-    var $_future_use_2 ;
-
-    /**
-     * Course Code
-     */
-    var $_course_code ;
-
-    /**
-     * Future Use #3
-     */
-    var $_future_use_3 ;
-
-    /**
-     * Set Org Code
-     *
-     * @param int org code
-     */
-    function setOrgCode($code)
-    {
-        $this->_org_code = $code ;
-    }
-
-    /**
-     * Get Org Code
-     *
-     * @return int org code
-     */
-    function getOrgCode()
-    {
-        return $this->_org_code ;
-    }
-
-    /**
-     * Set Future Use 1
-     *
-     * @param string future use 1
-     */
-    function setFutureUse1($txt)
-    {
-        $this->_future_use_1 = $txt ;
-    }
-
-    /**
-     * Get Future Use 1
-     *
-     * @return string future use 1
-     */
-    function getFutureUse1()
-    {
-        return $this->_future_use_1 ;
-    }
 
     /**
      * Set Meet Name
@@ -472,67 +958,17 @@ class SDIFB1Record extends SDIFRecord
     {
         return $this->_pool_altitude ;
     }
+}
 
-    /**
-     * Set Future Use 2
-     *
-     * @param string future use 2
-     */
-    function setFutureUse2($txt)
-    {
-        $this->_future_use_2 = $txt ;
-    }
-
-    /**
-     * Get Future Use 2
-     *
-     * @return string future use 2
-     */
-    function getFutureUse2()
-    {
-        return $this->_future_use_2 ;
-    }
-
-    /**
-     * Set Course Code
-     *
-     * @param string course code
-     */
-    function setCourseCode($txt)
-    {
-        $this->_course_code = $txt ;
-    }
-
-    /**
-     * Get Course Code
-     *
-     * @return string course code
-     */
-    function getCourseCode()
-    {
-        return $this->_course_code ;
-    }
-
-    /**
-     * Set Future Use 3
-     *
-     * @param string future use 3
-     */
-    function setFutureUse3($txt)
-    {
-        $this->_future_use_3 = $txt ;
-    }
-
-    /**
-     * Get Future Use 3
-     *
-     * @return string future use 3
-     */
-    function getFutureUse3()
-    {
-        return $this->_future_use_3 ;
-    }
-
+/**
+ * SDIF B1 record
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see SDIFBxRecord
+ */
+class SDIFB1Record extends SDIFBxRecord
+{
     /**
      * Parse Record
      */
@@ -587,29 +1023,14 @@ class SDIFB1Record extends SDIFRecord
 }
 
 /**
- * SDIF C1 record
+ * SDIF Cx record
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @access public
  * @see SDIFRecord
  */
-class SDIFC1Record extends SDIFRecord
+class SDIFCxRecord extends SDIFRecord
 {
-    /**
-     * Org Code
-     */
-    var $_org_code ;
-
-    /**
-     * Future Use #1
-     */
-    var $_future_use_1 ;
-
-    /**
-     * Team Code
-     */
-    var $_team_code ;
-
     /**
      * Team Name
      */
@@ -649,86 +1070,6 @@ class SDIFC1Record extends SDIFRecord
      * Team Country Code
      */
     var $_team_country_code ;
-
-    /**
-     * Region Code
-     */
-    var $_region_code ;
-
-    /**
-     * Future Use #2
-     */
-    var $_future_use_2 ;
-
-    /**
-     * Team Code 5th Character
-     */
-    var $_team_code_5 ;
-
-    /**
-     * Future Use #3
-     */
-    var $_future_use_3 ;
-
-    /**
-     * Set Org Code
-     *
-     * @param int org code
-     */
-    function setOrgCode($code)
-    {
-        $this->_org_code = $code ;
-    }
-
-    /**
-     * Get Org Code
-     *
-     * @return int org code
-     */
-    function getOrgCode()
-    {
-        return $this->_org_code ;
-    }
-
-    /**
-     * Set Future Use 1
-     *
-     * @param string future use 1
-     */
-    function setFutureUse1($txt)
-    {
-        $this->_future_use_1 = $txt ;
-    }
-
-    /**
-     * Get Future Use 1
-     *
-     * @return string future use 1
-     */
-    function getFutureUse1()
-    {
-        return $this->_future_use_1 ;
-    }
-
-    /**
-     * Set Team Code
-     *
-     * @param string team code
-     */
-    function setTeamCode($txt)
-    {
-        $this->_team_code = $txt ;
-    }
-
-    /**
-     * Get Team Code
-     *
-     * @return string team code
-     */
-    function getTeamCode()
-    {
-        return $this->_team_code ;
-    }
 
     /**
      * Set Team Name
@@ -889,87 +1230,17 @@ class SDIFC1Record extends SDIFRecord
     {
         return $this->_team_country_code ;
     }
+}
 
-    /**
-     * Set Region Code
-     *
-     * @param string region code
-     */
-    function setRegionCode($txt)
-    {
-        $this->_region_code = $txt ;
-    }
-
-    /**
-     * Get Region Code
-     *
-     * @return string region code
-     */
-    function getRegionCode()
-    {
-        return $this->_region_code ;
-    }
-
-    /**
-     * Set Future Use 2
-     *
-     * @param string future use 2
-     */
-    function setFutureUse2($txt)
-    {
-        $this->_future_use_2 = $txt ;
-    }
-
-    /**
-     * Get Future Use 2
-     *
-     * @return string future use 2
-     */
-    function getFutureUse2()
-    {
-        return $this->_future_use_2 ;
-    }
-
-    /**
-     * Set Team Code 5th character
-     *
-     * @param string team code 5th character
-     */
-    function setTeamCode5($txt)
-    {
-        $this->_team_code_5 = $txt ;
-    }
-
-    /**
-     * Get Team Code 5th character
-     *
-     * @return string team code 5th character
-     */
-    function getTeamCode5()
-    {
-        return $this->_team_code_5 ;
-    }
-
-    /**
-     * Set Future Use 3
-     *
-     * @param string future use 3
-     */
-    function setFutureUse3($txt)
-    {
-        $this->_future_use_3 = $txt ;
-    }
-
-    /**
-     * Get Future Use 3
-     *
-     * @return string future use 3
-     */
-    function getFutureUse3()
-    {
-        return $this->_future_use_3 ;
-    }
-
+/**
+ * SDIF C1 record
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see SDIFRecord
+ */
+class SDIFC1Record extends SDIFCxRecord
+{
     /**
      * Parse Record
      */
@@ -1010,68 +1281,8 @@ class SDIFC1Record extends SDIFRecord
  * @access public
  * @see SDIFRecord
  */
-class SDIFD0Record extends SDIFRecord
+class SDIFDxRecord extends SDIFRecord
 {
-    /**
-     * Org Code property
-     */
-    var $_org_code ;
-
-    /**
-     * Future Use 1 property
-     */
-    var $_future_use_1 ;
-
-    /**
-     * Swimmer Name property
-     */
-    var $_swimmer_name ;
-
-    /**
-     * USS property
-     */
-    var $_uss ;
-
-    /**
-     * USS new property
-     */
-    var $_uss_new ;
-
-    /**
-     * USS old property
-     */
-    var $_uss_old ;
-
-    /**
-     * Attach Code property
-     */
-    var $_attach_code ;
-
-    /**
-     * Citizen Code property
-     */
-    var $_citizen_code ;
-
-    /**
-     * Birth Date property
-     */
-    var $_birth_date ;
-
-    /**
-     * Birth Date Database property
-     */
-    var $_birth_date_db ;
-
-    /**
-     * Age Or Class property
-     */
-    var $_age_or_class ;
-
-    /**
-     * Gender property
-     */
-    var $_gender ;
-
     /**
      * Event Gender property
      */
@@ -1198,16 +1409,6 @@ class SDIFD0Record extends SDIFRecord
     var $_swimmer_flight_status ;
 
     /**
-     * Future Use 2 property
-     */
-    var $_future_use_2 ;
-
-    /**
-     * Timestamp property
-     */
-    var $_timestamp ;
-
-    /**
      * Set Result Id
      *
      * @param string result id
@@ -1248,277 +1449,6 @@ class SDIFD0Record extends SDIFRecord
     }
 
     /**
-     * Set Org Code
-     *
-     * @param string org code
-     */
-    function setOrgCode($txt)
-    {
-        $this->_org_code = $txt ;
-    }
-
-    /**
-     * Get Org Code
-     *
-     * @return string org code
-     */
-    function getOrgCode()
-    {
-        return $this->_org_code ;
-    }
-
-    /**
-     * Set Future Use 1
-     *
-     * @param string future use 1
-     */
-    function setFutureUse1($txt)
-    {
-        $this->_future_use_1 = $txt ;
-    }
-
-    /**
-     * Get Future Use 1
-     *
-     * @return string future use 1
-     */
-    function getFutureUse1()
-    {
-        return $this->_future_use_1 ;
-    }
-
-    /**
-     * Set Swimmer Name
-     *
-     * @param string swimmer name
-     */
-    function setSwimmerName($txt)
-    {
-        $this->_swimmer_name = $txt ;
-    }
-
-    /**
-     * Get Swimmer Name
-     *
-     * @return string swimmer name
-     */
-    function getSwimmerName()
-    {
-        return $this->_swimmer_name ;
-    }
-
-    /**
-     * Set USS
-     *
-     * @param string uss
-     */
-    function setUSS($txt)
-    {
-        $this->_uss = $txt ;
-    }
-
-    /**
-     * Get USS
-     *
-     * @return string uss
-     */
-    function getUSS()
-    {
-        return $this->_uss ;
-    }
-
-    /**
-     * Set USS New
-     *
-     * Construct the new format of the USS swimmer number
-     * from the name and birth date fields.
-     */
-    function setUSSNew($uss = null)
-    {
-        if (is_null($uss))
-        {
-            $dob = split('-', $this->getBirthDate()) ;
-            $name = split(',', $this->getSwimmerName()) ;
-
-            //  Make sure there are 3 elements in the $name array
-            for ($i = 0 ; $i <= 2 ; $i++)
-                if (!array_key_exists($i, $name)) $name[$i] = '' ;
-
-            $first = strtoupper(trim($name[1])) ;
-            $last = strtoupper(trim($name[0])) ;
-            $middle = '*' ;
-
-            $this->_uss_new = sprintf('%02s%02s%02s%3s%1s%4s',
-                $dob[1], $dob[2], substr($dob[0], 2, 2), substr($first, 0, 3),
-                substr($middle, 0, 1), substr($last, 0, 4)) ;
-        }
-        else
-            $this->_uss_new = $uss ;
-    }
-
-    /**
-     * Get USS New
-     *
-     * @return string ft uss new
-     */
-    function getUSSNew()
-    {
-        return $this->_uss_new ;
-    }
-
-    /**
-     * Set USS Old
-     *
-     */
-    function setUSSOld($uss = null)
-    {
-        if (is_null($uss))
-            $this->_uss_old = substr($this->getUSSNew(), 0, 12) ;
-        else
-            $this->_uss_old = $uss ;
-    }
-
-    /**
-     * Get USS Old
-     *
-     * @return string ft uss old
-     */
-    function getUSSOld()
-    {
-        return $this->_uss_old ;
-    }
-
-    /**
-     * Set Attach Code
-     *
-     * @param string attach code
-     */
-    function setAttachCode($txt)
-    {
-        $this->_attach_code = $txt ;
-    }
-
-    /**
-     * Get Attach Code
-     *
-     * @return string attach code
-     */
-    function getAttachCode()
-    {
-        return $this->_attach_code ;
-    }
-
-    /**
-     * Set Citizen Code
-     *
-     * @param string citizen code
-     */
-    function setCitizenCode($txt)
-    {
-        $this->_citizen_code = $txt ;
-    }
-
-    /**
-     * Get Citizen Code
-     *
-     * @return string citizen code
-     */
-    function getCitizenCode()
-    {
-        return $this->_citizen_code ;
-    }
-
-    /**
-     * Set Birth Date
-     *
-     * @param string birth date
-     * @param boolean date provided in database format
-     */
-    function setBirthDate($txt, $db = false)
-    {
-        if ($db)
-        {
-            $this->_birth_date_db = $txt ;
- 
-            //  The birth date date is stored in YYYY-MM-DD in the database but
-            //  SDIF B1 record expects it in MMDDYYYY format so the dates are
-            //  reformatted appropriately.
-
-            $date = &$this->_birth_date_db ;
-
-            $this->_birth_date = sprintf("%02s%02s%04s",
-                substr($date, 5, 2), substr($date, 8, 2), substr($date, 0, 4)) ;
-        }
-        else
-        {
-            $this->_birth_date = $txt ;
- 
-            //  The birth date date is stored in MMDDYYYY format in the SDIF B1
-            //  record.  The database needs dates in YYYY-MM-DD format so the
-            //  dates are reformatted appropriately.
-
-            $date = &$this->_birth_date ;
-
-            $this->_birth_date_db = sprintf("%04s-%02s-%02s",
-                substr($date, 4, 4), substr($date, 0, 2), substr($date, 2, 2)) ;
-        }
-    }
-
-    /**
-     * Get Birth Date
-     *
-     * @param boolean date returned in database format
-     * @return string birth date
-     */
-    function getBirthDate($db = true)
-    {
-        if ($db)
-            return $this->_birth_date_db ;
-        else
-            return $this->_birth_date ;
-    }
-
-    /**
-     * Set Age Or Class
-     *
-     * @param string age or class
-     */
-    function setAgeOrClass($txt)
-    {
-        $this->_age_or_class = $txt ;
-    }
-
-    /**
-     * Get Age Or Class
-     *
-     * @return string age or class
-     */
-    function getAgeOrClass()
-    {
-        return $this->_age_or_class ;
-    }
-
-    /**
-     * Set Gender
-     *
-     * @param string gender
-     */
-    function setGender($txt)
-    {
-        $this->_gender = $txt ;
-    }
-
-    /**
-     * Get Gender
-     *
-     * @return string gender
-     */
-    function getGender()
-    {
-        return $this->_gender ;
-    }
-
-    /**
      * Set Event Gender
      *
      * @param string event gender
@@ -1556,26 +1486,6 @@ class SDIFD0Record extends SDIFRecord
     function getEventDistance()
     {
         return $this->_event_distance ;
-    }
-
-    /**
-     * Set Stroke Code
-     *
-     * @param string stroke code
-     */
-    function setStrokeCode($txt)
-    {
-        $this->_stroke_code = $txt ;
-    }
-
-    /**
-     * Get Stroke Code
-     *
-     * @return string stroke code
-     */
-    function getStrokeCode()
-    {
-        return $this->_stroke_code ;
     }
 
     /**
@@ -2065,47 +1975,17 @@ class SDIFD0Record extends SDIFRecord
     {
         return $this->_swimmer_flight_status ;
     }
+}
 
-    /**
-     * Set Future Use 2
-     *
-     * @param string future use 2
-     */
-    function setFutureUse2($txt)
-    {
-        $this->_future_use_2 = $txt ;
-    }
-
-    /**
-     * Get Future Use 2
-     *
-     * @return string future use 2
-     */
-    function getFutureUse2()
-    {
-        return $this->_future_use_2 ;
-    }
-
-    /**
-     * Set Timestamp
-     *
-     * @param string timestamp
-     */
-    function setTimestamp($txt)
-    {
-        $this->_timestamp = $txt ;
-    }
-
-    /**
-     * Get Timestamp
-     *
-     * @return string timestamp
-     */
-    function getTimestamp()
-    {
-        return $this->_timestamp ;
-    }
-
+/**
+ * SDIF D0 record
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see SDIFDxRecord
+ */
+class SDIFD0Record extends SDIFDxRecord
+{
     /**
      * Parse Record
      */
@@ -2154,6 +2034,104 @@ class SDIFD0Record extends SDIFRecord
         $this->setEventTimeClassCode(trim(substr($this->_sdif_record, 142, 2))) ;
         $this->setSwimmerFlightStatus(trim(substr($this->_sdif_record, 144, 1))) ;
         $this->setFutureUse2(trim(substr($this->_sdif_record, 145, 15))) ;
+
+        //  Construct 'new' and 'old' formats of the USS number
+        //  from the name and birthdate fields.
+
+        $this->setUSSNew() ;
+        $this->setUSSOld() ;
+    }
+}
+
+/**
+ * SDIF D1 record
+ *
+ * @author Mike Walsh <mike_walsh@mindspring.com>
+ * @access public
+ * @see SDIFDxRecord
+ */
+class SDIFD1Record extends SDIFDxRecord
+{
+    /**
+     * First Admin property
+     */
+    var $_admin_info_1 ;
+
+    /**
+     * Fourth Admin property
+     */
+    var $_admin_info_4 ;
+
+    /**
+     * Set Admin Info 1
+     *
+     * @param string admin info
+     */
+    function setAdminInfo1($txt)
+    {
+        $this->_admin_info_1 = $txt ;
+    }
+
+    /**
+     * Get Admin Info
+     *
+     * @return string admin info
+     */
+    function getAdminInfo1()
+    {
+        return $this->_admin_info_1 ;
+    }
+
+    /**
+     * Set Admin Info 4
+     *
+     * @param string admin info
+     */
+    function setAdminInfo4($txt)
+    {
+        $this->_admin_info_4 = $txt ;
+    }
+
+    /**
+     * Get Admin Info
+     *
+     * @return string admin info
+     */
+    function getAdminInfo4()
+    {
+        return $this->_admin_info_4 ;
+    }
+
+    /**
+     * Parse Record
+     */
+    function ParseRecord()
+    {
+        if (FT_DEBUG)
+        {
+            $c = container() ;
+            $c->add(html_pre(FT_SDIF_COLUMN_DEBUG1,
+                FT_SDIF_COLUMN_DEBUG2, $this->_sdif_record)) ;
+            print $c->render() ;
+        }
+
+        //  Extract the data from the SDIF record by substring position
+
+        $this->setOrgCode(trim(substr($this->_sdif_record, 2, 1))) ;
+        $this->setFutureUse1(trim(substr($this->_sdif_record, 3, 8))) ;
+        $this->setTeamCode(trim(substr($this->_sdif_record, 11, 6))) ;
+        $this->setTeamCode5(trim(substr($this->_sdif_record, 17, 1))) ;
+        $this->setSwimmerName(trim(substr($this->_sdif_record, 18, 28))) ;
+        $this->setFutureUse2(trim(substr($this->_sdif_record, 46, 1))) ;
+        $this->setUSS(trim(substr($this->_sdif_record, 47, 12))) ;
+        $this->setAttachCode(trim(substr($this->_sdif_record, 59, 1))) ;
+        $this->setCitizenCode(trim(substr($this->_sdif_record, 60, 3))) ;
+        $this->setBirthDate(trim(substr($this->_sdif_record, 63, 8))) ;
+        $this->setAgeOrClass(trim(substr($this->_sdif_record, 71, 2))) ;
+        $this->setGender(trim(substr($this->_sdif_record, 73, 1))) ;
+        $this->setAdminInfo1(trim(substr($this->_sdif_record, 74, 30))) ;
+        $this->setAdminInfo4(trim(substr($this->_sdif_record, 104, 20))) ;
+        $this->setPhone(trim(substr($this->_sdif_record, 124, 12))) ;
 
         //  Construct 'new' and 'old' formats of the USS number
         //  from the name and birthdate fields.
