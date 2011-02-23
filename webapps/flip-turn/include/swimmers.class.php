@@ -193,14 +193,17 @@ class Swimmer extends SDIFD1Record
      * @param string swimmer name
      * @return boolean existance of swimmer by name
      */
-    function SwimmerExistsByName($swimmername = null)
+    function SwimmerExistsByName($first = null, $middle = null, $last = null)
     {
-        if (is_null($swimmername)) $swimmername = $this->getTeamName() ;
+        if (is_null($first)) $first = $this->getSwimmerFirstName() ;
+        if (is_null($middle)) $first = $this->getSwimmerMiddleName() ;
+        if (is_null($last)) $last = $this->getSwimmerLastName() ;
 
 	    //  Is name already in the database?
 
-        $query = sprintf("SELECT swimmerid FROM %s WHERE swimmer_name = \"%s\"",
-            FT_SWIMMERS_TABLE, $swimmername) ;
+        $query = sprintf("SELECT swimmerid FROM %s WHERE lastname=\"%s\" AND
+            firstname=\"%s\" AND middlename=\"%s\"", FT_SWIMMERS_TABLE, $last,
+            $middle, $first) ;
 
         $this->setQuery($query) ;
         $this->runSelectQuery(false) ;
@@ -239,6 +242,30 @@ class Swimmer extends SDIFD1Record
      * by comparing names and return a boolean accordingly.
      *
      * @param string uss new
+     * @return boolean existance of swimmer
+     */
+    function SwimmerExistsByUSSNew($uss = null)
+    {
+        if (is_null($uss)) $uss = $this->getUSSNew() ;
+
+	    //  Is swimmer already in the database?
+
+        $query = sprintf("SELECT swimmerid FROM %s WHERE
+            uss_new = \"%s\"", FT_SWIMMERS_TABLE, $uss) ;
+
+        $this->setQuery($query) ;
+        $this->runSelectQuery(false) ;
+
+	    //  determine existance status
+
+        return (bool)($this->getQueryCount() > 0) ;
+    }
+
+    /**
+     * Check if a swimmer already exists in the database
+     * by comparing names and return a boolean accordingly.
+     *
+     * @param string uss new
      * @param string int swim team id
      * @return boolean existance of swimmer
      */
@@ -255,7 +282,7 @@ class Swimmer extends SDIFD1Record
         $this->setQuery($query) ;
         $this->runSelectQuery(false) ;
 
-	    //  Make sure name doesn't exist
+	    //  determine existance status
 
         return (bool)($this->getQueryCount() > 0) ;
     }
@@ -377,10 +404,10 @@ class Swimmer extends SDIFD1Record
             lastname=\"%s\",
             firstname=\"%s\",
             middlename=\"%s\",
-            birthdate=\"%s\",
+            birth_date=\"%s\",
             uss=\"%s\",
             uss_new=\"%s\",
-            gender=\"%s\",
+            gender=\"%s\"
             WHERE swimmerid=\"%s\"",
             FT_SWIMMERS_TABLE,
             $this->getSwimTeamId(),
@@ -499,6 +526,8 @@ class SwimmersDataList extends DefaultGUIDataList
         //  Add the buttons ...
 
         $t->add_row(
+            $this->action_button('Add', 'swimmer_add.php'),
+            _HTML_SPACE,
             $this->action_button('Details', 'swimmer_details.php'),
             _HTML_SPACE,
             $this->action_button('Results', 'swimmer_results.php'),

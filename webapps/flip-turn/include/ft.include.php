@@ -24,7 +24,12 @@ define('FT_NOTE', 'note') ;
 define('FT_WARNING', 'warning') ;
 define('FT_ERROR', 'error') ;
 
+define('FT_NULL_ID', 0) ;
+define('FT_NONE', 'none') ;
 define('FT_NULL_STRING', '') ;
+
+define('FT_MALE', 'male') ;
+define('FT_FEMALE', 'female') ;
 
 define('FT_ACTION_ADD', 'add') ;
 define('FT_ACTION_UPDATE', 'update') ;
