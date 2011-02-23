@@ -290,7 +290,7 @@ class SDIFResultsQueue extends SDIFQueue
                 }
                 else
                 {
-                    print '<h1>' . basename(__FILE__) . '::' . __LINE__ . '</h1>' ;
+                    //print '<h1>' . basename(__FILE__) . '::' . __LINE__ . '</h1>' ;
                     $swimmer->setSwimTeamId($d0_record->getSwimTeamId()) ;
                     $swimmer->setBirthDate($d0_record->getBirthDate(true), true) ;
 
