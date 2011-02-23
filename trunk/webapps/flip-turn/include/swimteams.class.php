@@ -160,6 +160,29 @@ class SwimTeam extends SDIFC1Record
     }
 
     /**
+     * Retrieve all the Swim Club Ids for the swim clubs.
+     * Swim Clubs can be filtered to return a subset of records
+     *
+     * @param - string - optional filter to restrict query
+     * @return - array - array of swimmers ids
+     */
+    function GetAllSwimTeamIds($filter = null, $orderby = "team_name")
+    {
+        //  Select the records for the season
+
+        $query = sprintf("SELECT swimteamid FROM %s", FT_SWIMTEAMS_TABLE) ;
+        if (!is_null($filter) && ($filter != ""))
+            $query .= sprintf(" WHERE %s", $filter) ;
+
+        $query .= sprintf(" ORDER BY %s", $orderby) ;
+
+        $this->setQuery($query) ;
+        $this->runSelectQuery() ;
+
+        return $this->getQueryResults() ;
+    }
+
+    /**
      *
      * Load team record by Id
      *

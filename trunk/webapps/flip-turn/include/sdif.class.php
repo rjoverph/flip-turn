@@ -412,7 +412,7 @@ class SDIFRecord extends FlipTurnDBI
 
             $first = strtoupper(trim($name[1])) ;
             $last = strtoupper(trim($name[0])) ;
-            $middle = '*' ;
+            $middle = empty($name[2]) ? '*' : $name[2] ;
 
             $this->_uss_new = sprintf('%02s%02s%02s%3s%1s%4s',
                 $dob[1], $dob[2], substr($dob[0], 2, 2), substr($first, 0, 3),
