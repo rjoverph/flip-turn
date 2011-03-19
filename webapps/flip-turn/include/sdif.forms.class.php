@@ -469,7 +469,7 @@ class SDIFQueueProcessForm extends FlipTurnForm
 
         foreach ($msgs as $msg)
             $c->add(html_div(sprintf('ft-%s-msg', $msg['severity']), $msg['msg'])) ;
-        $c->add(html_div('ft-note-msg',
+            $c->add(html_div('ft-note-msg',
             sprintf("%d record%s processed from SDIF Queue.",
             $cnt, $cnt == 1 ? "" : "s"))) ;
 

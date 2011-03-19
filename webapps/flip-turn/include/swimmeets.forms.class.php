@@ -448,7 +448,6 @@ class SwimMeetUpdateForm extends SwimMeetAddForm
         //  should be stored in the Swim Meet class instance.
 
         $swimmeet = $this->getSwimMeet() ;
-        //var_dump($swimmeet) ;
 
         $success = $swimmeet->UpdateSwimMeet() ;
 

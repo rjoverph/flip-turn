@@ -58,7 +58,7 @@ class SwimmerResultsPage extends FlipTurnLayoutPage
 
         $container = container() ;
 
-        $container->add($ussid) ;
+        //$container->add($ussid) ;
 
         //$it = new SwimmerResultInfoTable('Swim Meet Details', '500') ;
         //$it->setSwimmerResultId($ussid) ;
