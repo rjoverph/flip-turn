@@ -530,8 +530,6 @@ class SwimmersDataList extends DefaultGUIDataList
             _HTML_SPACE,
             $this->action_button('Details', 'swimmer_details.php'),
             _HTML_SPACE,
-            $this->action_button('Results', 'swimmer_results.php'),
-            _HTML_SPACE,
             $this->action_button('Update', 'swimmer_update.php'),
             _HTML_SPACE,
             $this->action_button('Purge', 'swimmers_purge.php')) ;

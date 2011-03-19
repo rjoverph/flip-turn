@@ -37,7 +37,7 @@ class SwimResultsPage extends FlipTurnLayoutPermissionsPage
 	    
         $container = container() ;
 
-        $results = new SwimResultsAdminDataList("Swim Results", '100%', "resultid") ;
+        $results = new SwimResultsAdminDataList("Swim Results", '100%', "swimmer_name, swim_date") ;
         $div = html_div() ;
         $div->set_id("resultsgdl") ;
         $div->add($results) ;

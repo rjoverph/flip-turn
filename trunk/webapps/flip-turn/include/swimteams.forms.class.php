@@ -425,7 +425,6 @@ class SwimTeamUpdateForm extends SwimTeamAddForm
         //  should be stored in the Swim Team class instance.
 
         $swimteam = $this->getSwimTeam() ;
-        //var_dump($swimteam) ;
 
         $success = $swimteam->UpdateSwimTeam() ;
 

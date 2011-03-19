@@ -988,7 +988,6 @@ class FlipTurnEditPageForm extends FlipTurnForm
         $content = new FETinyMCETextArea($this->getEditPageLabel(),
             true, 30, 132, '100%', '500px') ;
         $this->add_element($content) ;
-        //var_dump($content->javascript()) ;
     }
 
     /**

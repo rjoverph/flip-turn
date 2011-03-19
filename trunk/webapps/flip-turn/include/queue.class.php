@@ -319,6 +319,13 @@ class SDIFResultsQueue extends SDIFQueue
                     }
                 }
 
+                //  The Swimmer Id may be in an array so need to extract it if it is.
+
+                if (is_array($swimmerid))
+                    $swimmerid = $swimmerid['swimmerid'] ;
+
+                //  Try and add the result
+
                 if ($swimmerid != null)
                 {
                     $d0_record->setSwimmerId($swimmerid) ;
