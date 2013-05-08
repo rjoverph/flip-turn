@@ -1275,7 +1275,7 @@ class SDIFC1Record extends SDIFCxRecord
 }
 
 /**
- * SDIF D0 record
+ * SDIF Dx record
  *
  * @author Mike Walsh <mike_walsh@mindspring.com>
  * @access public
