@@ -1,0 +1,1 @@
+Tools and utilities for creating, manipulating, processing, and parsing Swim Data Interchange Format (SDIF) and and other related file formats.  SDIF is the standard interchange format sanctioned by US Swimming.
